@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
-
-// import DashboardLayout from 'src/layouts/dashboard';
+import { DashboardLayout } from 'src/layouts/DashboardLayout';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 
@@ -12,11 +11,11 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-        // <DashboardLayout>
+        <DashboardLayout>
           <Suspense>
             <Outlet />
           </Suspense>
-        // </DashboardLayout>
+        </DashboardLayout>
       ),
       children: [
         { element: <IndexPage />, index: true }

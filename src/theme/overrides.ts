@@ -3,7 +3,7 @@ import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 
 // ----------------------------------------------------------------------
 
-export function overrides(theme: any) {
+export function overrides(theme: any): any {
   return {
     MuiCssBaseline: {
       styleOverrides: {
@@ -59,12 +59,14 @@ export function overrides(theme: any) {
     },
     MuiButton: {
       styleOverrides: {
-        containedInherit: {
+        contained: {
           color: theme.palette.common.white,
-          backgroundColor: theme.palette.grey[800],
+          backgroundColor: theme.palette.primary.main,
+          textTransform: 'unset',
+          padding: theme.spacing(0.75, 1.5),
           '&:hover': {
             color: theme.palette.common.white,
-            backgroundColor: theme.palette.grey[800],
+            backgroundColor: theme.palette.primary.dark,
           },
         },
         sizeLarge: {
