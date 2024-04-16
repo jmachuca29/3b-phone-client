@@ -3,6 +3,7 @@ import { devtools } from "zustand/middleware";
 
 type Actions = {
   setCapacity: (capacity: string) => void;
+  setPaymentType: (paymentType: string) => void;
   reset: () => void;
 };
 
@@ -37,6 +38,10 @@ const sharedStateAndActions = (set: any, get: any) => ({
     setCapacity: (value: string) => {
       const { survey } = get();
       set({ survey: { ...survey, capacity: value } }, false, "UPDATE CAPACITY");
+    },
+    setPaymentType: (value: string) => {
+      const { survey } = get();
+      set({ survey: { ...survey, paymentType: value } }, false, "UPDATE PAYMENT TYPE");
     },
     reset: () => set(initialState, false, "RESET"),
   },
