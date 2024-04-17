@@ -64,10 +64,7 @@ const AppPage = () => {
                 <Grid xs={4} key={index}>
                   <Card>
                     <CardActionArea
-                      onClick={() => {
-                        console.log('redirect')
-                        navigate('/trade-in');
-                      }}
+                      onClick={() => navigate('/trade-in')}
                     >
                       <CardMedia
                         component="img"

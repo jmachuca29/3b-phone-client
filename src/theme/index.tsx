@@ -24,8 +24,6 @@ export default function ThemeProvider({ children }: any) {
     []
   );
 
-  console.log('memoizedValue', memoizedValue)
-
   const theme = createTheme(memoizedValue);
 
   theme.components = overrides(theme);
