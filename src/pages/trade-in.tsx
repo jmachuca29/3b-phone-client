@@ -5,8 +5,6 @@ import {
   Paper,
   Stack,
   Step,
-  StepContent,
-  StepLabel,
   Stepper,
   Typography,
 } from "@mui/material";
@@ -18,50 +16,6 @@ import { Characteristics } from "src/components/Characteristics/Characteristics"
 import { Condition } from "src/components/Condition/Condition";
 import PaymentType from "src/components/PaymentType/PaymentType";
 
-const steps = [
-  {
-    label: "Select capacity",
-    description: `For each ad campaign that you create, you can control how much
-                you're willing to spend on clicks and conversions, which networks
-                and geographical locations you want your ads to show on, and more.`,
-    component: <Capacity />,
-    continueButton: false,
-  },
-  {
-    label: "Select accesories",
-    description:
-      "An ad group contains one or more ads which target a shared set of keywords.",
-    component: <Accesories />,
-    continueButton: true,
-  },
-  {
-    label: "Serie Number and Imeis",
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-    component: <Characteristics />,
-    continueButton: true,
-  },
-  {
-    label: "Payment Type",
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-    component: <PaymentType />,
-    continueButton: true,
-  },
-  {
-    label: "Condition",
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-    component: <Condition />,
-    continueButton: true,
-  },
-];
 export const TradeInContext = createContext<any>(null);
 
 const TradeInPage = () => {
@@ -105,49 +59,32 @@ const TradeInPage = () => {
           </Grid>
           <Grid xs={12}>
             <Stepper activeStep={activeStep} orientation="vertical">
-              {steps.map((step, index) => (
-                <Step key={step.label}>
-                  <StepLabel
-                    optional={
-                      index === 4 ? (
-                        <Typography variant="caption">Last step</Typography>
-                      ) : null
-                    }
-                  >
-                    {step.label}
-                  </StepLabel>
-                  <StepContent>
-                    <Box sx={{ mb: 2 }}>
-                      <TradeInContext.Provider value={handleNext}>
-                        {step.component}
-                      </TradeInContext.Provider>
-                    </Box>
-                    <Box sx={{ mb: 2 }}>
-                      <div>
-                        {step.continueButton && (
-                          <Button
-                            variant="contained"
-                            onClick={handleNext}
-                            sx={{ mt: 1, mr: 1 }}
-                          >
-                            {index === steps.length - 1 ? "Finish" : "Continue"}
-                          </Button>
-                        )}
-
-                        <Button
-                          disabled={index === 0}
-                          onClick={handleBack}
-                          sx={{ mt: 1, mr: 1 }}
-                        >
-                          Back
-                        </Button>
-                      </div>
-                    </Box>
-                  </StepContent>
-                </Step>
-              ))}
+              <Step>
+                <Capacity handleNext={handleNext} />
+              </Step>
+              <Step>
+                <Accesories handleNext={handleNext} handleBack={handleBack} />
+              </Step>
+              <Step>
+                <Characteristics
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                />
+              </Step>
+              <Step>
+                <PaymentType
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                />
+              </Step>
+              <Step>
+                <Condition
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                />
+              </Step>
             </Stepper>
-            {activeStep === steps.length && (
+            {activeStep === 5 && (
               <Paper square elevation={0} sx={{ p: 3 }}>
                 <Typography>
                   All steps completed - you&apos;re finished

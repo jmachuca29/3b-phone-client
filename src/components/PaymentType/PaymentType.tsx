@@ -1,6 +1,5 @@
+import { Box, StepContent, StepLabel } from "@mui/material";
 import Button from "@mui/material/Button";
-import { useContext } from "react";
-import { TradeInContext } from "src/pages/trade-in";
 import useAppStore from "src/store/store";
 
 const capacityList = [
@@ -14,8 +13,7 @@ const capacityList = [
   },
 ];
 
-const PaymentType = () => {
-  const handleNext = useContext(TradeInContext);
+const PaymentType = ({ handleNext, handleBack }: any) => {
   const setFn = useAppStore((state) => state.setFn);
 
   const selectPaymentType = (value: string) => {
@@ -23,15 +21,35 @@ const PaymentType = () => {
     handleNext();
   };
 
-  return capacityList.map((capacity) => (
-    <Button
-      key={capacity.id}
-      variant="contained"
-      onClick={() => selectPaymentType(capacity.value)}
-    >
-      {capacity.value}
-    </Button>
-  ));
-}
+  return (
+    <>
+      <StepLabel>Payment Type</StepLabel>
+      <StepContent>
+        <Box sx={{ mb: 2 }}>
+          {capacityList.map((capacity) => (
+            <Button
+              key={capacity.id}
+              variant="contained"
+              onClick={() => selectPaymentType(capacity.value)}
+            >
+              {capacity.value}
+            </Button>
+          ))}
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <div>
+            <Button variant="contained" disabled sx={{ mt: 1, mr: 1 }}>
+              Continue
+            </Button>
+            <Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
+              Back
+            </Button>
+          </div>
+        </Box>
+      </StepContent>
+    </>
+  );
 
-export default PaymentType
+};
+
+export default PaymentType;

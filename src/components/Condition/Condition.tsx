@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button, StepContent, StepLabel } from "@mui/material";
 import { useState } from "react";
 // import React, { useContext } from 'react'
 // import { TradeInContext } from 'src/pages/trade-in';
@@ -32,7 +32,7 @@ const conditionList = [
   },
 ];
 
-export const Condition = () => {
+export const Condition = ({ handleNext, handleBack }: any) => {
   const [condition, setCondition] = useState<string>("");
   const setFn = useAppStore((state) => state.setFn);
 
@@ -50,16 +50,35 @@ export const Condition = () => {
 
   return (
     <>
-      {conditionList.map((condition) => (
-        <Button
-          key={condition.id}
-          variant="contained"
-          onClick={() => selectCondition(condition.value)}
-        >
-          {condition.value}
-        </Button>
-      ))}
-      <div>{returnConditionDescription(condition)}</div>
+      <StepLabel>Condition</StepLabel>
+      <StepContent>
+        <Box sx={{ mb: 2 }}>
+          {conditionList.map((condition) => (
+            <Button
+              key={condition.id}
+              variant="contained"
+              onClick={() => selectCondition(condition.value)}
+            >
+              {condition.value}
+            </Button>
+          ))}
+          <div>{returnConditionDescription(condition)}</div>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <div>
+            <Button
+              variant="contained"
+              onClick={handleNext}
+              sx={{ mt: 1, mr: 1 }}
+            >
+              Finish
+            </Button>
+            <Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
+              Back
+            </Button>
+          </div>
+        </Box>
+      </StepContent>
     </>
   );
 };

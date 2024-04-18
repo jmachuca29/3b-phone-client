@@ -1,6 +1,4 @@
-import { Button } from "@mui/material";
-import { useContext } from "react";
-import { TradeInContext } from "src/pages/trade-in";
+import { Box, Button, StepContent, StepLabel } from "@mui/material";
 import useAppStore from "src/store/store";
 
 const capacityList = [
@@ -18,8 +16,7 @@ const capacityList = [
   },
 ];
 
-export const Capacity = () => {
-  const handleNext = useContext(TradeInContext);
+export const Capacity = ({ handleNext }: any) => {
   const setFn = useAppStore((state) => state.setFn);
 
   const selectCapacity = (value: string) => {
@@ -27,13 +24,22 @@ export const Capacity = () => {
     handleNext();
   };
 
-  return capacityList.map((capacity) => (
-    <Button
-      key={capacity.id}
-      variant="contained"
-      onClick={() => selectCapacity(capacity.value)}
-    >
-      {capacity.value}
-    </Button>
-  ));
+  return (
+    <>
+      <StepLabel>Select capacity</StepLabel>
+      <StepContent>
+        <Box sx={{ mb: 2 }}>
+          {capacityList.map((capacity) => (
+            <Button
+              key={capacity.id}
+              variant="contained"
+              onClick={() => selectCapacity(capacity.value)}
+            >
+              {capacity.value}
+            </Button>
+          ))}
+        </Box>
+      </StepContent>
+    </>
+  );
 };
