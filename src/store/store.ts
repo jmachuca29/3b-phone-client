@@ -6,6 +6,11 @@ type Actions = {
   setPaymentType: (paymentType: string) => void;
   setCondition: (condition: string) => void;
   setAccesory: (accesory: string[]) => void;
+  setSerieNumberImei: (
+    serieNumber: string,
+    imei1: string,
+    imei2: string
+  ) => void;
   reset: () => void;
 };
 
@@ -43,7 +48,11 @@ const sharedStateAndActions = (set: any, get: any) => ({
     },
     setPaymentType: (value: string) => {
       const { survey } = get();
-      set({ survey: { ...survey, paymentType: value } }, false, "SET PAYMENT TYPE");
+      set(
+        { survey: { ...survey, paymentType: value } },
+        false,
+        "SET PAYMENT TYPE"
+      );
     },
     setCondition: (value: string) => {
       const { survey } = get();
@@ -52,6 +61,14 @@ const sharedStateAndActions = (set: any, get: any) => ({
     setAccesory: (value: string[]) => {
       const { survey } = get();
       set({ survey: { ...survey, accesories: value } }, false, "SET ACCESORY");
+    },
+    setSerieNumberImei: (serieNumber: string, imei1: string, imei2: string) => {
+      const { survey } = get();
+      set(
+        { survey: { ...survey, serieNumber, imei1, imei2 } },
+        false,
+        "SET SERIENUMBER AND IMEI"
+      );
     },
     reset: () => set(initialState, false, "RESET"),
   },

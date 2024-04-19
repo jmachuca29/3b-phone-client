@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -6,7 +7,8 @@ import {
   StepLabel,
   TextField,
 } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import useAppStore from "src/store/store";
 
 type Inputs = {
   serieNumberRequired: string;
@@ -15,16 +17,31 @@ type Inputs = {
 };
 
 export const Characteristics = ({ handleNext, handleBack }: any) => {
+  const [setFn, survey] = useAppStore((state) => [state.setFn, state.survey]);
+  
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<Inputs>();
+    // watch
+  } = useForm<Inputs>({
+    defaultValues: {
+      serieNumberRequired: survey.serieNumber,
+      imeiNumberOneRequired: survey.imei1,
+      imeiNumberTwoRequired: survey.imei2
+    }
+  });
 
+  useEffect(() => {
+    setValue('serieNumberRequired', survey.serieNumber);
+    setValue('imeiNumberOneRequired', survey.imei1);
+    setValue('imeiNumberTwoRequired', survey.imei2);
+  }, [survey, setValue]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
-    handleNext()
+  const onSubmit: SubmitHandler<Inputs> = data => {
+    setFn.setSerieNumberImei(data.serieNumberRequired, data.imeiNumberOneRequired, data.imeiNumberTwoRequired);
+    handleNext();
   };
 
   return (

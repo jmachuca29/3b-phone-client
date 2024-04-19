@@ -37,54 +37,64 @@ const TradeInPage = () => {
     <Box sx={{ flexGrow: 1 }}>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid xs={12}>
-            <Stack direction="row" padding={2}>
-              <Stack padding={2}>
-                <Stack component="span" alignItems="center">
-                  <img
-                    src={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=242&h=242&fit=crop&auto=format`}
-                    loading="lazy"
-                  />
+          {activeStep !== 5 && (
+            <>
+              <Grid xs={12}>
+                <Stack direction="row" padding={2}>
+                  <Stack padding={2}>
+                    <Stack component="span" alignItems="center">
+                      <img
+                        src={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=242&h=242&fit=crop&auto=format`}
+                        loading="lazy"
+                      />
+                    </Stack>
+                  </Stack>
+                  <Stack padding={2} justifyContent="center" flexGrow={1}>
+                    <Typography variant="h6" gutterBottom>
+                      Sell your
+                    </Typography>
+                    <Typography variant="h4" gutterBottom>
+                      iPhone 15 Pro
+                    </Typography>
+                  </Stack>
                 </Stack>
-              </Stack>
-              <Stack padding={2} justifyContent="center" flexGrow={1}>
-                <Typography variant="h6" gutterBottom>
-                  Sell your
-                </Typography>
-                <Typography variant="h4" gutterBottom>
-                  iPhone 15 Pro
-                </Typography>
-              </Stack>
-            </Stack>
-          </Grid>
-          <Grid xs={12}>
-            <Stepper activeStep={activeStep} orientation="vertical">
-              <Step>
-                <Capacity handleNext={handleNext} />
-              </Step>
-              <Step>
-                <Accesories handleNext={handleNext} handleBack={handleBack} />
-              </Step>
-              <Step>
-                <Characteristics
-                  handleNext={handleNext}
-                  handleBack={handleBack}
-                />
-              </Step>
-              <Step>
-                <PaymentType
-                  handleNext={handleNext}
-                  handleBack={handleBack}
-                />
-              </Step>
-              <Step>
-                <Condition
-                  handleNext={handleNext}
-                  handleBack={handleBack}
-                />
-              </Step>
-            </Stepper>
-            {activeStep === 5 && (
+              </Grid>
+              <Grid xs={12}>
+                <Stepper activeStep={activeStep} orientation="vertical">
+                  <Step>
+                    <Capacity handleNext={handleNext} />
+                  </Step>
+                  <Step>
+                    <Accesories
+                      handleNext={handleNext}
+                      handleBack={handleBack}
+                    />
+                  </Step>
+                  <Step>
+                    <Characteristics
+                      handleNext={handleNext}
+                      handleBack={handleBack}
+                    />
+                  </Step>
+                  <Step>
+                    <PaymentType
+                      handleNext={handleNext}
+                      handleBack={handleBack}
+                    />
+                  </Step>
+                  <Step>
+                    <Condition
+                      handleNext={handleNext}
+                      handleBack={handleBack}
+                    />
+                  </Step>
+                </Stepper>
+              </Grid>
+            </>
+          )}
+
+          {activeStep === 5 && (
+            <Grid xs={12}>
               <Paper square elevation={0} sx={{ p: 3 }}>
                 <Typography>
                   All steps completed - you&apos;re finished
@@ -93,8 +103,8 @@ const TradeInPage = () => {
                   Reset
                 </Button>
               </Paper>
-            )}
-          </Grid>
+            </Grid>
+          )}
         </Grid>
       </Container>
     </Box>

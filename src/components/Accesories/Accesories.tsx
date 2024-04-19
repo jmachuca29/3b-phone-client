@@ -38,10 +38,6 @@ export const Accesories = ({ handleNext, handleBack }: any) => {
     handleNext();
   };
 
-  // useEffect(() => {
-  //   setFn.setAccesory(accesories);
-  // }, [setFn, accesories]);
-
   return (
     <>
       <StepLabel>Select accesories</StepLabel>
