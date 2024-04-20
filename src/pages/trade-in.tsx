@@ -1,8 +1,10 @@
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CardMedia,
   Container,
-  Paper,
   Stack,
   Step,
   Stepper,
@@ -29,9 +31,9 @@ const TradeInPage = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  // };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -95,14 +97,38 @@ const TradeInPage = () => {
 
           {activeStep === 5 && (
             <Grid xs={12}>
-              <Paper square elevation={0} sx={{ p: 3 }}>
-                <Typography>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                  Reset
-                </Button>
-              </Paper>
+              <Card sx={{ display: "flex" }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 151 }}
+                  image="/static/images/cards/live-from-space.jpg"
+                  alt="Live from space album cover"
+                />
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <CardContent sx={{ flex: "1 0 auto" }}>
+                    <Typography component="div" variant="h5">
+                      IPhone 15 pro
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      component="div"
+                    >
+                      Good - unlocked - 128 gb
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      component="div"
+                    >
+                      500 $
+                    </Typography>
+                    <Button variant="contained" sx={{ mt: 1, mr: 1 }}>
+                      Checkout
+                    </Button>
+                  </CardContent>
+                </Box>
+              </Card>
             </Grid>
           )}
         </Grid>
