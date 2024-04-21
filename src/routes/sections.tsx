@@ -23,6 +23,7 @@ export default function Router() {
       children: [
         { element: <IndexPage />, index: true },
         { path: "register", element: <RegisterPage /> },
+        { path: "my-account", element: <RegisterPage /> },
         {
           element: <ProtectedRoute />,
           children: [{ path: "trade-in", element: <TradeInPage /> }],

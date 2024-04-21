@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -24,7 +24,6 @@ export const Characteristics = ({ handleNext, handleBack }: any) => {
     handleSubmit,
     setValue,
     formState: { errors },
-    // watch
   } = useForm<Inputs>({
     defaultValues: {
       serieNumberRequired: survey.serieNumber,
