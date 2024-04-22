@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   Container,
+  FormControl,
+  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -22,8 +24,8 @@ const mockUser = {
   email: "ejdeza@hotmail.com",
   cellphone: "921883986",
   department: "1",
-  provinces: "callao",
-  district: "carmen de la legua",
+  provinces: "101",
+  district: "ASUNCION",
   address: "jr. loreto 107",
 };
 
@@ -75,9 +77,54 @@ function getUniqueDepartments(ubigeos: any): DepartmentInfo[] {
   return uniqueDepartments;
 }
 
+const getUniqueProvinces = (ubigeosProvince: any): DepartmentInfo[] => {
+  const uniqueDepartments: any[] = [];
+  const seenDepartments = new Map<string, string>();
+
+  for (const ubigeo of ubigeosProvince) {
+    if (!seenDepartments.has(ubigeo.provincia)) {
+      seenDepartments.set(ubigeo.provincia, ubigeo.provincia_inei);
+      uniqueDepartments.push({
+        name: ubigeo.provincia,
+        provincia_inei: ubigeo.provincia_inei,
+      });
+    }
+  }
+
+  return uniqueDepartments;
+};
+
+const getDistricts = (
+  ubigeos: any,
+  departamento_inei: any,
+  provincia_inei: any
+): any[] => {
+  //TO DO
+  const districts = ubigeos.filter(
+    (ubigeo: any) =>
+      ubigeo.departamento_inei === departamento_inei &&
+      ubigeo.provincia_inei === provincia_inei
+  );
+  return districts || [];
+};
+
+const getProvincesByDepartamento = (
+  ubigeos: any,
+  departamento_inei: string
+) => {
+  const ubigeosProvince = ubigeos.filter(
+    (ubigeo: any) => ubigeo.departamento_inei === departamento_inei
+  );
+  const provinces = getUniqueProvinces(ubigeosProvince);
+  return provinces || [];
+};
+
 const RegisterPage = () => {
   const [userForm, setUserForm] = useState(defaultFormValue);
+  const [ubigeos, setUbigeos] = useState<any>([]);
   const [departments, setDepartments] = useState<any>([]);
+  const [provinces, setProvinces] = useState<any>([]);
+  const [districts, setDistricts] = useState<any>([]);
 
   const userLoggedIn = true;
 
@@ -88,15 +135,16 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (data) {
-      const ubigeo = data.data;
-      const departments = getUniqueDepartments(ubigeo);
-      console.log(departments);
+      const ubigeos = data.data;
+      setUbigeos(ubigeos);
+      const departments = getUniqueDepartments(ubigeos);
       setDepartments(departments);
     }
   }, [data]);
 
   const {
     register,
+    watch,
     handleSubmit,
     setValue,
     control,
@@ -116,6 +164,25 @@ const RegisterPage = () => {
     },
   });
 
+  const watchDepartment = watch("department");
+  const watchProvinces = watch("provinces");
+
+  useEffect(() => {
+    setValue("provinces", "");
+    setValue("district", "");
+    if (watchDepartment && ubigeos.length > 0) {
+      const provinces = getProvincesByDepartamento(ubigeos, watchDepartment);
+      setProvinces(provinces);
+    }
+  }, [watchDepartment, ubigeos, setValue]);
+
+  useEffect(() => {
+    if (watchProvinces) {
+      const districts = getDistricts(ubigeos, watchDepartment, watchProvinces);
+      setDistricts(districts);
+    }
+  }, [ubigeos, watchDepartment, watchProvinces, setValue]);
+
   useEffect(() => {
     if (userLoggedIn) {
       setUserForm(mockUser);
@@ -123,8 +190,10 @@ const RegisterPage = () => {
   }, [userLoggedIn]);
 
   useEffect(() => {
-    if (departments.length > 0) {
-      console.log('departments', departments)
+    if (
+      departments.length > 0 &&
+      departments.some((d: any) => d.departamento_inei === userForm.department)
+    ) {
       setValue("name", userForm.name);
       setValue("lastName", userForm.lastName);
       setValue("typeDocument", userForm.typeDocument);
@@ -132,11 +201,28 @@ const RegisterPage = () => {
       setValue("email", userForm.email);
       setValue("cellphone", userForm.cellphone);
       setValue("department", userForm.department);
-      setValue("provinces", userForm.provinces);
-      setValue("district", userForm.district);
       setValue("address", userForm.address);
     }
   }, [setValue, userForm, departments]);
+
+  useEffect(() => {
+    if (
+      provinces.length > 0 &&
+      provinces.some((p: any) => p.provincia_inei === userForm.provinces)
+    ) {
+      setValue("provinces", userForm.provinces);
+    }
+  }, [setValue, userForm.provinces, provinces]);
+
+  useEffect(() => {
+    if (
+      districts.length > 0 &&
+      districts.some((d: any) => d.distrito === userForm.district)
+    ) {
+      setValue("district", userForm.district);
+    }
+  }, [setValue, userForm.district, districts]);
+
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
@@ -162,6 +248,8 @@ const RegisterPage = () => {
                     mb: 2,
                     display: "grid",
                     gridTemplateColumns: "repeat(2, 1fr)",
+                    gap: 2,
+                    padding: 3,
                   }}
                 >
                   <TextField
@@ -204,29 +292,61 @@ const RegisterPage = () => {
                     name="department"
                     control={control}
                     render={({ field }) => (
-                      <Select {...field}>
-                        {departments.map((department: any, index: number) => (
-                          <MenuItem
-                            key={index}
-                            value={department.departamento_inei}
-                          >
-                            {department.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                      <FormControl>
+                        <InputLabel id="demo-simple-select-label">
+                          Department
+                        </InputLabel>
+                        <Select {...field}>
+                          {departments.map((department: any, index: number) => (
+                            <MenuItem
+                              key={index}
+                              value={department.departamento_inei}
+                            >
+                              {department.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     )}
                   />
-                  <TextField
-                    id="provinces"
-                    label="Province"
-                    variant="outlined"
-                    {...register("provinces")}
+                  <Controller
+                    name="provinces"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl>
+                        <InputLabel id="demo-simple-select-label">
+                          Province
+                        </InputLabel>
+                        <Select {...field}>
+                          {provinces?.map((province: any, index: number) => (
+                            <MenuItem
+                              key={index}
+                              value={province.provincia_inei}
+                            >
+                              {province.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    )}
                   />
-                  <TextField
-                    id="district"
-                    label="District"
-                    variant="outlined"
-                    {...register("district")}
+                  <Controller
+                    name="district"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl>
+                        <InputLabel id="demo-simple-select-label">
+                          District
+                        </InputLabel>
+                        <Select {...field}>
+                          {districts?.map((district: any, index: number) => (
+                            <MenuItem key={index} value={district.distrito}>
+                              {district.distrito}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    )}
                   />
                   <TextField
                     id="address"
