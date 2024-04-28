@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { getUbigeo } from "src/services/ubigeo";
 
@@ -40,6 +40,8 @@ const defaultFormValue = {
   provinces: "",
   district: "",
   address: "",
+  password: "",
+  passwordRepeat: "",
 };
 
 type Inputs = {
@@ -53,6 +55,8 @@ type Inputs = {
   provinces: string;
   district: string;
   address: string;
+  password: string;
+  passwordRepeat: string;
 };
 
 type DepartmentInfo = {
@@ -126,7 +130,7 @@ const RegisterPage = () => {
   const [provinces, setProvinces] = useState<any>([]);
   const [districts, setDistricts] = useState<any>([]);
 
-  const userLoggedIn = true;
+  // const userLoggedIn = true;
 
   const { isPending, error, data } = useQuery({
     queryKey: ["ubigeo"],
@@ -148,7 +152,7 @@ const RegisterPage = () => {
     handleSubmit,
     setValue,
     control,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
       name: userForm.name,
@@ -166,6 +170,8 @@ const RegisterPage = () => {
 
   const watchDepartment = watch("department");
   const watchProvinces = watch("provinces");
+  const password = useRef({});
+  password.current = watch("password", "");
 
   useEffect(() => {
     setValue("provinces", "");
@@ -183,11 +189,11 @@ const RegisterPage = () => {
     }
   }, [ubigeos, watchDepartment, watchProvinces, setValue]);
 
-  useEffect(() => {
-    if (userLoggedIn) {
-      setUserForm(mockUser);
-    }
-  }, [userLoggedIn]);
+  // useEffect(() => {
+  //   if (userLoggedIn) {
+  //     setUserForm(mockUser);
+  //   }
+  // }, [userLoggedIn]);
 
   useEffect(() => {
     if (
@@ -222,7 +228,6 @@ const RegisterPage = () => {
       setValue("district", userForm.district);
     }
   }, [setValue, userForm.district, districts]);
-
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
@@ -288,6 +293,32 @@ const RegisterPage = () => {
                     variant="outlined"
                     {...register("cellphone")}
                   />
+                  <TextField
+                    id="password"
+                    label="Password"
+                    variant="outlined"
+                    type="password"
+                    {...register("password", {
+                      required: "You must specify a password",
+                      minLength: {
+                        value: 8,
+                        message: "Password must have at least 8 characters",
+                      },
+                    })}
+                  />
+                  {errors.password && <p>{errors.password.message}</p>}
+                  <TextField
+                    id="passwordRepeat"
+                    label="Password Repeat"
+                    variant="outlined"
+                    type="password"
+                    {...register("passwordRepeat", {
+                      validate: (value) =>
+                        value === password.current ||
+                        "The passwords do not match",
+                    })}
+                  />
+                  {errors.passwordRepeat && <p>{errors.passwordRepeat.message}</p>}
                   <Controller
                     name="department"
                     control={control}
