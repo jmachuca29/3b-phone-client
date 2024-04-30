@@ -12,15 +12,22 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { createContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Accesories } from "src/components/Accesories/Accesories";
 import { Capacity } from "src/components/Capacity/Capacity";
 import { Characteristics } from "src/components/Characteristics/Characteristics";
 import { Condition } from "src/components/Condition/Condition";
 import PaymentType from "src/components/PaymentType/PaymentType";
+import useAppStore from "src/store/store";
 
 export const TradeInContext = createContext<any>(null);
 
 const TradeInPage = () => {
+
+  const navigate = useNavigate();
+
+  const [product, survey] = useAppStore((state) => [state.product, state.survey]);
+
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
@@ -30,10 +37,6 @@ const TradeInPage = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
-  // const handleReset = () => {
-  //   setActiveStep(0);
-  // };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -56,7 +59,7 @@ const TradeInPage = () => {
                       Sell your
                     </Typography>
                     <Typography variant="h4" gutterBottom>
-                      iPhone 15 Pro
+                      { product.description }
                     </Typography>
                   </Stack>
                 </Stack>
@@ -107,14 +110,14 @@ const TradeInPage = () => {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <CardContent sx={{ flex: "1 0 auto" }}>
                     <Typography component="div" variant="h5">
-                      IPhone 15 pro
+                    { product.description }
                     </Typography>
                     <Typography
                       variant="subtitle1"
                       color="text.secondary"
                       component="div"
                     >
-                      Good - unlocked - 128 gb
+                      Grado { survey.condition } - { survey.capacity } - { survey.paymentType }
                     </Typography>
                     <Typography
                       variant="subtitle1"
@@ -123,7 +126,7 @@ const TradeInPage = () => {
                     >
                       500 $
                     </Typography>
-                    <Button variant="contained" sx={{ mt: 1, mr: 1 }}>
+                    <Button variant="contained" sx={{ mt: 1, mr: 1 }} onClick={ ()=> navigate('/checkout') }>
                       Checkout
                     </Button>
                   </CardContent>

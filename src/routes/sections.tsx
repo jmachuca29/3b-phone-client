@@ -7,6 +7,7 @@ export const IndexPage = lazy(() => import("src/pages/app"));
 export const LoginPage = lazy(() => import("src/pages/login"));
 export const RegisterPage = lazy(() => import("src/pages/register"));
 export const TradeInPage = lazy(() => import("src/pages/trade-in"));
+export const CheckoutPage = lazy(() => import("src/pages/checkout"));
 export const Page404 = lazy(() => import("src/pages/page-not-found"));
 
 // ----------------------------------------------------------------------
@@ -26,6 +27,7 @@ export default function Router() {
         { path: "login", element: <LoginPage /> },
         { path: "register", element: <RegisterPage /> },
         { path: "my-account", element: <RegisterPage /> },
+        { path: "checkout", element: <CheckoutPage /> },
         {
           element: <ProtectedRoute />,
           children: [{ path: "trade-in", element: <TradeInPage /> }],

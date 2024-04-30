@@ -11,6 +11,9 @@ type Actions = {
     imei1: string,
     imei2: string
   ) => void;
+  setUser: (infoUser: any) => void;
+  setProduct: (productDetails: any) => void;
+  removeUser: () => void;
   reset: () => void;
 };
 
@@ -24,10 +27,13 @@ type AppState = {
     paymentType: string;
     condition: string;
   };
-  setFn: Actions;
+  user: any;
+  product: any;
+  setFn: Actions; 
 };
 
 const initialState = {
+  product: {},
   survey: {
     capacity: "",
     accesories: [],
@@ -37,6 +43,7 @@ const initialState = {
     paymentType: "",
     condition: "",
   },
+  user: {}
 };
 
 const sharedStateAndActions = (set: any, get: any) => ({
@@ -69,6 +76,15 @@ const sharedStateAndActions = (set: any, get: any) => ({
         false,
         "SET SERIENUMBER AND IMEI"
       );
+    },
+    setUser: (infoUser: any) => {
+      set({ user: infoUser }, false, "SET USER");
+    },
+    setProduct: (productDetails: any) => {
+      set({ product: productDetails }, false, "SET PRODUCT");
+    },
+    removeUser: () => {
+      set({ user: initialState.user }, false, "REMOVE USER");
     },
     reset: () => set(initialState, false, "RESET"),
   },

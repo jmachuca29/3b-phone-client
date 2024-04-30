@@ -12,19 +12,24 @@ import {
   Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import listProducts from "src/services/product";
+import { useEffect, useState } from "react";
+import useAppStore from "src/store/store";
 
 const AppPage = () => {
   const navigate = useNavigate();
+  const [setFn] = useAppStore((state) => [state.setFn]);
+  const [products, setProducts] = useState([]);
   const { isPending, error, data } = useQuery({
-    queryKey: ["repoData"],
-    queryFn: () =>
-      axios
-        .get("https://jsonplaceholder.typicode.com/users")
-        .then((res) => res.data),
+    queryKey: ["listProducts"],
+    queryFn: listProducts,
   });
+
+  useEffect(() => {
+    data && setProducts(data?.data);
+  }, [data]);
 
   if (isPending) return "Loading...";
 
@@ -59,13 +64,14 @@ const AppPage = () => {
             />
           </Grid>
           <Grid container xs={12}>
-            {data.map((element: any, index: any) => {
+            {products.map((product: any, index: any) => {
               return (
                 <Grid xs={4} key={index}>
                   <Card>
-                    <CardActionArea
-                      onClick={() => navigate('/trade-in')}
-                    >
+                    <CardActionArea onClick={() => {
+                      setFn.setProduct(product)
+                      navigate("/trade-in")
+                    }}>
                       <CardMedia
                         component="img"
                         height="140"
@@ -74,7 +80,7 @@ const AppPage = () => {
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                          Lizard
+                          { product.description }
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           Lizards are a widespread group of squamate reptiles,

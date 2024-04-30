@@ -16,18 +16,18 @@ import { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { getUbigeo } from "src/services/ubigeo";
 
-const mockUser = {
-  name: "paul",
-  lastName: "vega",
-  typeDocument: "dni",
-  numberDocument: "75741810",
-  email: "ejdeza@hotmail.com",
-  cellphone: "921883986",
-  department: "1",
-  provinces: "101",
-  district: "ASUNCION",
-  address: "jr. loreto 107",
-};
+// const mockUser = {
+//   name: "paul",
+//   lastName: "vega",
+//   typeDocument: "dni",
+//   numberDocument: "75741810",
+//   email: "ejdeza@hotmail.com",
+//   cellphone: "921883986",
+//   department: "1",
+//   provinces: "101",
+//   district: "ASUNCION",
+//   address: "jr. loreto 107",
+// };
 
 const defaultFormValue = {
   name: "",
@@ -124,7 +124,7 @@ const getProvincesByDepartamento = (
 };
 
 const RegisterPage = () => {
-  const [userForm, setUserForm] = useState(defaultFormValue);
+  const [userForm] = useState(defaultFormValue);
   const [ubigeos, setUbigeos] = useState<any>([]);
   const [departments, setDepartments] = useState<any>([]);
   const [provinces, setProvinces] = useState<any>([]);
