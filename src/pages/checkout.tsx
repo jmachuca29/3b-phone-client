@@ -11,10 +11,11 @@ import {
   TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateSaleDTO, ICreateSale, IUser } from "src/models/sales";
+import createSale from "src/services/sale";
 import { getUbigeo } from "src/services/ubigeo";
 import useAppStore from "src/store/store";
 
@@ -115,6 +116,13 @@ const CheckoutPage = () => {
   const [provinces, setProvinces] = useState<any>([]);
   const [districts, setDistricts] = useState<any>([]);
 
+  const createSaleMutation = useMutation({
+    mutationFn: createSale,
+    onSuccess: () => {
+      console.log('success')
+    },
+  })
+
   const { isPending, error, data } = useQuery({
     queryKey: ["ubigeo"],
     queryFn: getUbigeo,
@@ -213,7 +221,6 @@ const CheckoutPage = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // console.log("onSubmit", data);
     const user: IUser = {
       name: data.name,
       last_name: data.lastName,
@@ -235,6 +242,7 @@ const CheckoutPage = () => {
     };
     const createSaleDto = new CreateSaleDTO(createSale);
     console.log(createSaleDto);
+    createSaleMutation.mutate(createSaleDto);
   };
 
   if (isPending) {

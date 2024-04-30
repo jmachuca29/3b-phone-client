@@ -33,7 +33,6 @@ export const Accesories = ({ handleNext, handleBack }: any) => {
   };
 
   const handleSubmit = () => {
-    console.log("accesories", accesories);
     setFn.setAccesory(accesories);
     handleNext();
   };

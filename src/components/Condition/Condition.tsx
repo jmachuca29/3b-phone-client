@@ -1,7 +1,7 @@
 import { Box, Button, StepContent, StepLabel } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-// import React, { useContext } from 'react'
-// import { TradeInContext } from 'src/pages/trade-in';
+import { getCondition } from "src/services/survey";
 import useAppStore from "src/store/store";
 
 const conditionList = [
@@ -33,12 +33,18 @@ const conditionList = [
 ];
 
 export const Condition = ({ handleNext, handleBack }: any) => {
-  const [condition, setCondition] = useState<string>("");
+  const [condition, setCondition] = useState<any>({});
   const setFn = useAppStore((state) => state.setFn);
 
-  const selectCondition = (value: string) => {
-    setCondition(value);
-    setFn.setCondition(value);
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ['condition'],
+    queryFn: getCondition,
+  })
+  
+  const selectCondition = (condition: any) => {
+    console.log(condition)
+    setCondition(condition.description);
+    setFn.setCondition(condition._id);
   };
 
   const returnConditionDescription = (value: string) => {
@@ -48,18 +54,26 @@ export const Condition = ({ handleNext, handleBack }: any) => {
     );
   };
 
+  if (isPending) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
+
   return (
     <>
       <StepLabel>Condition</StepLabel>
       <StepContent>
         <Box sx={{ mb: 2 }}>
-          {conditionList.map((condition) => (
+          {data.data?.map((condition) => (
             <Button
-              key={condition.id}
+              key={condition._id}
               variant="contained"
-              onClick={() => selectCondition(condition.value)}
+              onClick={() => selectCondition(condition)}
             >
-              {condition.value}
+              {condition.description}
             </Button>
           ))}
           <div>{returnConditionDescription(condition)}</div>

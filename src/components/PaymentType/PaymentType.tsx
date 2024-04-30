@@ -1,5 +1,7 @@
 import { Box, StepContent, StepLabel } from "@mui/material";
 import Button from "@mui/material/Button";
+import { useQuery } from "@tanstack/react-query";
+import { getPaymentType } from "src/services/survey";
 import useAppStore from "src/store/store";
 
 const capacityList = [
@@ -16,23 +18,36 @@ const capacityList = [
 const PaymentType = ({ handleNext, handleBack }: any) => {
   const setFn = useAppStore((state) => state.setFn);
 
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ['paymentType'],
+    queryFn: getPaymentType,
+  })
+
   const selectPaymentType = (value: string) => {
     setFn.setPaymentType(value);
     handleNext();
   };
+
+  if (isPending) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
 
   return (
     <>
       <StepLabel>Payment Type</StepLabel>
       <StepContent>
         <Box sx={{ mb: 2 }}>
-          {capacityList.map((capacity) => (
+          {data.data?.map((capacity) => (
             <Button
-              key={capacity.id}
+              key={capacity._id}
               variant="contained"
-              onClick={() => selectPaymentType(capacity.value)}
+              onClick={() => selectPaymentType(capacity._id)}
             >
-              {capacity.value}
+              {capacity.description}
             </Button>
           ))}
         </Box>
