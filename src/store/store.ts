@@ -19,13 +19,13 @@ type Actions = {
 
 type AppState = {
   survey: {
-    capacity: string;
+    capacity: any;
     accesories: string[];
     serieNumber: string;
     imei1: string;
     imei2: string;
-    paymentType: string;
-    condition: string;
+    paymentType: any;
+    condition: any;
   };
   user: any;
   product: any;

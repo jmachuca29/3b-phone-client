@@ -27,10 +27,9 @@ export default function Router() {
         { path: "login", element: <LoginPage /> },
         { path: "register", element: <RegisterPage /> },
         { path: "my-account", element: <RegisterPage /> },
-        { path: "checkout", element: <CheckoutPage /> },
         {
           element: <ProtectedRoute />,
-          children: [{ path: "trade-in", element: <TradeInPage /> }],
+          children: [{ path: "trade-in", element: <TradeInPage /> },{ path: "checkout", element: <CheckoutPage /> },],
         },
       ],
     },

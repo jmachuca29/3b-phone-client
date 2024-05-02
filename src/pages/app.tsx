@@ -17,18 +17,55 @@ import { useNavigate } from "react-router-dom";
 import listProducts from "src/services/product";
 import { useEffect, useState } from "react";
 import useAppStore from "src/store/store";
+import { useForm } from "react-hook-form";
+
+interface IFormInputs {
+  searchField: string
+}
+
+const searchProducts = (products: any, searchTerm: any) => {
+  // Create a RegExp object from the search term, case insensitive
+  const regex = new RegExp(searchTerm, 'i');
+
+  // Filter products based on description and capacity description
+  return products.filter((product: any) => {
+      // Check if the product's description matches the regex
+      const matchesDescription = regex.test(product.description);
+      // Check if the product's capacity description matches the regex
+      const matchesCapacityDescription = regex.test(product.capacity.description);
+
+      // Return true if any of the descriptions match
+      return matchesDescription || matchesCapacityDescription;
+  });
+}
 
 const AppPage = () => {
   const navigate = useNavigate();
   const [setFn] = useAppStore((state) => [state.setFn]);
+  const [originalProducts, setOriginalProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const { isPending, error, data } = useQuery({
     queryKey: ["listProducts"],
     queryFn: listProducts,
   });
 
+  const {
+    register,
+    watch,
+  } = useForm<IFormInputs>()
+
+  const watchSearchField = watch("searchField")
+
   useEffect(() => {
-    data && setProducts(data?.data);
+    const productsFound = searchProducts(originalProducts, watchSearchField)
+    setProducts(productsFound)
+  }, [watchSearchField]);
+
+  useEffect(() => {
+    if(data) {
+      setOriginalProducts(data?.data);
+      setProducts(data?.data);
+    }  
   }, [data]);
 
   if (isPending) return "Loading...";
@@ -49,6 +86,7 @@ const AppPage = () => {
               fullWidth
               label="Buscar un modelo..."
               id="outlined-start-adornment"
+              {...register("searchField")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -80,7 +118,7 @@ const AppPage = () => {
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                          { product.description }
+                          { product.description } - { product.capacity.description }
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           Lizards are a widespread group of squamate reptiles,

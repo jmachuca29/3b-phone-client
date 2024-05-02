@@ -33,7 +33,7 @@ export const Capacity = ({ handleNext }: any) => {
             <Button
               key={capacity._id}
               variant="contained"
-              onClick={() => selectCapacity(capacity._id)}
+              onClick={() => selectCapacity(capacity)}
             >
               {capacity.description}
             </Button>

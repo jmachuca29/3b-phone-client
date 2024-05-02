@@ -41,13 +41,13 @@ const PaymentType = ({ handleNext, handleBack }: any) => {
       <StepLabel>Payment Type</StepLabel>
       <StepContent>
         <Box sx={{ mb: 2 }}>
-          {data.data?.map((capacity) => (
+          {data.data?.map((paymentType) => (
             <Button
-              key={capacity._id}
+              key={paymentType._id}
               variant="contained"
-              onClick={() => selectPaymentType(capacity._id)}
+              onClick={() => selectPaymentType(paymentType)}
             >
-              {capacity.description}
+              {paymentType.description}
             </Button>
           ))}
         </Box>

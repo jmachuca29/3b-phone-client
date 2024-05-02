@@ -3,33 +3,46 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getCondition } from "src/services/survey";
 import useAppStore from "src/store/store";
+import CardCondition from "./CardCondition/CardCondition";
 
 const conditionList = [
   {
     id: "1",
     value: "A",
-    description: "A description",
+    description: [
+      "NO TIENE EXCEPCIONES",
+      "SIN QUIÑES",
+      "OBLIGATORIAMENTE MAS DE 90%"
+    ],
   },
   {
     id: "2",
     value: "B",
-    description: "B description",
+    description: [
+      "SOLO PINTURA",
+      "NO ABOYADURAS",
+      "SURCOS",
+      "DEFORMACIONES EN LA CARCASA"
+    ],
   },
   {
     id: "3",
     value: "C",
-    description: "C description",
+    description: [
+      "RAYONES EN EL GLASS GRAVES QUE SE NOTAN PESE A TENER MICA DE VIDRIO",
+      "ABOYADURAS",
+      "HENDIDURAS",
+      "DESPINTADO MUY NOTORIO"
+    ],
   },
   {
     id: "4",
     value: "D",
-    description: "D description",
-  },
-  {
-    id: "5",
-    value: "E",
-    description: "E description",
-  },
+    description: [
+      "FALLAS EN FUNCIONAMIENTO",
+      "FALLAS EN LOS BOTONES, FALLA DEL ZOCALO DE CARGA, GLASS DELANTERO Y TRASERO ROTO"
+    ],
+  }
 ];
 
 export const Condition = ({ handleNext, handleBack }: any) => {
@@ -42,16 +55,15 @@ export const Condition = ({ handleNext, handleBack }: any) => {
   })
   
   const selectCondition = (condition: any) => {
-    console.log(condition)
     setCondition(condition.description);
-    setFn.setCondition(condition._id);
+    setFn.setCondition(condition);
   };
 
-  const returnConditionDescription = (value: string) => {
-    return (
-      conditionList.find((condition) => condition.value === value)
-        ?.description || "No description available"
-    );
+  const returnConditionDescription = (value: string): any => {
+    const descriptions = conditionList.find((condition) => condition.value === value)
+    ?.description || []
+    console.log('descriptions', descriptions)
+    return <CardCondition descriptions={descriptions} />
   };
 
   if (isPending) {

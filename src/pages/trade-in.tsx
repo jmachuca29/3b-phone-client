@@ -44,7 +44,7 @@ const TradeInPage = () => {
         <Grid container spacing={2}>
           {activeStep !== 5 && (
             <>
-              <Grid xs={12}>
+              <Grid xs={6}>
                 <Stack direction="row" padding={2}>
                   <Stack padding={2}>
                     <Stack component="span" alignItems="center">
@@ -64,7 +64,7 @@ const TradeInPage = () => {
                   </Stack>
                 </Stack>
               </Grid>
-              <Grid xs={12}>
+              <Grid xs={6} padding={6}>
                 <Stepper activeStep={activeStep} orientation="vertical">
                   <Step>
                     <Capacity handleNext={handleNext} />
@@ -117,7 +117,7 @@ const TradeInPage = () => {
                       color="text.secondary"
                       component="div"
                     >
-                      Grado { survey.condition } - { survey.capacity } - { survey.paymentType }
+                      Grado { survey.condition } - { survey.capacity.description } - { survey.paymentType.description }
                     </Typography>
                     <Typography
                       variant="subtitle1"
