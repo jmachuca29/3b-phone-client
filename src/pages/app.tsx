@@ -14,7 +14,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import listProducts from "src/services/product";
+import {listProducts} from "src/services/product";
 import { useEffect, useState } from "react";
 import useAppStore from "src/store/store";
 import { useForm } from "react-hook-form";
@@ -41,9 +41,9 @@ const searchProducts = (products: any, searchTerm: any) => {
 
 const AppPage = () => {
   const navigate = useNavigate();
-  const [setFn] = useAppStore((state) => [state.setFn]);
-  const [originalProducts, setOriginalProducts] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [products, setFn] = useAppStore((state) => [state.products, state.setFn]);
+  // const [originalProducts, setOriginalProducts] = useState([]);
+  const [productsFiltered, setProductsFiltered] = useState([]);
   const { isPending, error, data } = useQuery({
     queryKey: ["listProducts"],
     queryFn: listProducts,
@@ -57,14 +57,13 @@ const AppPage = () => {
   const watchSearchField = watch("searchField")
 
   useEffect(() => {
-    const productsFound = searchProducts(originalProducts, watchSearchField)
-    setProducts(productsFound)
+    const productsFound = searchProducts(products, watchSearchField)
+    setProductsFiltered(productsFound)
   }, [watchSearchField]);
 
   useEffect(() => {
     if(data) {
-      setOriginalProducts(data?.data);
-      setProducts(data?.data);
+      setFn.setProducts(data?.data);
     }  
   }, [data]);
 
@@ -102,12 +101,12 @@ const AppPage = () => {
             />
           </Grid>
           <Grid container xs={12}>
-            {products.map((product: any, index: any) => {
+            {productsFiltered.map((product: any, index: any) => {
               return (
                 <Grid xs={4} key={index}>
                   <Card>
                     <CardActionArea onClick={() => {
-                      setFn.setProduct(product)
+                      setFn.setCurrentProduct(product)
                       navigate("/trade-in")
                     }}>
                       <CardMedia

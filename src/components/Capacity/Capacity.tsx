@@ -1,35 +1,28 @@
 import { Box, Button, StepContent, StepLabel } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { getCapacity } from "src/services/survey";
+import { useEffect, useState } from "react";
 import useAppStore from "src/store/store";
 
 export const Capacity = ({ handleNext }: any) => {
-  const setFn = useAppStore((state) => state.setFn);
+  const [products, currentProduct, setFn] = useAppStore((state) => [state.products, state.currentProduct, state.setFn]);
+  const [capacities, setCapacities] = useState<any>([])
 
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ['capacity'],
-    queryFn: getCapacity,
-  })
+  useEffect(() => {
+    const productsFiltered = products.filter((product: any) => product.description === currentProduct.description)
+    const capacities = productsFiltered.map((productFiltered: any) => productFiltered.capacity)
+    setCapacities(capacities)
+  }, [])
 
-  const selectCapacity = (value: string) => {
+  const selectCapacity = (value: any) => {
     setFn.setCapacity(value);
     handleNext();
   };
-
-  if (isPending) {
-    return <span>Loading...</span>
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>
-  }
 
   return (
     <>
       <StepLabel>Select capacity</StepLabel>
       <StepContent>
         <Box sx={{ mb: 2 }}>
-          {data.data?.map((capacity) => (
+          {capacities.map((capacity: any) => (
             <Button
               key={capacity._id}
               variant="contained"

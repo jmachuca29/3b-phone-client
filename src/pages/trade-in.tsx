@@ -11,24 +11,25 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { createContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Accesories } from "src/components/Accesories/Accesories";
 import { Capacity } from "src/components/Capacity/Capacity";
 import { Characteristics } from "src/components/Characteristics/Characteristics";
 import { Condition } from "src/components/Condition/Condition";
 import PaymentType from "src/components/PaymentType/PaymentType";
+import { getProductPrice } from "src/services/product";
 import useAppStore from "src/store/store";
-
-export const TradeInContext = createContext<any>(null);
 
 const TradeInPage = () => {
 
   const navigate = useNavigate();
 
-  const [product, survey] = useAppStore((state) => [state.product, state.survey]);
+  const [currentProduct, survey] = useAppStore((state) => [state.currentProduct, state.survey]);
 
   const [activeStep, setActiveStep] = useState(0);
+
+  const [price, setPrice] = useState(0);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -37,6 +38,22 @@ const TradeInPage = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  const getPrice = async () => {
+    try {
+      const productId = currentProduct._id
+      const gradeId = survey.condition._id
+      const { data } = await getProductPrice(productId, gradeId)
+      setPrice(data)
+    } catch (error) {
+      setPrice(0)
+    }
+  }
+
+  useEffect(() => {
+    activeStep === 5 && getPrice()
+  }, [activeStep])
+  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -59,7 +76,7 @@ const TradeInPage = () => {
                       Sell your
                     </Typography>
                     <Typography variant="h4" gutterBottom>
-                      { product.description }
+                      {currentProduct.description}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -110,23 +127,23 @@ const TradeInPage = () => {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <CardContent sx={{ flex: "1 0 auto" }}>
                     <Typography component="div" variant="h5">
-                    { product.description }
+                      {currentProduct.description}
                     </Typography>
                     <Typography
                       variant="subtitle1"
                       color="text.secondary"
                       component="div"
                     >
-                      Grado { survey.condition } - { survey.capacity.description } - { survey.paymentType.description }
+                      Grado {survey.condition.description} - {survey.capacity.description} - {survey.paymentType.description}
                     </Typography>
                     <Typography
                       variant="subtitle1"
                       color="text.secondary"
                       component="div"
                     >
-                      500 $
+                      { price + '$' } 
                     </Typography>
-                    <Button variant="contained" sx={{ mt: 1, mr: 1 }} onClick={ ()=> navigate('/checkout') }>
+                    <Button variant="contained" sx={{ mt: 1, mr: 1 }} onClick={() => navigate('/checkout')}>
                       Checkout
                     </Button>
                   </CardContent>

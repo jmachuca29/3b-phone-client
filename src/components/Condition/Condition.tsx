@@ -62,7 +62,6 @@ export const Condition = ({ handleNext, handleBack }: any) => {
   const returnConditionDescription = (value: string): any => {
     const descriptions = conditionList.find((condition) => condition.value === value)
     ?.description || []
-    console.log('descriptions', descriptions)
     return <CardCondition descriptions={descriptions} />
   };
 

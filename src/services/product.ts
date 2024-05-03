@@ -6,4 +6,8 @@ const listProducts = (): Promise<AxiosResponse<any, any>> => {
   return axios.get(`${baseUrl}/api/product`);
 };
 
-export default listProducts;
+const getProductPrice = (productId: string, gradeId: string): any => {
+  return axios.get(`${baseUrl}/api/product/${productId}/${gradeId}`);
+};
+
+export { listProducts, getProductPrice };

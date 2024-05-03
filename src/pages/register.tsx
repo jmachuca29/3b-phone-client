@@ -14,20 +14,8 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import getDocumentType from "src/services/type-document";
 import { getUbigeo } from "src/services/ubigeo";
-
-// const mockUser = {
-//   name: "paul",
-//   lastName: "vega",
-//   typeDocument: "dni",
-//   numberDocument: "75741810",
-//   email: "ejdeza@hotmail.com",
-//   cellphone: "921883986",
-//   department: "1",
-//   provinces: "101",
-//   district: "ASUNCION",
-//   address: "jr. loreto 107",
-// };
 
 const defaultFormValue = {
   name: "",
@@ -129,13 +117,24 @@ const RegisterPage = () => {
   const [departments, setDepartments] = useState<any>([]);
   const [provinces, setProvinces] = useState<any>([]);
   const [districts, setDistricts] = useState<any>([]);
-
-  // const userLoggedIn = true;
+  const [typeDocuments, setTypeDocuments] = useState<any>([]);
 
   const { isPending, error, data } = useQuery({
     queryKey: ["ubigeo"],
     queryFn: getUbigeo,
   });
+
+  const { data: documentData } = useQuery({
+    queryKey: ["documentType"],
+    queryFn: getDocumentType,
+  });
+
+  useEffect(() => {
+    if (documentData) {
+      const documentTypes = documentData.data;
+      setTypeDocuments(documentTypes);
+    }
+  }, [documentData]);
 
   useEffect(() => {
     if (data) {
@@ -188,12 +187,6 @@ const RegisterPage = () => {
       setDistricts(districts);
     }
   }, [ubigeos, watchDepartment, watchProvinces, setValue]);
-
-  // useEffect(() => {
-  //   if (userLoggedIn) {
-  //     setUserForm(mockUser);
-  //   }
-  // }, [userLoggedIn]);
 
   useEffect(() => {
     if (
@@ -269,11 +262,32 @@ const RegisterPage = () => {
                     variant="outlined"
                     {...register("lastName")}
                   />
-                  <TextField
+                  {/* <TextField
                     id="typeDocument"
                     label="Type Document"
                     variant="outlined"
                     {...register("typeDocument")}
+                  /> */}
+                  <Controller
+                    name="typeDocument"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl>
+                        <InputLabel id="demo-simple-select-label">
+                          Tipo Documento
+                        </InputLabel>
+                        <Select {...field}>
+                          {typeDocuments.map((typeDocument: any, index: number) => (
+                            <MenuItem
+                              key={index}
+                              value={typeDocument._id}
+                            >
+                              {typeDocument.description}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    )}
                   />
                   <TextField
                     id="numberDocument"

@@ -1,9 +1,11 @@
-import { Box, Button, Container, Paper, TextField } from "@mui/material";
+import { Box, Button, Container, Link, Paper, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { login } from "src/services/auth";
+import { BrowserRouter as Router, Link as RouterLink } from "react-router-dom";
+// import Link from "@material-ui/core/Link";
 
 type Login = {
   username: string;
@@ -12,7 +14,7 @@ type Login = {
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  
+
   const mutationLogin = useMutation({
     mutationFn: login,
     onSuccess: async (response) => {
@@ -31,7 +33,6 @@ const LoginPage = () => {
   } = useForm<Login>();
 
   const onSubmit: SubmitHandler<Login> = (data) => {
-    console.log(data);
     mutationLogin.mutate(data);
   };
 
@@ -40,14 +41,15 @@ const LoginPage = () => {
       <Grid container spacing={2}>
         <Grid xs={12}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Paper>
+            <Paper sx={{
+              mb: 2,
+              padding: 3
+            }}>
               <Box
                 sx={{
-                  mb: 2,
                   display: "grid",
                   gridTemplateColumns: "repeat(1, 1fr)",
-                  gap: 2,
-                  padding: 3,
+                  gap: 2
                 }}
               >
                 <TextField
@@ -63,6 +65,11 @@ const LoginPage = () => {
                   type="password"
                   {...register("password", { required: true })}
                 />
+              </Box>
+              <Box sx={{ textAlign: 'end' }}>
+                <Link component={RouterLink} to="/register" variant="caption">
+                  No tienes cuenta?, Registrate
+                </Link>
               </Box>
               <Button variant="contained" type="submit">
                 Login

@@ -231,13 +231,13 @@ const CheckoutPage = () => {
     };
     const createSale: ICreateSale = {
       product: product._id,
-      capacity: survey.capacity,
+      capacity: survey.capacity._id,
       accesories: survey.accesories,
       serieNumber: survey.serieNumber,
       imei_1: survey.imei1,
       imei_2: survey.imei2,
-      paymentType: survey.paymentType,
-      grade: survey.condition,
+      paymentType: survey.paymentType._id,
+      grade: survey.condition._id,
       user: { ...user },
     };
     const createSaleDto = new CreateSaleDTO(createSale);

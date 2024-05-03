@@ -12,7 +12,8 @@ type Actions = {
     imei2: string
   ) => void;
   setUser: (infoUser: any) => void;
-  setProduct: (productDetails: any) => void;
+  setProducts: (products: any) => void;
+  setCurrentProduct: (productDetails: any) => void;
   removeUser: () => void;
   reset: () => void;
 };
@@ -28,12 +29,14 @@ type AppState = {
     condition: any;
   };
   user: any;
-  product: any;
+  currentProduct: any;
+  products: any;
   setFn: Actions; 
 };
 
 const initialState = {
-  product: {},
+  currentProduct: {},
+  products: [],
   survey: {
     capacity: "",
     accesories: [],
@@ -80,8 +83,11 @@ const sharedStateAndActions = (set: any, get: any) => ({
     setUser: (infoUser: any) => {
       set({ user: infoUser }, false, "SET USER");
     },
-    setProduct: (productDetails: any) => {
-      set({ product: productDetails }, false, "SET PRODUCT");
+    setCurrentProduct: (productDetails: any) => {
+      set({ currentProduct: productDetails }, false, "SET CURRENT PRODUCT");
+    },
+    setProducts: (products: any) => {
+      set({ products: products }, false, "SET PRODUCTS");
     },
     removeUser: () => {
       set({ user: initialState.user }, false, "REMOVE USER");

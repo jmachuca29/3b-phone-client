@@ -3,7 +3,7 @@ import useAppStore from "src/store/store";
 
 export const ProtectedRoute = () => {
 
-  const [product] = useAppStore((state) => [state.product]);
+  const [currentProduct] = useAppStore((state) => [state.currentProduct]);
 
-  return Object.keys(product).length !== 0 ? <Outlet /> : <Navigate to="/" />;
+  return Object.keys(currentProduct).length !== 0 ? <Outlet /> : <Navigate to="/" />;
 };
