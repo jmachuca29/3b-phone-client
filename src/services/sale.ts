@@ -7,4 +7,8 @@ const createSale = (saleDto: CreateSaleDTO) => {
   return axios.post(`${baseUrl}/api/sale`, saleDto);
 };
 
-export default createSale
+const getSalebyUID = (uuid: string) => {
+  return axios.get(`${baseUrl}/api/sale/uid/${uuid}`);
+};
+
+export { createSale, getSalebyUID }

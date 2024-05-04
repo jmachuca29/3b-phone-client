@@ -1,11 +1,10 @@
-import { Box, Button, Container, Link, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Link, Paper, TextField } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { login } from "src/services/auth";
-import { BrowserRouter as Router, Link as RouterLink } from "react-router-dom";
-// import Link from "@material-ui/core/Link";
+import { Link as RouterLink } from "react-router-dom";
 
 type Login = {
   username: string;

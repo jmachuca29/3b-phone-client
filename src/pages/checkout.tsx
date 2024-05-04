@@ -14,8 +14,9 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { CreateSaleDTO, ICreateSale, IUser } from "src/models/sales";
-import createSale from "src/services/sale";
+import { createSale } from "src/services/sale";
 import { getUbigeo } from "src/services/ubigeo";
 import useAppStore from "src/store/store";
 
@@ -106,9 +107,10 @@ const getProvincesByDepartamento = (
 };
 
 const CheckoutPage = () => {
-  const [survey, product] = useAppStore((state) => [
+  const navigate = useNavigate();
+  const [survey, currentProduct] = useAppStore((state) => [
     state.survey,
-    state.product,
+    state.currentProduct,
   ]);
   const [checkoutForm] = useState(defaultFormValue);
   const [ubigeos, setUbigeos] = useState<any>([]);
@@ -118,8 +120,9 @@ const CheckoutPage = () => {
 
   const createSaleMutation = useMutation({
     mutationFn: createSale,
-    onSuccess: () => {
-      console.log('success')
+    onSuccess: ({ data }) => {
+      const uuid = data?.uuid || ''
+      navigate(`/resume/${uuid}`)
     },
   })
 
@@ -230,7 +233,7 @@ const CheckoutPage = () => {
       address: data.address,
     };
     const createSale: ICreateSale = {
-      product: product._id,
+      product: currentProduct._id,
       capacity: survey.capacity._id,
       accesories: survey.accesories,
       serieNumber: survey.serieNumber,
