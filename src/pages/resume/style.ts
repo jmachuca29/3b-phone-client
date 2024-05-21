@@ -1,5 +1,45 @@
 import styled from "@emotion/styled";
-import { Stack } from "@mui/material";
+import { Avatar, Stack } from "@mui/material";
+
+const ProductDetailContainer = styled(Stack)`
+  padding-left: 24px;
+  padding-right: 24px;
+`
+
+const ProductDetailDescriptionContainer = styled(Stack)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  min-width: 640px;
+  border-bottom: 2px dashed rgb(244, 246, 248);
+`
+const ProductDetailDescriptionAvatar = styled(Avatar)`
+  margin-right: 16px;
+`
+
+const ProductDetailDescriptionListItem = styled(Stack)`
+  flex: 1 1 auto;
+  min-width: 0px;
+  margin: 0px;
+`
+
+const ProductDetailDescriptionQuantity = styled(Stack)`
+  line-height: 1.57143;
+  font-size: 0.875rem;
+  font-family: "Public Sans", sans-serif;
+  font-weight: 400;
+`
+
+const ProductDetailDescriptionPrice = styled(Stack)`
+  width: 110px;
+  text-align: right;
+  font-weight: 600;
+  line-height: 1.57143;
+  font-size: 0.875rem;
+  font-family: "Public Sans", sans-serif;
+`
 
 const ProductPriceDetailContainer = styled(Stack)`
   display: flex;
@@ -26,6 +66,12 @@ const ProductPriceDetailPrice = styled(Stack)`
 `;
 
 export {
+  ProductDetailContainer,
+  ProductDetailDescriptionContainer,
+  ProductDetailDescriptionAvatar,
+  ProductDetailDescriptionListItem,
+  ProductDetailDescriptionQuantity,
+  ProductDetailDescriptionPrice,
   ProductPriceDetailContainer,
   ProductPriceDetailStack,
   ProductPriceDetailDescription,

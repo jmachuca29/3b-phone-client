@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 import { getSalebyUID } from "src/services/sale";
 import Grid from "@mui/material/Unstable_Grid2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ProductPriceDetailContainer, ProductPriceDetailDescription, ProductPriceDetailPrice, ProductPriceDetailStack } from "./style";
+import { ProductDetailContainer, ProductDetailDescriptionAvatar, ProductDetailDescriptionContainer, ProductDetailDescriptionListItem, ProductDetailDescriptionPrice, ProductDetailDescriptionQuantity, ProductPriceDetailContainer, ProductPriceDetailDescription, ProductPriceDetailPrice, ProductPriceDetailStack } from "./style";
 
 const ResumePage = () => {
   const { uuid } = useParams();
@@ -53,22 +53,20 @@ const ResumePage = () => {
                   </IconButton>
                 }
               />
-              <Stack>
-                <Stack>
-                  <Avatar variant="rounded">
+              <ProductDetailContainer>
+                <ProductDetailDescriptionContainer>
+                  <ProductDetailDescriptionAvatar variant="rounded">
                     <p>Product</p>
-                  </Avatar>
-                  <List>
-                    <ListItem>
-                      <ListItemText
-                        primary="Single-line item"
-                        secondary="Secondary text"
-                      />
-                    </ListItem>
-                  </List>
-                  <Box>x1</Box>
-                  <Box>$83.74</Box>
-                </Stack>
+                  </ProductDetailDescriptionAvatar>
+                  <ProductDetailDescriptionListItem>
+                    <ListItemText
+                      primary="Single-line item"
+                      secondary="Secondary text"
+                    />
+                  </ProductDetailDescriptionListItem>
+                  <ProductDetailDescriptionQuantity>x1</ProductDetailDescriptionQuantity>
+                  <ProductDetailDescriptionPrice>$83.74</ProductDetailDescriptionPrice>
+                </ProductDetailDescriptionContainer>
                 <ProductPriceDetailContainer>
                   <ProductPriceDetailStack>
                     <ProductPriceDetailDescription>Sub Total</ProductPriceDetailDescription>
@@ -79,7 +77,7 @@ const ResumePage = () => {
                     <Box>30$</Box>
                   </Stack>
                 </ProductPriceDetailContainer>
-              </Stack>
+              </ProductDetailContainer>
             </Paper>
           </Stack>
         </Grid>
