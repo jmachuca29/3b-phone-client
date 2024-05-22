@@ -1,14 +1,10 @@
 import {
-  Avatar,
   Box,
   CardHeader,
   Container,
   Divider,
   IconButton,
-  List,
-  ListItem,
   ListItemText,
-  Paper,
   Stack,
   Typography,
 } from "@mui/material";
@@ -17,16 +13,35 @@ import { useParams } from "react-router-dom";
 import { getSalebyUID } from "src/services/sale";
 import Grid from "@mui/material/Unstable_Grid2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ProductDetailContainer, ProductDetailDescriptionAvatar, ProductDetailDescriptionContainer, ProductDetailDescriptionListItem, ProductDetailDescriptionPrice, ProductDetailDescriptionQuantity, ProductPriceDetailContainer, ProductPriceDetailDescription, ProductPriceDetailPrice, ProductPriceDetailStack } from "./style";
+import { CustomerDeliveryContainer, CustomerDeliverySubCategoryContainer, CustomerDeliverySubCategoryName, CustomerInfoAvatarContainer, CustomerInfoContainer, CustomerInfoDescriptionContainer, CustomerPaymentContainer, CustomerPaymentSubCategoryContainer, CustomerPaymentSubCategoryName, CustomerShippingContainer, CustomerShippingSubCategoryContainer, CustomerShippingSubCategoryName, OrderDetailBody, OrderDetailContainer, OrderDetailDate, OrderDetailDescription, OrderDetailStack, OrderDetailStatus, ProductDetailContainer, ProductDetailDescriptionAvatar, ProductDetailDescriptionContainer, ProductDetailDescriptionListItem, ProductDetailDescriptionPrice, ProductDetailDescriptionQuantity, ProductPriceDetailContainer, ProductPriceDetailDescription, ProductPriceDetailPrice, ProductPriceDetailStack, ProductPriceDetailTotalDescription, ProductPriceDetailTotalPrice, ProductPriceDetailTotalStack } from "./style";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { MuiPaper } from "src/components/MuiPaper/MuiPaper";
+import { useEffect, useState } from "react";
+
+const stringAvatar = (name: string) => {
+  return {
+    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+  };
+}
 
 const ResumePage = () => {
   const { uuid } = useParams();
+
+  const [product, setProduct] = useState<any>(null)
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["saleDetail", uuid],
     queryFn: () =>
       uuid ? getSalebyUID(uuid) : Promise.reject("No uuid found"),
   });
+
+  useEffect(() => {
+    if(data) {
+      const response = data?.data || null
+      console.log(response)
+      setProduct(response)
+    }  
+  }, [data]);
 
   if (isPending) {
     return <span>Loading...</span>;
@@ -36,15 +51,26 @@ const ResumePage = () => {
     return <span>Error: {error.message}</span>;
   }
 
-  console.log(data);
-
   return (
     <Container maxWidth="lg">
-      <Stack>Orden: {uuid}</Stack>
+      <OrderDetailContainer>
+        <OrderDetailStack>
+          <IconButton aria-label="arrow-back">
+            <ChevronLeftIcon />
+          </IconButton>
+          <OrderDetailBody>
+            <OrderDetailDescription>
+              <Typography variant="h4">Orden #{uuid}</Typography>
+              <OrderDetailStatus>{product.status}</OrderDetailStatus>
+            </OrderDetailDescription>
+            <OrderDetailDate variant="body2">20 May 2024 12:03 PM</OrderDetailDate>
+          </OrderDetailBody>
+        </OrderDetailStack>
+      </OrderDetailContainer>
       <Grid container spacing={2}>
         <Grid xs={8}>
           <Stack>
-            <Paper>
+            <MuiPaper>
               <CardHeader
                 title="Details"
                 action={
@@ -65,24 +91,28 @@ const ResumePage = () => {
                     />
                   </ProductDetailDescriptionListItem>
                   <ProductDetailDescriptionQuantity>x1</ProductDetailDescriptionQuantity>
-                  <ProductDetailDescriptionPrice>$83.74</ProductDetailDescriptionPrice>
+                  <ProductDetailDescriptionPrice>S/ {product?.price}</ProductDetailDescriptionPrice>
                 </ProductDetailDescriptionContainer>
                 <ProductPriceDetailContainer>
                   <ProductPriceDetailStack>
                     <ProductPriceDetailDescription>Sub Total</ProductPriceDetailDescription>
-                    <ProductPriceDetailPrice>30$</ProductPriceDetailPrice>
+                    <ProductPriceDetailPrice>S/ {product?.price}</ProductPriceDetailPrice>
                   </ProductPriceDetailStack>
-                  <Stack>
-                    <Box>Shipping</Box>
-                    <Box>30$</Box>
-                  </Stack>
+                  <ProductPriceDetailStack>
+                    <ProductPriceDetailDescription>Shipping</ProductPriceDetailDescription>
+                    <ProductPriceDetailPrice>-</ProductPriceDetailPrice>
+                  </ProductPriceDetailStack>
+                  <ProductPriceDetailTotalStack>
+                    <ProductPriceDetailTotalDescription>Total</ProductPriceDetailTotalDescription>
+                    <ProductPriceDetailTotalPrice>S/ {product?.price}</ProductPriceDetailTotalPrice>
+                  </ProductPriceDetailTotalStack>
                 </ProductPriceDetailContainer>
               </ProductDetailContainer>
-            </Paper>
+            </MuiPaper>
           </Stack>
         </Grid>
         <Grid xs={4}>
-          <Paper>
+          <MuiPaper>
             <CardHeader
               title="Customer Info"
               action={
@@ -91,15 +121,15 @@ const ResumePage = () => {
                 </IconButton>
               }
             />
-            <Stack>
-              <Avatar>H</Avatar>
-              <Stack>
+            <CustomerInfoContainer>
+              <CustomerInfoAvatarContainer {...stringAvatar(`${product?.user?.name + ' ' + product?.user?.last_name }`)}></CustomerInfoAvatarContainer>
+              <CustomerInfoDescriptionContainer>
                 <Typography variant="subtitle2" gutterBottom>
-                  Lucian Obrien
+                  { product?.user?.name } { product?.user?.last_name }
                 </Typography>
-                <Box>ashlynn_ohara62@gmail.com</Box>
-              </Stack>
-            </Stack>
+                <Box>{ product?.user?.email }</Box>
+              </CustomerInfoDescriptionContainer>
+            </CustomerInfoContainer>
             <Divider />
             <CardHeader
               title="Delivery"
@@ -109,16 +139,16 @@ const ResumePage = () => {
                 </IconButton>
               }
             />
-            <Stack>
-              <Stack>
-                <Box>Ship by</Box>
-                <Box>DHL</Box>
-              </Stack>
-              <Stack>
-                <Box>Tracking No.</Box>
-                <Box>SPX037739199373</Box>
-              </Stack>
-            </Stack>
+            <CustomerDeliveryContainer>
+              <CustomerDeliverySubCategoryContainer>
+                <CustomerDeliverySubCategoryName>Ship by</CustomerDeliverySubCategoryName>
+                -
+              </CustomerDeliverySubCategoryContainer>
+              <CustomerDeliverySubCategoryContainer>
+                <CustomerDeliverySubCategoryName>Tracking No.</CustomerDeliverySubCategoryName>
+                -
+              </CustomerDeliverySubCategoryContainer>
+            </CustomerDeliveryContainer>
             <Divider />
             <CardHeader
               title="Shipping"
@@ -128,16 +158,16 @@ const ResumePage = () => {
                 </IconButton>
               }
             />
-            <Stack>
-              <Stack>
-                <Box>Address</Box>
-                <Box>19034 Verna Unions Apt. 164 - Honolulu, RI / 87535</Box>
-              </Stack>
-              <Stack>
-                <Box>Phone number</Box>
-                <Box>SPX037739199373</Box>
-              </Stack>
-            </Stack>
+            <CustomerShippingContainer>
+              <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>Address</CustomerShippingSubCategoryName>
+                { product?.user?.address }
+              </CustomerShippingSubCategoryContainer>
+              <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>Phone number</CustomerShippingSubCategoryName>
+                { product?.user?.cellphone }
+              </CustomerShippingSubCategoryContainer>
+            </CustomerShippingContainer>
             <Divider />
             <CardHeader
               title="Payment"
@@ -147,17 +177,17 @@ const ResumePage = () => {
                 </IconButton>
               }
             />
-            <Stack>
-              <Stack>
-                <Box>Method</Box>
-                <Box>Yape</Box>
-              </Stack>
-              <Stack>
-                <Box>Phone number</Box>
-                <Box>SPX037739199373</Box>
-              </Stack>
-            </Stack>
-          </Paper>
+            <CustomerPaymentContainer>
+              <CustomerPaymentSubCategoryContainer>
+                <CustomerPaymentSubCategoryName>Method</CustomerPaymentSubCategoryName>
+                Yape
+              </CustomerPaymentSubCategoryContainer>
+              <CustomerPaymentSubCategoryContainer>
+                <CustomerPaymentSubCategoryName>Phone number</CustomerPaymentSubCategoryName>
+                { product?.user?.cellphone }
+              </CustomerPaymentSubCategoryContainer>
+            </CustomerPaymentContainer>
+          </MuiPaper>
         </Grid>
       </Grid>
     </Container>

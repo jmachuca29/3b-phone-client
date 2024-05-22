@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Header } from "src/components/Header/Header";
 import { getUserProfile } from "src/services/auth";
 import useAppStore from "src/store/store";
+import MainStyled from "./styles";
 
 export const DashboardLayout = ({ children }: any) => {
   const token = localStorage.getItem("3b-iphone-token");
@@ -23,9 +24,9 @@ export const DashboardLayout = ({ children }: any) => {
   }, [token, data]);
 
   return (
-    <div>
+    <>
       <Header />
-      <main>{children}</main>
-    </div>
+      <MainStyled>{children}</MainStyled>
+    </>
   );
 };

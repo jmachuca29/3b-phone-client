@@ -104,11 +104,6 @@ export function overrides(theme: any): any {
         },
       },
     },
-    MuiPaper: {
-      defaultProps: {
-        elevation: 0,
-      },
-    },
     MuiTableCell: {
       styleOverrides: {
         head: {
