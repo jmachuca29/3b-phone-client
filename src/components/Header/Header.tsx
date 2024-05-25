@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import useAppStore from "src/store/store";
 import { useNavigate } from "react-router-dom";
 import { MuiAppBar, MuiStack, MuiToolBar } from "./styles";
-import { Avatar, Menu, MenuItem, Stack } from "@mui/material";
+import { Avatar, Menu, MenuItem } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export const Header = () => {

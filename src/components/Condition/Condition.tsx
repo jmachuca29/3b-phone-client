@@ -46,7 +46,7 @@ const conditionList = [
   }
 ];
 
-export const Condition = ({ handleNext, handleBack }: any) => {
+export const Condition = ({ handleBack }: any) => {
 
   const [condition, setCondition] = useState<any>({});
   const setFn = useAppStore((state) => state.setFn);

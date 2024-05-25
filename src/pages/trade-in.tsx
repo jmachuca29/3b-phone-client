@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardMedia,
@@ -12,7 +11,6 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Accesories } from "src/components/Accesories/Accesories";
 import { Capacity } from "src/components/Capacity/Capacity";
 import { Characteristics } from "src/components/Characteristics/Characteristics";
@@ -22,8 +20,6 @@ import { getProductPrice } from "src/services/product";
 import useAppStore from "src/store/store";
 
 const TradeInPage = () => {
-
-  const navigate = useNavigate();
 
   const [currentProduct, survey] = useAppStore((state) => [state.currentProduct, state.survey]);
 

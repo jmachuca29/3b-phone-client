@@ -4,17 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getPaymentType } from "src/services/survey";
 import useAppStore from "src/store/store";
 
-const capacityList = [
-  {
-    id: "1",
-    value: "REGULAR",
-  },
-  {
-    id: "2",
-    value: "EXPRESS",
-  },
-];
-
 const PaymentType = ({ handleNext, handleBack }: any) => {
   const setFn = useAppStore((state) => state.setFn);
 
