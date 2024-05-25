@@ -61,7 +61,7 @@ const ResumePage = () => {
           <OrderDetailBody>
             <OrderDetailDescription>
               <Typography variant="h4">Orden #{uuid}</Typography>
-              <OrderDetailStatus>{product.status}</OrderDetailStatus>
+              <OrderDetailStatus>{product?.status}</OrderDetailStatus>
             </OrderDetailDescription>
             <OrderDetailDate variant="body2">20 May 2024 12:03 PM</OrderDetailDate>
           </OrderDetailBody>
@@ -122,7 +122,7 @@ const ResumePage = () => {
               }
             />
             <CustomerInfoContainer>
-              <CustomerInfoAvatarContainer {...stringAvatar(`${product?.user?.name + ' ' + product?.user?.last_name }`)}></CustomerInfoAvatarContainer>
+              <CustomerInfoAvatarContainer {...stringAvatar(`${product?.user?.name.toUpperCase() + ' ' + product?.user?.last_name.toUpperCase() }`)}></CustomerInfoAvatarContainer>
               <CustomerInfoDescriptionContainer>
                 <Typography variant="subtitle2" gutterBottom>
                   { product?.user?.name } { product?.user?.last_name }
