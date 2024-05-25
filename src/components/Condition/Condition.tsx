@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getCondition } from "src/services/survey";
 import useAppStore from "src/store/store";
 import CardCondition from "./CardCondition/CardCondition";
+import { useNavigate } from "react-router-dom";
 
 const conditionList = [
   {
@@ -46,14 +47,16 @@ const conditionList = [
 ];
 
 export const Condition = ({ handleNext, handleBack }: any) => {
+
   const [condition, setCondition] = useState<any>({});
   const setFn = useAppStore((state) => state.setFn);
+  const navigate = useNavigate();
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['condition'],
     queryFn: getCondition,
   })
-  
+
   const selectCondition = (condition: any) => {
     setCondition(condition.description);
     setFn.setCondition(condition);
@@ -61,7 +64,7 @@ export const Condition = ({ handleNext, handleBack }: any) => {
 
   const returnConditionDescription = (value: string): any => {
     const descriptions = conditionList.find((condition) => condition.value === value)
-    ?.description || []
+      ?.description || []
     return <CardCondition descriptions={descriptions} />
   };
 
@@ -93,7 +96,7 @@ export const Condition = ({ handleNext, handleBack }: any) => {
           <div>
             <Button
               variant="contained"
-              onClick={handleNext}
+              onClick={() => { navigate('/checkout') }}
               sx={{ mt: 1, mr: 1 }}
             >
               Finish

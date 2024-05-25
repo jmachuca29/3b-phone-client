@@ -1,14 +1,20 @@
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CardMedia,
   Container,
+  Divider,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -16,9 +22,12 @@ import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { CreateSaleDTO, ICreateSale, IUser } from "src/models/sales";
+import { getProductPrice } from "src/services/product";
 import { createSale } from "src/services/sale";
 import { getUbigeo } from "src/services/ubigeo";
 import useAppStore from "src/store/store";
+import { OrderDetailBody, OrderDetailContainer, OrderDetailDescription, OrderDetailStack } from "./styles";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 type DepartmentInfo = {
   name: string;
@@ -117,6 +126,7 @@ const CheckoutPage = () => {
   const [departments, setDepartments] = useState<any>([]);
   const [provinces, setProvinces] = useState<any>([]);
   const [districts, setDistricts] = useState<any>([]);
+  const [price, setPrice] = useState(0);
 
   const createSaleMutation = useMutation({
     mutationFn: createSale,
@@ -126,10 +136,26 @@ const CheckoutPage = () => {
     },
   })
 
+  const getPrice = async () => {
+    try {
+      const productId = currentProduct._id
+      const gradeId = survey.condition._id
+      const { data } = await getProductPrice(productId, gradeId)
+      setPrice(data)
+    } catch (error) {
+      setPrice(0)
+    }
+  }
+
   const { isPending, error, data } = useQuery({
     queryKey: ["ubigeo"],
     queryFn: getUbigeo,
   });
+
+  useEffect(() => {
+    getPrice()
+  }, [])
+
 
   useEffect(() => {
     if (data) {
@@ -258,17 +284,59 @@ const CheckoutPage = () => {
 
   return (
     <Container maxWidth="lg">
+      <OrderDetailContainer>
+        <OrderDetailStack>
+          <IconButton aria-label="arrow-back">
+            <ChevronLeftIcon />
+          </IconButton>
+          <OrderDetailBody>
+            <OrderDetailDescription>
+              <Typography variant="h4">Checkout</Typography>
+            </OrderDetailDescription>
+          </OrderDetailBody>
+        </OrderDetailStack>
+      </OrderDetailContainer>
       <Grid container spacing={2}>
-        <Grid xs={12}>
-          <Paper>
+        <Grid xs={4}>
+          <Card sx={{ display: "flex", flexDirection: "column" }}>
+            <CardMedia
+              component="img"
+              sx={{ width: 151 }}
+              image="/static/images/cards/live-from-space.jpg"
+              alt="Live from space album cover"
+            />
+            <Divider />
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <CardContent sx={{ flex: "1 0 auto" }}>
+                <Typography component="div" variant="h5">
+                  {currentProduct.description}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  Grado {survey.condition.description} - {survey.capacity.description} - {survey.paymentType.description}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  {price + '$'}
+                </Typography>
+              </CardContent>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid xs={8}>
+          <Paper sx={{ padding: 2 }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Box
                 sx={{
-                  mb: 2,
                   display: "grid",
                   gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: 2,
-                  padding: 3,
+                  gap: 2
                 }}
               >
                 <TextField
@@ -359,7 +427,7 @@ const CheckoutPage = () => {
                   {...register("address")}
                 />
               </Box>
-              <Stack>
+              <Stack sx={{ textAlign: "end", display: "block", marginTop: 2 }}>
                 <Button variant="contained" type="submit">
                   Confirmar
                 </Button>

@@ -7,7 +7,7 @@ export const IndexPage = lazy(() => import("src/pages/app"));
 export const LoginPage = lazy(() => import("src/pages/login"));
 export const RegisterPage = lazy(() => import("src/pages/register"));
 export const TradeInPage = lazy(() => import("src/pages/trade-in"));
-export const CheckoutPage = lazy(() => import("src/pages/checkout"));
+export const CheckoutPage = lazy(() => import("src/pages/checkout/checkout"));
 export const Page404 = lazy(() => import("src/pages/page-not-found"));
 export const ResumePage = lazy(() => import("src/pages/resume/resume"));
 

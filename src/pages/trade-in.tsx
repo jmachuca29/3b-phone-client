@@ -143,9 +143,6 @@ const TradeInPage = () => {
                     >
                       { price + '$' } 
                     </Typography>
-                    <Button variant="contained" sx={{ mt: 1, mr: 1 }} onClick={() => navigate('/checkout')}>
-                      Checkout
-                    </Button>
                   </CardContent>
                 </Box>
               </Card>
