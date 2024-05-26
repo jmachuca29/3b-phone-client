@@ -80,18 +80,9 @@ const ResumePage = () => {
       uuid ? getSalebyUID(uuid) : Promise.reject("No uuid found"),
   });
 
-  // useEffect(() => {
-  //   const time = dayjs("2024-05-26T03:59:22.823Z");
-  //   //20 May 2024 12:03 PM
-  //   const peruTime = time.tz("America/Lima").format("DD MMMM YYYY hh:mm A");
-
-  //   console.log(peruTime);
-  // }, []);
-
   useEffect(() => {
     if (data) {
       const response = data?.data || null;
-      console.log(response);
       setProduct(response);
     }
   }, [data]);

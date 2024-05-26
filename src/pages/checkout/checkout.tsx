@@ -270,7 +270,6 @@ const CheckoutPage = () => {
       user: { ...user },
     };
     const createSaleDto = new CreateSaleDTO(createSale);
-    console.log(createSaleDto);
     createSaleMutation.mutate(createSaleDto);
   };
 
