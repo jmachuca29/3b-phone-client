@@ -13,22 +13,67 @@ import { useParams } from "react-router-dom";
 import { getSalebyUID } from "src/services/sale";
 import Grid from "@mui/material/Unstable_Grid2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { CustomerDeliveryContainer, CustomerDeliverySubCategoryContainer, CustomerDeliverySubCategoryName, CustomerInfoAvatarContainer, CustomerInfoContainer, CustomerInfoDescriptionContainer, CustomerPaymentContainer, CustomerPaymentSubCategoryContainer, CustomerPaymentSubCategoryName, CustomerShippingContainer, CustomerShippingSubCategoryContainer, CustomerShippingSubCategoryName, OrderDetailBody, OrderDetailContainer, OrderDetailDate, OrderDetailDescription, OrderDetailStack, OrderDetailStatus, ProductDetailContainer, ProductDetailDescriptionAvatar, ProductDetailDescriptionContainer, ProductDetailDescriptionListItem, ProductDetailDescriptionPrice, ProductDetailDescriptionQuantity, ProductPriceDetailContainer, ProductPriceDetailDescription, ProductPriceDetailPrice, ProductPriceDetailStack, ProductPriceDetailTotalDescription, ProductPriceDetailTotalPrice, ProductPriceDetailTotalStack } from "./style";
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import {
+  CustomerDeliveryContainer,
+  CustomerDeliverySubCategoryContainer,
+  CustomerDeliverySubCategoryName,
+  CustomerInfoAvatarContainer,
+  CustomerInfoContainer,
+  CustomerInfoDescriptionContainer,
+  CustomerPaymentContainer,
+  CustomerPaymentSubCategoryContainer,
+  CustomerPaymentSubCategoryName,
+  CustomerShippingContainer,
+  CustomerShippingSubCategoryContainer,
+  CustomerShippingSubCategoryName,
+  OrderDetailBody,
+  OrderDetailContainer,
+  OrderDetailDate,
+  OrderDetailDescription,
+  OrderDetailStack,
+  OrderDetailStatus,
+  ProductDetailContainer,
+  ProductDetailDescriptionAvatar,
+  ProductDetailDescriptionContainer,
+  ProductDetailDescriptionListItem,
+  ProductDetailDescriptionPrice,
+  ProductDetailDescriptionQuantity,
+  ProductPriceDetailContainer,
+  ProductPriceDetailDescription,
+  ProductPriceDetailPrice,
+  ProductPriceDetailStack,
+  ProductPriceDetailTotalDescription,
+  ProductPriceDetailTotalPrice,
+  ProductPriceDetailTotalStack,
+} from "./style";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { MuiPaper } from "src/components/MuiPaper/MuiPaper";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(localizedFormat);
 
 const stringAvatar = (name: string) => {
   return {
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
   };
-}
+};
+
+const calculateDate = (date: Date): string => {
+  const time = dayjs(date);
+  const peruTime = time.tz("America/Lima").format("DD MMMM YYYY hh:mm A");
+  return peruTime;
+};
 
 const ResumePage = () => {
   const { uuid } = useParams();
 
-  const [product, setProduct] = useState<any>(null)
-
+  const [product, setProduct] = useState<any>(null);
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["saleDetail", uuid],
     queryFn: () =>
@@ -36,11 +81,10 @@ const ResumePage = () => {
   });
 
   useEffect(() => {
-    if(data) {
-      const response = data?.data || null
-      console.log(response)
-      setProduct(response)
-    }  
+    if (data) {
+      const response = data?.data || null;
+      setProduct(response);
+    }
   }, [data]);
 
   if (isPending) {
@@ -63,7 +107,9 @@ const ResumePage = () => {
               <Typography variant="h4">Orden #{uuid}</Typography>
               <OrderDetailStatus>{product?.status}</OrderDetailStatus>
             </OrderDetailDescription>
-            <OrderDetailDate variant="body2">20 May 2024 12:03 PM</OrderDetailDate>
+            <OrderDetailDate variant="body2">
+              {calculateDate(product?.createdAt)}
+            </OrderDetailDate>
           </OrderDetailBody>
         </OrderDetailStack>
       </OrderDetailContainer>
@@ -86,25 +132,39 @@ const ResumePage = () => {
                   </ProductDetailDescriptionAvatar>
                   <ProductDetailDescriptionListItem>
                     <ListItemText
-                      primary="Single-line item"
-                      secondary="Secondary text"
+                      primary={product?.product?.description}
+                      secondary={product?.capacity?.description}
                     />
                   </ProductDetailDescriptionListItem>
-                  <ProductDetailDescriptionQuantity>x1</ProductDetailDescriptionQuantity>
-                  <ProductDetailDescriptionPrice>S/ {product?.price}</ProductDetailDescriptionPrice>
+                  <ProductDetailDescriptionQuantity>
+                    x1
+                  </ProductDetailDescriptionQuantity>
+                  <ProductDetailDescriptionPrice>
+                    S/ {product?.price}
+                  </ProductDetailDescriptionPrice>
                 </ProductDetailDescriptionContainer>
                 <ProductPriceDetailContainer>
                   <ProductPriceDetailStack>
-                    <ProductPriceDetailDescription>Sub Total</ProductPriceDetailDescription>
-                    <ProductPriceDetailPrice>S/ {product?.price}</ProductPriceDetailPrice>
+                    <ProductPriceDetailDescription>
+                      Sub Total
+                    </ProductPriceDetailDescription>
+                    <ProductPriceDetailPrice>
+                      S/ {product?.price}
+                    </ProductPriceDetailPrice>
                   </ProductPriceDetailStack>
                   <ProductPriceDetailStack>
-                    <ProductPriceDetailDescription>Shipping</ProductPriceDetailDescription>
+                    <ProductPriceDetailDescription>
+                      Shipping
+                    </ProductPriceDetailDescription>
                     <ProductPriceDetailPrice>-</ProductPriceDetailPrice>
                   </ProductPriceDetailStack>
                   <ProductPriceDetailTotalStack>
-                    <ProductPriceDetailTotalDescription>Total</ProductPriceDetailTotalDescription>
-                    <ProductPriceDetailTotalPrice>S/ {product?.price}</ProductPriceDetailTotalPrice>
+                    <ProductPriceDetailTotalDescription>
+                      Total
+                    </ProductPriceDetailTotalDescription>
+                    <ProductPriceDetailTotalPrice>
+                      S/ {product?.price}
+                    </ProductPriceDetailTotalPrice>
                   </ProductPriceDetailTotalStack>
                 </ProductPriceDetailContainer>
               </ProductDetailContainer>
@@ -122,12 +182,20 @@ const ResumePage = () => {
               }
             />
             <CustomerInfoContainer>
-              <CustomerInfoAvatarContainer {...stringAvatar(`${product?.user?.name.toUpperCase() + ' ' + product?.user?.last_name.toUpperCase() }`)}></CustomerInfoAvatarContainer>
+              <CustomerInfoAvatarContainer
+                {...stringAvatar(
+                  `${
+                    product?.user?.name.toUpperCase() +
+                    " " +
+                    product?.user?.last_name.toUpperCase()
+                  }`
+                )}
+              ></CustomerInfoAvatarContainer>
               <CustomerInfoDescriptionContainer>
                 <Typography variant="subtitle2" gutterBottom>
-                  { product?.user?.name } { product?.user?.last_name }
+                  {product?.user?.name} {product?.user?.last_name}
                 </Typography>
-                <Box>{ product?.user?.email }</Box>
+                <Box>{product?.user?.email}</Box>
               </CustomerInfoDescriptionContainer>
             </CustomerInfoContainer>
             <Divider />
@@ -141,11 +209,15 @@ const ResumePage = () => {
             />
             <CustomerDeliveryContainer>
               <CustomerDeliverySubCategoryContainer>
-                <CustomerDeliverySubCategoryName>Ship by</CustomerDeliverySubCategoryName>
+                <CustomerDeliverySubCategoryName>
+                  Ship by
+                </CustomerDeliverySubCategoryName>
                 -
               </CustomerDeliverySubCategoryContainer>
               <CustomerDeliverySubCategoryContainer>
-                <CustomerDeliverySubCategoryName>Tracking No.</CustomerDeliverySubCategoryName>
+                <CustomerDeliverySubCategoryName>
+                  Tracking No.
+                </CustomerDeliverySubCategoryName>
                 -
               </CustomerDeliverySubCategoryContainer>
             </CustomerDeliveryContainer>
@@ -160,12 +232,16 @@ const ResumePage = () => {
             />
             <CustomerShippingContainer>
               <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>Address</CustomerShippingSubCategoryName>
-                { product?.user?.address }
+                <CustomerShippingSubCategoryName>
+                  Address
+                </CustomerShippingSubCategoryName>
+                {product?.user?.address}
               </CustomerShippingSubCategoryContainer>
               <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>Phone number</CustomerShippingSubCategoryName>
-                { product?.user?.cellphone }
+                <CustomerShippingSubCategoryName>
+                  Phone number
+                </CustomerShippingSubCategoryName>
+                {product?.user?.cellphone}
               </CustomerShippingSubCategoryContainer>
             </CustomerShippingContainer>
             <Divider />
@@ -179,12 +255,16 @@ const ResumePage = () => {
             />
             <CustomerPaymentContainer>
               <CustomerPaymentSubCategoryContainer>
-                <CustomerPaymentSubCategoryName>Method</CustomerPaymentSubCategoryName>
+                <CustomerPaymentSubCategoryName>
+                  Method
+                </CustomerPaymentSubCategoryName>
                 Yape
               </CustomerPaymentSubCategoryContainer>
               <CustomerPaymentSubCategoryContainer>
-                <CustomerPaymentSubCategoryName>Phone number</CustomerPaymentSubCategoryName>
-                { product?.user?.cellphone }
+                <CustomerPaymentSubCategoryName>
+                  Phone number
+                </CustomerPaymentSubCategoryName>
+                {product?.user?.cellphone}
               </CustomerPaymentSubCategoryContainer>
             </CustomerPaymentContainer>
           </MuiPaper>
