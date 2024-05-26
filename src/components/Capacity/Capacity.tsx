@@ -21,7 +21,7 @@ export const Capacity = ({ handleNext }: any) => {
     <>
       <StepLabel>Select capacity</StepLabel>
       <StepContent>
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ m: 2, display: "flex",gap: 1 }}>
           {capacities.map((capacity: any) => (
             <Button
               key={capacity._id}

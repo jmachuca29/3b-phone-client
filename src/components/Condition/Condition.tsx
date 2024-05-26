@@ -80,7 +80,7 @@ export const Condition = ({ handleBack }: any) => {
     <>
       <StepLabel>Condition</StepLabel>
       <StepContent>
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ m: 2, display: "flex",gap: 1 }}>
           {data.data?.map((condition) => (
             <Button
               key={condition._id}
@@ -90,9 +90,11 @@ export const Condition = ({ handleBack }: any) => {
               {condition.description}
             </Button>
           ))}
+        </Box>
+        <Box>
           <div>{returnConditionDescription(condition)}</div>
         </Box>
-        <Box sx={{ mb: 2 }}>
+        <Box>
           <div>
             <Button
               variant="contained"

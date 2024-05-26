@@ -24,10 +24,10 @@ export const Header = () => {
     if (Object.keys(user).length === 0) {
       navigate("/login");
     } else {
-      handleClose();
       setFn.removeUser();
       localStorage.removeItem("3b-iphone-token");
     }
+    handleClose();
   };
 
   useEffect(() => {

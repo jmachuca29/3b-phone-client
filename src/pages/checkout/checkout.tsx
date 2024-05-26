@@ -296,13 +296,13 @@ const CheckoutPage = () => {
           </OrderDetailBody>
         </OrderDetailStack>
       </OrderDetailContainer>
-      <Grid container spacing={2}>
+      <Grid container spacing={4}>
         <Grid xs={4}>
           <Card sx={{ display: "flex", flexDirection: "column" }}>
             <CardMedia
               component="img"
-              sx={{ width: 151 }}
-              image="/static/images/cards/live-from-space.jpg"
+              // sx={{ width: 151 }}
+              image="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=242&h=242&fit=crop&auto=format"
               alt="Live from space album cover"
             />
             <Divider />

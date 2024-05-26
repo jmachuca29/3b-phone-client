@@ -29,7 +29,7 @@ const PaymentType = ({ handleNext, handleBack }: any) => {
     <>
       <StepLabel>Payment Type</StepLabel>
       <StepContent>
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ m: 2 }}>
           {data.data?.map((paymentType) => (
             <Button
               key={paymentType._id}

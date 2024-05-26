@@ -13,7 +13,7 @@ export const DashboardLayout = ({ children }: any) => {
     queryFn: () =>
       token ? getUserProfile(token) : Promise.reject("No token found"),
     retry: false,
-    enabled: !!token, // Only run the query if token is available
+    enabled: !!token, // Only run the query if token is available,
   });
 
   useEffect(() => {
