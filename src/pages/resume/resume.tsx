@@ -256,15 +256,15 @@ const ResumePage = () => {
             <CustomerPaymentContainer>
               <CustomerPaymentSubCategoryContainer>
                 <CustomerPaymentSubCategoryName>
-                  Method
+                  Bank
                 </CustomerPaymentSubCategoryName>
-                Yape
+                {product?.bankEntity}
               </CustomerPaymentSubCategoryContainer>
               <CustomerPaymentSubCategoryContainer>
                 <CustomerPaymentSubCategoryName>
-                  Phone number
+                  # Account
                 </CustomerPaymentSubCategoryName>
-                {product?.user?.cellphone}
+                {product?.numberAccount}
               </CustomerPaymentSubCategoryContainer>
             </CustomerPaymentContainer>
           </MuiPaper>

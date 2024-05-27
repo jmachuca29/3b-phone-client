@@ -17,6 +17,8 @@ export type ICreateSale = {
   paymentType: string;
   grade: string;
   user: IUser;
+  bankEntity: string;
+  numberAccount: string;
 };
 
 export class CreateSaleDTO {
@@ -29,6 +31,8 @@ export class CreateSaleDTO {
   paymentType: string;
   grade: string;
   user: IUser;
+  bankEntity: string;
+  numberAccount: string;
   constructor(data: ICreateSale) {
     this.product = data.product;
     this.capacity = data.capacity;
@@ -39,5 +43,7 @@ export class CreateSaleDTO {
     this.paymentType = data.paymentType;
     this.grade = data.grade;
     this.user = data.user;
+    this.bankEntity = data.bankEntity;
+    this.numberAccount = data.numberAccount;
   }
 }
