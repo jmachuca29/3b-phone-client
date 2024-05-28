@@ -4,11 +4,14 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Checkbox,
   Container,
   Divider,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputLabel,
+  Link,
   MenuItem,
   Paper,
   Select,
@@ -28,6 +31,7 @@ import { getUbigeo } from "src/services/ubigeo";
 import useAppStore from "src/store/store";
 import { OrderDetailBody, OrderDetailContainer, OrderDetailDescription, OrderDetailStack } from "./styles";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 type DepartmentInfo = {
   name: string;
@@ -43,6 +47,8 @@ type Inputs = {
   provinces: string;
   district: string;
   address: string;
+  bankEntity: string;
+  numberAccount: string;
 };
 
 const defaultFormValue: Inputs = {
@@ -54,6 +60,8 @@ const defaultFormValue: Inputs = {
   provinces: "",
   district: "",
   address: "",
+  bankEntity: "",
+  numberAccount: ""
 };
 
 function getUniqueDepartments(ubigeos: any): DepartmentInfo[] {
@@ -127,6 +135,12 @@ const CheckoutPage = () => {
   const [provinces, setProvinces] = useState<any>([]);
   const [districts, setDistricts] = useState<any>([]);
   const [price, setPrice] = useState(0);
+  const [checked, setChecked] = useState(false)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
 
   const createSaleMutation = useMutation({
     mutationFn: createSale,
@@ -183,6 +197,8 @@ const CheckoutPage = () => {
       provinces: checkoutForm.provinces,
       district: checkoutForm.district,
       address: checkoutForm.address,
+      bankEntity: checkoutForm.bankEntity,
+      numberAccount: checkoutForm.numberAccount
     },
   });
 
@@ -218,6 +234,8 @@ const CheckoutPage = () => {
       setValue("cellphone", checkoutForm.cellphone);
       setValue("department", checkoutForm.department);
       setValue("address", checkoutForm.address);
+      setValue("bankEntity", checkoutForm.bankEntity);
+      setValue("numberAccount", checkoutForm.numberAccount);
     }
   }, [setValue, checkoutForm, departments]);
 
@@ -267,6 +285,8 @@ const CheckoutPage = () => {
       imei_2: survey.imei2,
       paymentType: survey.paymentType._id,
       grade: survey.condition._id,
+      bankEntity: data.bankEntity,
+      numberAccount: data.numberAccount,
       user: { ...user },
     };
     const createSaleDto = new CreateSaleDTO(createSale);
@@ -300,7 +320,6 @@ const CheckoutPage = () => {
           <Card sx={{ display: "flex", flexDirection: "column" }}>
             <CardMedia
               component="img"
-              // sx={{ width: 151 }}
               image="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=242&h=242&fit=crop&auto=format"
               alt="Live from space album cover"
             />
@@ -425,9 +444,47 @@ const CheckoutPage = () => {
                   variant="outlined"
                   {...register("address")}
                 />
+                <Controller
+                  name="bankEntity"
+                  control={control}
+                  render={({ field }) => (
+                    <FormControl>
+                      <InputLabel id="demo-simple-select-label">
+                        Entidad Bancaria
+                      </InputLabel>
+                      <Select {...field}>
+                        <MenuItem value="BCP">
+                          BCP
+                        </MenuItem>
+                        <MenuItem value="INTERBANK">
+                          INTERBANK
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+                <TextField
+                  id="numberAccount"
+                  label="Numero de cuenta"
+                  variant="outlined"
+                  {...register("numberAccount")}
+                />
+              </Box>
+              <Box>
+                <FormControlLabel control={<Checkbox checked={checked} onChange={handleChange} />} label={
+                  <p>
+                    Acepto terminos y condiciones
+                    <Link
+                      href="https://grintek.pe/terminos_condiciones/"
+                      target="_blank"
+                    >
+                      <LaunchIcon />
+                    </Link>
+                  </p>
+                } />
               </Box>
               <Stack sx={{ textAlign: "end", display: "block", marginTop: 2 }}>
-                <Button variant="contained" type="submit">
+                <Button variant="contained" type="submit" disabled={!checked}>
                   Confirmar
                 </Button>
               </Stack>

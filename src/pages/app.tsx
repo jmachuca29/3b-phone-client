@@ -18,6 +18,7 @@ import {listProducts} from "src/services/product";
 import { useEffect, useState } from "react";
 import useAppStore from "src/store/store";
 import { useForm } from "react-hook-form";
+import mobileImg from './../assets/mobile_image.svg';
 
 interface IFormInputs {
   searchField: string
@@ -112,8 +113,11 @@ const AppPage = () => {
                       <CardMedia
                         component="img"
                         height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
+                        image={mobileImg}
                         alt="green iguana"
+                        sx={{
+                          height: '15rem'
+                        }}
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="div">

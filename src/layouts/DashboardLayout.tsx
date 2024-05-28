@@ -4,6 +4,7 @@ import { Header } from "src/components/Header/Header";
 import { getUserProfile } from "src/services/auth";
 import useAppStore from "src/store/store";
 import MainStyled from "./styles";
+import SnackBar from "src/components/SnackBar/SnackBar";
 
 export const DashboardLayout = ({ children }: any) => {
   const token = localStorage.getItem("3b-iphone-token");
@@ -25,6 +26,7 @@ export const DashboardLayout = ({ children }: any) => {
 
   return (
     <>
+      <SnackBar/>
       <Header />
       <MainStyled>{children}</MainStyled>
     </>

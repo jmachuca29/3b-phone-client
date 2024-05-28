@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getSalebyUID } from "src/services/sale";
 import Grid from "@mui/material/Unstable_Grid2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -72,6 +72,7 @@ const calculateDate = (date: Date): string => {
 
 const ResumePage = () => {
   const { uuid } = useParams();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState<any>(null);
   const { isPending, isError, data, error } = useQuery({
@@ -99,7 +100,7 @@ const ResumePage = () => {
     <Container maxWidth="lg">
       <OrderDetailContainer>
         <OrderDetailStack>
-          <IconButton aria-label="arrow-back">
+          <IconButton aria-label="arrow-back" onClick={() => navigate(-1)}>
             <ChevronLeftIcon />
           </IconButton>
           <OrderDetailBody>
@@ -184,10 +185,9 @@ const ResumePage = () => {
             <CustomerInfoContainer>
               <CustomerInfoAvatarContainer
                 {...stringAvatar(
-                  `${
-                    product?.user?.name.toUpperCase() +
-                    " " +
-                    product?.user?.last_name.toUpperCase()
+                  `${product?.user?.name.toUpperCase() +
+                  " " +
+                  product?.user?.last_name.toUpperCase()
                   }`
                 )}
               ></CustomerInfoAvatarContainer>
@@ -256,15 +256,15 @@ const ResumePage = () => {
             <CustomerPaymentContainer>
               <CustomerPaymentSubCategoryContainer>
                 <CustomerPaymentSubCategoryName>
-                  Method
+                  Bank
                 </CustomerPaymentSubCategoryName>
-                Yape
+                {product?.bankEntity}
               </CustomerPaymentSubCategoryContainer>
               <CustomerPaymentSubCategoryContainer>
                 <CustomerPaymentSubCategoryName>
-                  Phone number
+                  # Account
                 </CustomerPaymentSubCategoryName>
-                {product?.user?.cellphone}
+                {product?.numberAccount}
               </CustomerPaymentSubCategoryContainer>
             </CustomerPaymentContainer>
           </MuiPaper>

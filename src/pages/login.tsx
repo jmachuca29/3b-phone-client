@@ -1,11 +1,9 @@
 import {
-  Alert,
   Box,
   Button,
   Container,
   Link,
   Paper,
-  Snackbar,
   TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -14,55 +12,31 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { login } from "src/services/auth";
 import { Link as RouterLink } from "react-router-dom";
-import { useState } from "react";
+import useAppStore from "src/store/store";
+import AlertType from "src/constant/alertType";
 
 type Login = {
   username: string;
   password: string;
 };
 
-enum SeverityType {
-  success = "success",
-  info = "info",
-  warning = "warning",
-  error = "error",
-}
-
 const LoginPage = () => {
+  const [setFn] = useAppStore(state => [state.setFn])
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-  const [messageInfo, setMessageInfo] = useState({
-    message: "",
-    type: SeverityType.error,
-  });
-
-  const handleClose = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
   const mutationLogin = useMutation({
     mutationFn: login,
     onSuccess: async (response) => {
       const token = response.data.access_token || "";
       if (token !== "") {
         localStorage.setItem("3b-iphone-token", token);
-        setMessageInfo({ message: "Bienvenido", type: SeverityType.success });
-        setOpen(true);
+        setFn.addSnackbar('Bienvenido', AlertType.success)
         navigate("/");
       }
     },
     onError: async (error: any) => {
       const response = error?.response;
       const message = response?.data?.message || "Internal Server Error";
-      setMessageInfo({ message: message, type: SeverityType.error });
-      setOpen(true);
+      setFn.addSnackbar(message, AlertType.error)
     },
   });
 
@@ -116,21 +90,6 @@ const LoginPage = () => {
           </form>
         </Grid>
       </Grid>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={messageInfo.type as SeverityType}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {messageInfo.message}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };
