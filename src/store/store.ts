@@ -1,5 +1,12 @@
+import AlertType from "src/constant/alertType";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+
+interface ISnackBar {
+  message: string,
+  key: any,
+  type: AlertType
+}
 
 type Actions = {
   setCapacity: (capacity: string) => void;
@@ -15,6 +22,8 @@ type Actions = {
   setProducts: (products: any) => void;
   setCurrentProduct: (productDetails: any) => void;
   removeUser: () => void;
+  addSnackbar: (message: string, type: AlertType) => void;
+  removeSnackbar: () => void;
   reset: () => void;
 };
 
@@ -31,7 +40,8 @@ type AppState = {
   user: any;
   currentProduct: any;
   products: any;
-  setFn: Actions; 
+  snackPack: ISnackBar[];
+  setFn: Actions;
 };
 
 const initialState = {
@@ -46,7 +56,8 @@ const initialState = {
     paymentType: "",
     condition: "",
   },
-  user: {}
+  user: {},
+  snackPack: []
 };
 
 const sharedStateAndActions = (set: any, get: any) => ({
@@ -89,6 +100,20 @@ const sharedStateAndActions = (set: any, get: any) => ({
     setProducts: (products: any) => {
       set({ products: products }, false, "SET PRODUCTS");
     },
+    addSnackbar: (message: string, type: AlertType) => set(
+      (state: AppState) => ({
+        snackPack: [
+          ...state.snackPack,
+          { message, key: new Date().getTime(), type }
+        ]
+
+      }), false, 'ADD SNACKBAR'
+    ),
+    removeSnackbar: () => set(
+      (state: AppState) => ({
+        snackPack: state.snackPack.splice(1)
+      }), false, 'REMOVE SNACKBAR'
+    ),
     removeUser: () => {
       set({ user: initialState.user }, false, "REMOVE USER");
     },

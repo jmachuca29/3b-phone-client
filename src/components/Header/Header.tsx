@@ -55,7 +55,10 @@ export const Header = () => {
               {isLoggedIn 
                 ? [
                   <MenuItem key="profile" onClick={handleClose}>My Profile</MenuItem>,
-                  <MenuItem key="sales" onClick={handleClose}>My Sales</MenuItem>,
+                  <MenuItem key="sales" onClick={ ()=> {
+                    navigate('/my-sales')
+                    handleClose()
+                  }}>My Sales</MenuItem>,
                   <MenuItem key="logout" onClick={handleLogin}>Logout</MenuItem>
                 ] 
                 : <MenuItem onClick={handleLogin}>Login</MenuItem>

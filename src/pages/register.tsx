@@ -11,17 +11,21 @@ import {
   TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import getDocumentType from "src/services/type-document";
 import { getUbigeo } from "src/services/ubigeo";
+import registerAccount from "src/services/account";
+import useAppStore from "src/store/store";
+import AlertType from "src/constant/alertType";
+import { useNavigate } from "react-router-dom";
 
 const defaultFormValue = {
   name: "",
   lastName: "",
-  typeDocument: "",
-  numberDocument: "",
+  documentType: "",
+  documentNumber: "",
   email: "",
   cellphone: "",
   department: "",
@@ -30,13 +34,14 @@ const defaultFormValue = {
   address: "",
   password: "",
   passwordRepeat: "",
+  ubigeo: ""
 };
 
 type Inputs = {
   name: string;
   lastName: string;
-  typeDocument: string;
-  numberDocument: string;
+  documentType: string;
+  documentNumber: string;
   email: string;
   cellphone: string;
   department: string;
@@ -45,6 +50,7 @@ type Inputs = {
   address: string;
   password: string;
   passwordRepeat: string;
+  ubigeo: string;
 };
 
 type DepartmentInfo = {
@@ -117,8 +123,10 @@ const RegisterPage = () => {
   const [departments, setDepartments] = useState<any>([]);
   const [provinces, setProvinces] = useState<any>([]);
   const [districts, setDistricts] = useState<any>([]);
-  const [typeDocuments, setTypeDocuments] = useState<any>([]);
-
+  const [documentsType, setDocumentsType] = useState<any>([]);
+  const [setFn] = useAppStore(state => [state.setFn])
+  const navigate = useNavigate();
+  
   const { isPending, error, data } = useQuery({
     queryKey: ["ubigeo"],
     queryFn: getUbigeo,
@@ -129,10 +137,24 @@ const RegisterPage = () => {
     queryFn: getDocumentType,
   });
 
+  const mutationRegister = useMutation({
+    mutationFn: registerAccount,
+    onSuccess: async () => {
+      setFn.addSnackbar("Registro Exitoso", AlertType.success)
+      navigate('/')
+    },
+    onError: async (error: any) => {
+      console.log(error)
+      const response = error?.response;
+      const message = response?.data?.message || "Internal Server Error";
+      setFn.addSnackbar(message, AlertType.error)
+    },
+  });
+
   useEffect(() => {
     if (documentData) {
       const documentTypes = documentData.data;
-      setTypeDocuments(documentTypes);
+      setDocumentsType(documentTypes);
     }
   }, [documentData]);
 
@@ -150,25 +172,28 @@ const RegisterPage = () => {
     watch,
     handleSubmit,
     setValue,
+    getValues,
     control,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
       name: userForm.name,
       lastName: userForm.lastName,
-      typeDocument: userForm.typeDocument,
-      numberDocument: userForm.numberDocument,
+      documentType: userForm.documentType,
+      documentNumber: userForm.documentNumber,
       email: userForm.email,
       cellphone: userForm.cellphone,
       department: userForm.department,
       provinces: userForm.provinces,
       district: userForm.district,
       address: userForm.address,
+      ubigeo: userForm.ubigeo
     },
   });
 
   const watchDepartment = watch("department");
   const watchProvinces = watch("provinces");
+  const watchDistrict = watch("district");
   const password = useRef({});
   password.current = watch("password", "");
 
@@ -195,8 +220,8 @@ const RegisterPage = () => {
     ) {
       setValue("name", userForm.name);
       setValue("lastName", userForm.lastName);
-      setValue("typeDocument", userForm.typeDocument);
-      setValue("numberDocument", userForm.numberDocument);
+      setValue("documentType", userForm.documentType);
+      setValue("documentNumber", userForm.documentNumber);
       setValue("email", userForm.email);
       setValue("cellphone", userForm.cellphone);
       setValue("department", userForm.department);
@@ -222,8 +247,18 @@ const RegisterPage = () => {
     }
   }, [setValue, userForm.district, districts]);
 
+  useEffect(() => {
+    const formValues = getValues()
+    const findUbigeo = ubigeos.find((ubigeo: any) => ubigeo.departamento_inei === formValues.department && ubigeo.provincia_inei === formValues.provinces && ubigeo.distrito === formValues.district)
+    if (findUbigeo) {
+      setValue("ubigeo", findUbigeo?.id_ubigeo);
+    }
+  }, [watchDistrict])
+
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
+    mutationRegister.mutate(data);
   };
 
   if (isPending) {
@@ -262,14 +297,8 @@ const RegisterPage = () => {
                     variant="outlined"
                     {...register("lastName")}
                   />
-                  {/* <TextField
-                    id="typeDocument"
-                    label="Type Document"
-                    variant="outlined"
-                    {...register("typeDocument")}
-                  /> */}
                   <Controller
-                    name="typeDocument"
+                    name="documentType"
                     control={control}
                     render={({ field }) => (
                       <FormControl>
@@ -277,12 +306,12 @@ const RegisterPage = () => {
                           Tipo Documento
                         </InputLabel>
                         <Select {...field}>
-                          {typeDocuments.map((typeDocument: any, index: number) => (
+                          {documentsType.map((documentType: any, index: number) => (
                             <MenuItem
                               key={index}
-                              value={typeDocument._id}
+                              value={documentType._id}
                             >
-                              {typeDocument.description}
+                              {documentType.description}
                             </MenuItem>
                           ))}
                         </Select>
@@ -290,10 +319,10 @@ const RegisterPage = () => {
                     )}
                   />
                   <TextField
-                    id="numberDocument"
+                    id="documentNumber"
                     label="Document"
                     variant="outlined"
-                    {...register("numberDocument")}
+                    {...register("documentNumber")}
                   />
                   <TextField
                     id="email"
