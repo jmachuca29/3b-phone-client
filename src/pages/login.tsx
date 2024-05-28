@@ -1,11 +1,9 @@
 import {
-  Alert,
   Box,
   Button,
   Container,
   Link,
   Paper,
-  Snackbar,
   TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -14,7 +12,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { login } from "src/services/auth";
 import { Link as RouterLink } from "react-router-dom";
-import { useState } from "react";
 import useAppStore from "src/store/store";
 import AlertType from "src/constant/alertType";
 
@@ -22,13 +19,6 @@ type Login = {
   username: string;
   password: string;
 };
-
-enum SeverityType {
-  success = "success",
-  info = "info",
-  warning = "warning",
-  error = "error",
-}
 
 const LoginPage = () => {
   const [setFn] = useAppStore(state => [state.setFn])
