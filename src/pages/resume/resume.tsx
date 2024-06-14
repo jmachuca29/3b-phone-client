@@ -74,7 +74,7 @@ const ResumePage = () => {
   const { uuid } = useParams();
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState<any>(null);
+  const [sale, setSale] = useState<any>(null);
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["saleDetail", uuid],
     queryFn: () =>
@@ -84,7 +84,7 @@ const ResumePage = () => {
   useEffect(() => {
     if (data) {
       const response = data?.data || null;
-      setProduct(response);
+      setSale(response);
     }
   }, [data]);
 
@@ -106,10 +106,10 @@ const ResumePage = () => {
           <OrderDetailBody>
             <OrderDetailDescription>
               <Typography variant="h4">Orden #{uuid}</Typography>
-              <OrderDetailStatus>{product?.status}</OrderDetailStatus>
+              <OrderDetailStatus>{sale?.status}</OrderDetailStatus>
             </OrderDetailDescription>
             <OrderDetailDate variant="body2">
-              {calculateDate(product?.createdAt)}
+              {calculateDate(sale?.createdAt)}
             </OrderDetailDate>
           </OrderDetailBody>
         </OrderDetailStack>
@@ -133,15 +133,15 @@ const ResumePage = () => {
                   </ProductDetailDescriptionAvatar>
                   <ProductDetailDescriptionListItem>
                     <ListItemText
-                      primary={product?.product?.description}
-                      secondary={product?.capacity?.description}
+                      primary={sale?.productName}
+                      secondary={sale?.capacity?.description}
                     />
                   </ProductDetailDescriptionListItem>
                   <ProductDetailDescriptionQuantity>
                     x1
                   </ProductDetailDescriptionQuantity>
                   <ProductDetailDescriptionPrice>
-                    S/ {product?.price}
+                    S/ {sale?.price}
                   </ProductDetailDescriptionPrice>
                 </ProductDetailDescriptionContainer>
                 <ProductPriceDetailContainer>
@@ -150,7 +150,7 @@ const ResumePage = () => {
                       Sub Total
                     </ProductPriceDetailDescription>
                     <ProductPriceDetailPrice>
-                      S/ {product?.price}
+                      S/ {sale?.price}
                     </ProductPriceDetailPrice>
                   </ProductPriceDetailStack>
                   <ProductPriceDetailStack>
@@ -164,7 +164,7 @@ const ResumePage = () => {
                       Total
                     </ProductPriceDetailTotalDescription>
                     <ProductPriceDetailTotalPrice>
-                      S/ {product?.price}
+                      S/ {sale?.price}
                     </ProductPriceDetailTotalPrice>
                   </ProductPriceDetailTotalStack>
                 </ProductPriceDetailContainer>
@@ -185,17 +185,17 @@ const ResumePage = () => {
             <CustomerInfoContainer>
               <CustomerInfoAvatarContainer
                 {...stringAvatar(
-                  `${product?.user?.name.toUpperCase() +
+                  `${sale?.user?.name.toUpperCase() +
                   " " +
-                  product?.user?.last_name.toUpperCase()
+                  sale?.user?.lastName.toUpperCase()
                   }`
                 )}
               ></CustomerInfoAvatarContainer>
               <CustomerInfoDescriptionContainer>
                 <Typography variant="subtitle2" gutterBottom>
-                  {product?.user?.name} {product?.user?.last_name}
+                  {sale?.user?.name} {sale?.user?.last_name}
                 </Typography>
-                <Box>{product?.user?.email}</Box>
+                <Box>{sale?.user?.email}</Box>
               </CustomerInfoDescriptionContainer>
             </CustomerInfoContainer>
             <Divider />
@@ -235,13 +235,13 @@ const ResumePage = () => {
                 <CustomerShippingSubCategoryName>
                   Address
                 </CustomerShippingSubCategoryName>
-                {product?.user?.address}
+                {sale?.user?.address}
               </CustomerShippingSubCategoryContainer>
               <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
                   Phone number
                 </CustomerShippingSubCategoryName>
-                {product?.user?.cellphone}
+                {sale?.user?.phoneNumber}
               </CustomerShippingSubCategoryContainer>
             </CustomerShippingContainer>
             <Divider />
@@ -258,13 +258,13 @@ const ResumePage = () => {
                 <CustomerPaymentSubCategoryName>
                   Bank
                 </CustomerPaymentSubCategoryName>
-                {product?.bankEntity}
+                {sale?.bankEntity}
               </CustomerPaymentSubCategoryContainer>
               <CustomerPaymentSubCategoryContainer>
                 <CustomerPaymentSubCategoryName>
                   # Account
                 </CustomerPaymentSubCategoryName>
-                {product?.numberAccount}
+                {sale?.numberAccount}
               </CustomerPaymentSubCategoryContainer>
             </CustomerPaymentContainer>
           </MuiPaper>
