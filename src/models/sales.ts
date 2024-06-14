@@ -1,49 +1,52 @@
-export type IUser = {
-  name: string;
-  last_name: string;
-  email: string;
-  cellphone: string;
-  ubigeo: string;
-  address: string;
-};
+export type UserProps = {
+    name: string
+    lastName: string
+    email: string
+    phoneNumber: string
+    ubigeo: string
+    address: string
+}
 
-export type ICreateSale = {
-  product: string;
-  capacity: string;
-  accesories: string[];
-  serieNumber: string;
-  imei_1: string;
-  imei_2: string;
-  paymentType: string;
-  grade: string;
-  user: IUser;
-  bankEntity: string;
-  numberAccount: string;
-};
+export type SaleCreateProps = {
+    productId: string
+    productName: string
+    capacity: string
+    accesories: string[]
+    serieNumber: string
+    firstImei: string
+    secondImei: string
+    paymentType: string
+    grade: string
+    user: UserProps
+    bankEntity: string
+    numberAccount: string
+}
 
-export class CreateSaleDTO {
-  product: string;
-  capacity: string;
-  accesories: string[];
-  serieNumber: string;
-  imei_1: string;
-  imei_2: string;
-  paymentType: string;
-  grade: string;
-  user: IUser;
-  bankEntity: string;
-  numberAccount: string;
-  constructor(data: ICreateSale) {
-    this.product = data.product;
-    this.capacity = data.capacity;
-    this.accesories = data.accesories;
-    this.serieNumber = data.serieNumber;
-    this.imei_1 = data.imei_1;
-    this.imei_2 = data.imei_2;
-    this.paymentType = data.paymentType;
-    this.grade = data.grade;
-    this.user = data.user;
-    this.bankEntity = data.bankEntity;
-    this.numberAccount = data.numberAccount;
-  }
+export class SalesCreateDto {
+    productId: string
+    productName: string
+    capacity: string
+    accesories: string[]
+    serieNumber: string
+    firstImei: string
+    secondImei: string
+    paymentType: string
+    grade: string
+    user: UserProps
+    bankEntity: string
+    numberAccount: string
+    constructor(sale: SaleCreateProps) {
+        this.productId = sale.productId
+        this.productName = sale.productName || ''
+        this.capacity = sale.capacity || ''
+        this.accesories = sale.accesories || []
+        this.serieNumber = sale.serieNumber || ''
+        this.firstImei = sale.firstImei || ''
+        this.secondImei = sale.secondImei || ''
+        this.paymentType = sale.paymentType || ''
+        this.grade = sale.grade || ''
+        this.user = sale.user || null
+        this.bankEntity = sale.bankEntity || ''
+        this.numberAccount = sale.numberAccount || ''
+    }
 }

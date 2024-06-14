@@ -24,7 +24,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { CreateSaleDTO, ICreateSale, IUser } from "src/models/sales";
+import { SaleCreateProps, SalesCreateDto, UserProps } from "src/models/sales";
 import { getProductPrice } from "src/services/product";
 import { createSale } from "src/services/sale";
 import { getUbigeo } from "src/services/ubigeo";
@@ -42,7 +42,7 @@ type Inputs = {
   name: string;
   lastName: string;
   email: string;
-  cellphone: string;
+  phoneNumber: string;
   department: string;
   provinces: string;
   district: string;
@@ -55,7 +55,7 @@ const defaultFormValue: Inputs = {
   name: "",
   lastName: "",
   email: "",
-  cellphone: "",
+  phoneNumber: "",
   department: "",
   provinces: "",
   district: "",
@@ -192,7 +192,7 @@ const CheckoutPage = () => {
       name: checkoutForm.name,
       lastName: checkoutForm.lastName,
       email: checkoutForm.email,
-      cellphone: checkoutForm.cellphone,
+      phoneNumber: checkoutForm.phoneNumber,
       department: checkoutForm.department,
       provinces: checkoutForm.provinces,
       district: checkoutForm.district,
@@ -231,7 +231,7 @@ const CheckoutPage = () => {
       setValue("name", checkoutForm.name);
       setValue("lastName", checkoutForm.lastName);
       setValue("email", checkoutForm.email);
-      setValue("cellphone", checkoutForm.cellphone);
+      setValue("phoneNumber", checkoutForm.phoneNumber);
       setValue("department", checkoutForm.department);
       setValue("address", checkoutForm.address);
       setValue("bankEntity", checkoutForm.bankEntity);
@@ -268,28 +268,29 @@ const CheckoutPage = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const user: IUser = {
+    const user: UserProps = {
       name: data.name,
-      last_name: data.lastName,
+      lastName: data.lastName,
       email: data.email,
-      cellphone: data.cellphone,
+      phoneNumber: data.phoneNumber,
       ubigeo: findByUbigeoId(data),
       address: data.address,
     };
-    const createSale: ICreateSale = {
-      product: currentProduct._id,
+    const createSale: SaleCreateProps = {
+      productId: currentProduct._id,
+      productName: currentProduct.description,
       capacity: survey.capacity._id,
       accesories: survey.accesories,
       serieNumber: survey.serieNumber,
-      imei_1: survey.imei1,
-      imei_2: survey.imei2,
+      firstImei: survey.imei1,
+      secondImei: survey.imei2,
       paymentType: survey.paymentType._id,
       grade: survey.condition._id,
+      user: { ...user },
       bankEntity: data.bankEntity,
       numberAccount: data.numberAccount,
-      user: { ...user },
     };
-    const createSaleDto = new CreateSaleDTO(createSale);
+    const createSaleDto = new SalesCreateDto(createSale);
     createSaleMutation.mutate(createSaleDto);
   };
 
@@ -376,10 +377,10 @@ const CheckoutPage = () => {
                   {...register("email")}
                 />
                 <TextField
-                  id="cellphone"
-                  label="cellphone"
+                  id="phoneNumber"
+                  label="phoneNumber"
                   variant="outlined"
-                  {...register("cellphone")}
+                  {...register("phoneNumber")}
                 />
                 <Controller
                   name="department"
