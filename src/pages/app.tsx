@@ -12,7 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import {listProducts} from "src/services/product";
 import { useEffect, useState } from "react";
