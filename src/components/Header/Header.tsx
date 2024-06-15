@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import useAppStore from "src/store/store";
 import { useNavigate } from "react-router-dom";
 import { MuiAppBar, MuiStack, MuiToolBar } from "./styles";
-import { Avatar, Menu, MenuItem } from "@mui/material";
+import { Avatar, Button, Link, Menu, MenuItem, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export const Header = () => {
@@ -40,6 +40,31 @@ export const Header = () => {
       <MuiAppBar>
         <MuiToolBar>
           <MuiStack>
+            <Stack sx={{
+              flexDirection: "row",
+              gap: 2,
+              alignItems: "center"
+            }}>
+              <Box
+                component="div"
+                sx={{
+                  width: '5rem',
+                  height: '5rem',
+                  display: 'inline-flex',
+                  cursor: 'pointer'
+                }}
+                onClick={() => navigate('/')}
+              >
+                <img src="src/assets/3b_iphone_logo.png" alt="3b_iphone_logo" />
+              </Box>
+              <Button LinkComponent={'a'} href="https://3biphones.com/preguntas-frecuentes/" target="_blank">
+                FAQ
+              </Button>
+              <Button LinkComponent={'a'} href="https://3biphones.com/contacto/" target="_blank">
+              Contacto
+              </Button>
+            </Stack>
+
             <IconButton aria-label="icon_avatar" onClick={handleClick}>
               <Avatar alt="avatar_25" src="https://api-prod-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg" />
             </IconButton>
@@ -52,15 +77,15 @@ export const Header = () => {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              {isLoggedIn 
+              {isLoggedIn
                 ? [
                   <MenuItem key="profile" onClick={handleClose}>My Profile</MenuItem>,
-                  <MenuItem key="sales" onClick={ ()=> {
+                  <MenuItem key="sales" onClick={() => {
                     navigate('/my-sales')
                     handleClose()
                   }}>My Sales</MenuItem>,
                   <MenuItem key="logout" onClick={handleLogin}>Logout</MenuItem>
-                ] 
+                ]
                 : <MenuItem onClick={handleLogin}>Login</MenuItem>
               }
             </Menu>

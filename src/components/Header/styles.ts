@@ -22,7 +22,7 @@ const MuiStack = styled(Stack)`
     flex-direction: row;
     flex-grow: 1;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
 `
 
 export {
