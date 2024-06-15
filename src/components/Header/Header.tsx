@@ -55,7 +55,7 @@ export const Header = () => {
                 }}
                 onClick={() => navigate('/')}
               >
-                <img src="src/assets/3b_iphone_logo.png" alt="3b_iphone_logo" />
+                <img src="/3b_iphone_logo.png" alt="3b_iphone_logo" />
               </Box>
               <Button LinkComponent={'a'} href="https://3biphones.com/preguntas-frecuentes/" target="_blank">
                 FAQ
