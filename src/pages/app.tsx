@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import useAppStore from "src/store/store";
 import { useForm } from "react-hook-form";
 import mobileImg from './../assets/mobile_image.svg';
+import Iconify from "src/components/Iconify/Iconify";
 
 interface IFormInputs {
   searchField: string
@@ -78,7 +79,7 @@ const AppPage = () => {
         <Grid container spacing={2}>
           <Grid xs={12}>
             <Typography variant="h3" gutterBottom>
-              h3. Heading
+              Busca un modelo
             </Typography>
           </Grid>
           <Grid xs={12}>
@@ -86,15 +87,13 @@ const AppPage = () => {
               fullWidth
               label="Buscar un modelo..."
               id="outlined-start-adornment"
+              autoComplete="off"
               {...register("searchField")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      edge="end"
-                    >
-                      <Visibility />
+                    <IconButton>
+                      <Iconify icon="material-symbols:search" />
                     </IconButton>
                   </InputAdornment>
                 ),
