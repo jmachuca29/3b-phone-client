@@ -3,7 +3,9 @@ export type UserProps = {
     lastName: string
     email: string
     phoneNumber: string
-    ubigeo: string
+    department: string
+    province: string
+    district: string
     address: string
 }
 

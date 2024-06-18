@@ -20,23 +20,18 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { SaleCreateProps, SalesCreateDto, UserProps } from "src/models/sales";
 import { getProductPrice } from "src/services/product";
 import { createSale } from "src/services/sale";
-import { getUbigeo } from "src/services/ubigeo";
 import useAppStore from "src/store/store";
 import { OrderDetailBody, OrderDetailContainer, OrderDetailDescription, OrderDetailStack } from "./styles";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LaunchIcon from '@mui/icons-material/Launch';
-
-type DepartmentInfo = {
-  name: string;
-  departamento_inei: string;
-};
+import useUbigeo from "src/hooks/ubigeo";
 
 type Inputs = {
   name: string;
@@ -44,7 +39,7 @@ type Inputs = {
   email: string;
   phoneNumber: string;
   department: string;
-  provinces: string;
+  province: string;
   district: string;
   address: string;
   bankEntity: string;
@@ -57,70 +52,11 @@ const defaultFormValue: Inputs = {
   email: "",
   phoneNumber: "",
   department: "",
-  provinces: "",
+  province: "",
   district: "",
   address: "",
   bankEntity: "",
   numberAccount: ""
-};
-
-function getUniqueDepartments(ubigeos: any): DepartmentInfo[] {
-  const uniqueDepartments: DepartmentInfo[] = [];
-  const seenDepartments = new Map<string, string>();
-
-  for (const ubigeo of ubigeos) {
-    if (!seenDepartments.has(ubigeo.departamento)) {
-      seenDepartments.set(ubigeo.departamento, ubigeo.departamento_inei);
-      uniqueDepartments.push({
-        name: ubigeo.departamento,
-        departamento_inei: ubigeo.departamento_inei,
-      });
-    }
-  }
-
-  return uniqueDepartments;
-}
-
-const getUniqueProvinces = (ubigeosProvince: any): DepartmentInfo[] => {
-  const uniqueDepartments: any[] = [];
-  const seenDepartments = new Map<string, string>();
-
-  for (const ubigeo of ubigeosProvince) {
-    if (!seenDepartments.has(ubigeo.provincia)) {
-      seenDepartments.set(ubigeo.provincia, ubigeo.provincia_inei);
-      uniqueDepartments.push({
-        name: ubigeo.provincia,
-        provincia_inei: ubigeo.provincia_inei,
-      });
-    }
-  }
-
-  return uniqueDepartments;
-};
-
-const getDistricts = (
-  ubigeos: any,
-  departamento_inei: any,
-  provincia_inei: any
-): any[] => {
-  //TO DO
-  const districts = ubigeos.filter(
-    (ubigeo: any) =>
-      ubigeo.departamento_inei === departamento_inei &&
-      ubigeo.provincia_inei === provincia_inei
-  );
-  return districts || [];
-};
-
-const getProvincesByDepartamento = (
-  ubigeos: any,
-  departamento_inei: string
-) => {
-  const ubigeosProvince = ubigeos.filter(
-    (ubigeo: any) => ubigeo.departamento_inei === departamento_inei
-  );
-  const provinces = getUniqueProvinces(ubigeosProvince);
-  return provinces || [];
 };
 
 const CheckoutPage = () => {
@@ -130,12 +66,19 @@ const CheckoutPage = () => {
     state.currentProduct,
   ]);
   const [checkoutForm] = useState(defaultFormValue);
-  const [ubigeos, setUbigeos] = useState<any>([]);
-  const [departments, setDepartments] = useState<any>([]);
-  const [provinces, setProvinces] = useState<any>([]);
-  const [districts, setDistricts] = useState<any>([]);
+  // const [ubigeos, setUbigeos] = useState<any>([]);
   const [price, setPrice] = useState(0);
   const [checked, setChecked] = useState(false)
+
+  const {
+    isPending,
+    error,
+    departments,
+    provinces,
+    districts,
+    getProvincesByDepartamento,
+    getDistricts,
+  } = useUbigeo();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
@@ -161,32 +104,17 @@ const CheckoutPage = () => {
     }
   }
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ["ubigeo"],
-    queryFn: getUbigeo,
-  });
-
   useEffect(() => {
     getPrice()
   }, [])
 
-
-  useEffect(() => {
-    if (data) {
-      const ubigeos = data.data;
-      setUbigeos(ubigeos);
-      const departments = getUniqueDepartments(ubigeos);
-      setDepartments(departments);
-    }
-  }, [data]);
-
   const {
     register,
-    watch,
     handleSubmit,
     setValue,
     control,
     // formState: { errors },
+    watch
   } = useForm<Inputs>({
     defaultValues: {
       name: checkoutForm.name,
@@ -194,7 +122,7 @@ const CheckoutPage = () => {
       email: checkoutForm.email,
       phoneNumber: checkoutForm.phoneNumber,
       department: checkoutForm.department,
-      provinces: checkoutForm.provinces,
+      province: checkoutForm.province,
       district: checkoutForm.district,
       address: checkoutForm.address,
       bankEntity: checkoutForm.bankEntity,
@@ -203,23 +131,15 @@ const CheckoutPage = () => {
   });
 
   const watchDepartment = watch("department");
-  const watchProvinces = watch("provinces");
+  const watchProvinces = watch("province");
 
   useEffect(() => {
-    setValue("provinces", "");
-    setValue("district", "");
-    if (watchDepartment && ubigeos.length > 0) {
-      const provinces = getProvincesByDepartamento(ubigeos, watchDepartment);
-      setProvinces(provinces);
-    }
-  }, [watchDepartment, ubigeos, setValue]);
+    getProvincesByDepartamento(watchDepartment);
+  }, [watchDepartment]);
 
   useEffect(() => {
-    if (watchProvinces) {
-      const districts = getDistricts(ubigeos, watchDepartment, watchProvinces);
-      setDistricts(districts);
-    }
-  }, [ubigeos, watchDepartment, watchProvinces, setValue]);
+    getDistricts(watchDepartment, watchProvinces);
+  }, [watchProvinces]);
 
   useEffect(() => {
     if (
@@ -242,11 +162,11 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (
       provinces.length > 0 &&
-      provinces.some((p: any) => p.provincia_inei === checkoutForm.provinces)
+      provinces.some((p: any) => p.provincia_inei === checkoutForm.province)
     ) {
-      setValue("provinces", checkoutForm.provinces);
+      setValue("province", checkoutForm.province);
     }
-  }, [setValue, checkoutForm.provinces, provinces]);
+  }, [setValue, checkoutForm.province, provinces]);
 
   useEffect(() => {
     if (
@@ -257,23 +177,15 @@ const CheckoutPage = () => {
     }
   }, [setValue, checkoutForm.district, districts]);
 
-  const findByUbigeoId = (data: any) => {
-    const ubigeoId = ubigeos.find(
-      (u: any) =>
-        u.departamento_inei === data.department &&
-        u.provincia_inei === data.provinces &&
-        u.distrito === data.district
-    );
-    return ubigeoId.id_ubigeo || ''
-  };
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const user: UserProps = {
       name: data.name,
       lastName: data.lastName,
       email: data.email,
       phoneNumber: data.phoneNumber,
-      ubigeo: findByUbigeoId(data),
+      department: data.department,
+      province: data.province,
+      district: data.district,
       address: data.address,
     };
     const createSale: SaleCreateProps = {
@@ -391,12 +303,12 @@ const CheckoutPage = () => {
                         Department
                       </InputLabel>
                       <Select {...field}>
-                        {departments.map((department: any, index: number) => (
+                        {departments.map((d: any, index: number) => (
                           <MenuItem
                             key={index}
-                            value={department.departamento_inei}
+                            value={d?.departamento}
                           >
-                            {department.name}
+                            {d.departamento}
                           </MenuItem>
                         ))}
                       </Select>
@@ -404,7 +316,7 @@ const CheckoutPage = () => {
                   )}
                 />
                 <Controller
-                  name="provinces"
+                  name="province"
                   control={control}
                   render={({ field }) => (
                     <FormControl>
@@ -412,9 +324,9 @@ const CheckoutPage = () => {
                         Province
                       </InputLabel>
                       <Select {...field}>
-                        {provinces?.map((province: any, index: number) => (
-                          <MenuItem key={index} value={province.provincia_inei}>
-                            {province.name}
+                        {provinces?.map((p: any, index: number) => (
+                          <MenuItem key={index} value={p?.provincia}>
+                            {p.provincia}
                           </MenuItem>
                         ))}
                       </Select>
@@ -430,9 +342,9 @@ const CheckoutPage = () => {
                         District
                       </InputLabel>
                       <Select {...field}>
-                        {districts?.map((district: any, index: number) => (
-                          <MenuItem key={index} value={district.distrito}>
-                            {district.distrito}
+                        {districts?.map((d: any, index: number) => (
+                          <MenuItem key={index} value={d?.distrito}>
+                            {d.distrito}
                           </MenuItem>
                         ))}
                       </Select>

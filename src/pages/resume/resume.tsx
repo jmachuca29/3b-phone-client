@@ -231,6 +231,24 @@ const ResumePage = () => {
               }
             />
             <CustomerShippingContainer>
+            <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>
+                  Department
+                </CustomerShippingSubCategoryName>
+                {sale?.user?.department}
+              </CustomerShippingSubCategoryContainer>
+              <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>
+                  Province
+                </CustomerShippingSubCategoryName>
+                {sale?.user?.province}
+              </CustomerShippingSubCategoryContainer>
+              <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>
+                  District
+                </CustomerShippingSubCategoryName>
+                {sale?.user?.district}
+              </CustomerShippingSubCategoryContainer>
               <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
                   Address
