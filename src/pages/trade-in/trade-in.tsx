@@ -1,6 +1,7 @@
 import { Container, Stack, Step, Stepper, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Accesories } from "src/components/Accesories/Accesories";
 import { Capacity } from "src/components/Capacity/Capacity";
 import { Characteristics } from "src/components/Characteristics/Characteristics";
@@ -10,12 +11,19 @@ import PaymentType from "src/components/PaymentType/PaymentType";
 import useAppStore from "src/store/store";
 
 const TradeInPage = () => {
+  const navigate = useNavigate();
   const [currentProduct] = useAppStore((state) => [
     state.currentProduct,
     state.survey,
   ]);
-
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if(Object.keys(currentProduct).length === 0) {
+      navigate('/')
+    }
+  }, [currentProduct])
+  
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -40,7 +48,7 @@ const TradeInPage = () => {
             </Stack>
             <Stack padding={2} justifyContent="center" flexGrow={1}>
               <Typography variant="h6" gutterBottom>
-                Sell your
+                Vende tu
               </Typography>
               <Typography variant="h4" gutterBottom>
                 {currentProduct.description}

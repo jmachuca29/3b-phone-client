@@ -39,17 +39,15 @@ export const Accesories = ({ handleNext, handleBack }: any) => {
 
   return (
     <>
-      <StepLabel>Select accesories</StepLabel>
+      <StepLabel>Indica los accesorios</StepLabel>
       <StepContent>
         <Box sx={{ mb: 2 }}>
           <FormGroup>
             {accesoriesList.map((element, index) => (
               <FormControlLabel
                 key={index}
-                required
                 control={
                   <Checkbox
-                    // checked={survey.accesories.includes(element)}
                     onChange={(event) => handleChange(event, element)}
                   />
                 }

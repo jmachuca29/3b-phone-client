@@ -27,7 +27,7 @@ const PaymentType = ({ handleNext, handleBack }: any) => {
 
   return (
     <>
-      <StepLabel>Payment Type</StepLabel>
+      <StepLabel>Tipo de Pago</StepLabel>
       <StepContent>
         <Box sx={{ m: 2 }}>
           {data.data?.map((paymentType) => (

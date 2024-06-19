@@ -1,48 +1,25 @@
-import { Box, Button, StepContent, StepLabel } from "@mui/material";
+import { Box, Button, CardMedia, StepContent, StepLabel } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getCondition } from "src/services/survey";
 import useAppStore from "src/store/store";
-import CardCondition from "./CardCondition/CardCondition";
 import { useNavigate } from "react-router-dom";
 
 const conditionList = [
   {
     id: "1",
     value: "A",
-    description: [
-      "NO TIENE EXCEPCIONES",
-      "SIN QUIÑES",
-      "OBLIGATORIAMENTE MAS DE 90%"
-    ],
+    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1718834504/vefgixfeq0do3vxzylkg.png",
   },
   {
     id: "2",
     value: "B",
-    description: [
-      "SOLO PINTURA",
-      "NO ABOYADURAS",
-      "SURCOS",
-      "DEFORMACIONES EN LA CARCASA"
-    ],
+    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1718834503/r3ldfwogoboi9k4iefw0.png",
   },
   {
     id: "3",
     value: "C",
-    description: [
-      "RAYONES EN EL GLASS GRAVES QUE SE NOTAN PESE A TENER MICA DE VIDRIO",
-      "ABOYADURAS",
-      "HENDIDURAS",
-      "DESPINTADO MUY NOTORIO"
-    ],
-  },
-  {
-    id: "4",
-    value: "D",
-    description: [
-      "FALLAS EN FUNCIONAMIENTO",
-      "FALLAS EN LOS BOTONES, FALLA DEL ZOCALO DE CARGA, GLASS DELANTERO Y TRASERO ROTO"
-    ],
+    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1718834503/svrrjokdc82qkycfpn3j.png",
   }
 ];
 
@@ -63,9 +40,17 @@ export const Condition = ({ handleBack }: any) => {
   };
 
   const returnConditionDescription = (value: string): any => {
-    const descriptions = conditionList.find((condition) => condition.value === value)
-      ?.description || []
-    return <CardCondition descriptions={descriptions} />
+    const image = conditionList.find((condition) => condition.value === value)
+      ?.image || ''
+    return image ? <CardMedia
+      component="img"
+      height="140"
+      image={image || ''}
+      alt="condition_img"
+      sx={{
+        height: 'auto'
+      }}
+    /> : null
   };
 
   if (isPending) {
@@ -78,9 +63,9 @@ export const Condition = ({ handleBack }: any) => {
 
   return (
     <>
-      <StepLabel>Condition</StepLabel>
+      <StepLabel>Condicion del equipo</StepLabel>
       <StepContent>
-        <Box sx={{ m: 2, display: "flex",gap: 1 }}>
+        <Box sx={{ m: 2, display: "flex", gap: 1 }}>
           {data.data?.map((condition) => (
             <Button
               key={condition._id}
@@ -101,10 +86,10 @@ export const Condition = ({ handleBack }: any) => {
               onClick={() => { navigate('/checkout') }}
               sx={{ mt: 1, mr: 1 }}
             >
-              Finish
+              Confirmar
             </Button>
             <Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
-              Back
+              Atras
             </Button>
           </div>
         </Box>

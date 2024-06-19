@@ -19,7 +19,7 @@ export const Capacity = ({ handleNext }: any) => {
 
   return (
     <>
-      <StepLabel>Select capacity</StepLabel>
+      <StepLabel>Indica la capacidad</StepLabel>
       <StepContent>
         <Box sx={{ m: 2, display: "flex",gap: 1 }}>
           {capacities.map((capacity: any) => (

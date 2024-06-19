@@ -66,7 +66,7 @@ export const Header = () => {
             </Stack>
 
             <IconButton aria-label="icon_avatar" onClick={handleClick}>
-              <Avatar alt="avatar_25" src="https://api-prod-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg" />
+              <Avatar alt="avatar_25" src="https://api-prod-minimal-v6.vercel.app/assets/images/avatar/avatar-25.webp" />
             </IconButton>
             <Menu
               id="basic-menu"

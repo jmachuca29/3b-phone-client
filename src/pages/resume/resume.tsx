@@ -120,7 +120,7 @@ const ResumePage = () => {
           <Stack>
             <MuiPaper>
               <CardHeader
-                title="Details"
+                title="Detalle"
                 action={
                   <IconButton aria-label="settings">
                     <MoreVertIcon />
@@ -156,7 +156,7 @@ const ResumePage = () => {
                   </ProductPriceDetailStack>
                   <ProductPriceDetailStack>
                     <ProductPriceDetailDescription>
-                      Shipping
+                      Delivery
                     </ProductPriceDetailDescription>
                     <ProductPriceDetailPrice>-</ProductPriceDetailPrice>
                   </ProductPriceDetailStack>
@@ -176,7 +176,7 @@ const ResumePage = () => {
         <Grid xs={4}>
           <MuiPaper>
             <CardHeader
-              title="Customer Info"
+              title="Datos Usuario"
               action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
@@ -201,7 +201,7 @@ const ResumePage = () => {
             </CustomerInfoContainer>
             <Divider />
             <CardHeader
-              title="Delivery"
+              title="Datos Envio"
               action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
@@ -211,7 +211,7 @@ const ResumePage = () => {
             <CustomerDeliveryContainer>
               <CustomerDeliverySubCategoryContainer>
                 <CustomerDeliverySubCategoryName>
-                  Ship by
+                  Enviado por
                 </CustomerDeliverySubCategoryName>
                 -
               </CustomerDeliverySubCategoryContainer>
@@ -224,7 +224,7 @@ const ResumePage = () => {
             </CustomerDeliveryContainer>
             <Divider />
             <CardHeader
-              title="Shipping"
+              title="Delivery"
               action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
@@ -234,38 +234,38 @@ const ResumePage = () => {
             <CustomerShippingContainer>
               <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
-                  Department
+                  Departamento
                 </CustomerShippingSubCategoryName>
                 {sale?.user?.department}
               </CustomerShippingSubCategoryContainer>
               <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
-                  Province
+                  Provincia
                 </CustomerShippingSubCategoryName>
                 {sale?.user?.province}
               </CustomerShippingSubCategoryContainer>
               <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
-                  District
+                  Distrito
                 </CustomerShippingSubCategoryName>
                 {sale?.user?.district}
               </CustomerShippingSubCategoryContainer>
               <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
-                  Address
+                  Direccion
                 </CustomerShippingSubCategoryName>
                 {sale?.user?.address}
               </CustomerShippingSubCategoryContainer>
               <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
-                  Phone number
+                  Celular
                 </CustomerShippingSubCategoryName>
                 {sale?.user?.phoneNumber}
               </CustomerShippingSubCategoryContainer>
             </CustomerShippingContainer>
             <Divider />
             <CardHeader
-              title="Payment"
+              title="Datos de Pago"
               action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
@@ -281,7 +281,7 @@ const ResumePage = () => {
               </CustomerPaymentSubCategoryContainer>
               <CustomerPaymentSubCategoryContainer>
                 <CustomerPaymentSubCategoryName>
-                  # Account
+                  {['BCP','INTERBANK'].includes(sale?.bankEntity) ? '# Cuenta' : 'Celular'}
                 </CustomerPaymentSubCategoryName>
                 {sale?.numberAccount}
               </CustomerPaymentSubCategoryContainer>

@@ -45,13 +45,13 @@ export const Characteristics = ({ handleNext, handleBack }: any) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <StepLabel>Serie Number and Imeis</StepLabel>
+      <StepLabel>Datos del equipo</StepLabel>
       <StepContent sx={{ width: 0.6}}>
         <Box sx={{ m: 2 }}>
           <FormGroup sx={{ gap: 2}}>
             <TextField
               id="serieNumber-survey"
-              label="Serie Number"
+              label="Numero de Serie"
               variant="outlined"
               {...register("serieNumberRequired", { required: true })}
             />
