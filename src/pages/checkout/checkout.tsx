@@ -61,12 +61,11 @@ const defaultFormValue: Inputs = {
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  const [survey, currentProduct] = useAppStore((state) => [
+  const [survey, currentProduct, user] = useAppStore((state) => [
     state.survey,
     state.currentProduct,
+    state.user
   ]);
-  const [checkoutForm] = useState(defaultFormValue);
-  // const [ubigeos, setUbigeos] = useState<any>([]);
   const [price, setPrice] = useState(0);
   const [checked, setChecked] = useState(false)
 
@@ -105,6 +104,7 @@ const CheckoutPage = () => {
   }
 
   useEffect(() => {
+    if(Object.keys(currentProduct).length === 0) navigate('/')
     getPrice()
   }, [])
 
@@ -113,69 +113,34 @@ const CheckoutPage = () => {
     handleSubmit,
     setValue,
     control,
-    // formState: { errors },
     watch
   } = useForm<Inputs>({
-    defaultValues: {
-      name: checkoutForm.name,
-      lastName: checkoutForm.lastName,
-      email: checkoutForm.email,
-      phoneNumber: checkoutForm.phoneNumber,
-      department: checkoutForm.department,
-      province: checkoutForm.province,
-      district: checkoutForm.district,
-      address: checkoutForm.address,
-      bankEntity: checkoutForm.bankEntity,
-      numberAccount: checkoutForm.numberAccount
-    },
+    defaultValues: defaultFormValue,
   });
 
   const watchDepartment = watch("department");
-  const watchProvinces = watch("province");
+  const watchProvince = watch("province");
 
   useEffect(() => {
-    getProvincesByDepartamento(watchDepartment);
+    if (watchDepartment) {
+      getProvincesByDepartamento(watchDepartment);
+      setValue("province", "");
+      setValue("district", "");
+    }
   }, [watchDepartment]);
 
   useEffect(() => {
-    getDistricts(watchDepartment, watchProvinces);
-  }, [watchProvinces]);
+    if (watchProvince) {
+      getDistricts(watchDepartment, watchProvince);
+    }
+  }, [watchProvince]);
 
   useEffect(() => {
-    if (
-      departments.length > 0 &&
-      departments.some(
-        (d: any) => d.departamento_inei === checkoutForm.department
-      )
-    ) {
-      setValue("name", checkoutForm.name);
-      setValue("lastName", checkoutForm.lastName);
-      setValue("email", checkoutForm.email);
-      setValue("phoneNumber", checkoutForm.phoneNumber);
-      setValue("department", checkoutForm.department);
-      setValue("address", checkoutForm.address);
-      setValue("bankEntity", checkoutForm.bankEntity);
-      setValue("numberAccount", checkoutForm.numberAccount);
-    }
-  }, [setValue, checkoutForm, departments]);
+    setValue('name', user?.name);
+    setValue('lastName', user?.lastName);
+    setValue('email', user?.email);
+}, [user]);
 
-  useEffect(() => {
-    if (
-      provinces.length > 0 &&
-      provinces.some((p: any) => p.provincia_inei === checkoutForm.province)
-    ) {
-      setValue("province", checkoutForm.province);
-    }
-  }, [setValue, checkoutForm.province, provinces]);
-
-  useEffect(() => {
-    if (
-      districts.length > 0 &&
-      districts.some((d: any) => d.distrito === checkoutForm.district)
-    ) {
-      setValue("district", checkoutForm.district);
-    }
-  }, [setValue, checkoutForm.district, districts]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const user: UserProps = {
@@ -203,8 +168,10 @@ const CheckoutPage = () => {
       numberAccount: data.numberAccount,
     };
     const createSaleDto = new SalesCreateDto(createSale);
+    console.log(createSaleDto)
     createSaleMutation.mutate(createSaleDto);
   };
+
 
   if (isPending) {
     return <span>Loading...</span>;
@@ -306,9 +273,9 @@ const CheckoutPage = () => {
                         {departments.map((d: any, index: number) => (
                           <MenuItem
                             key={index}
-                            value={d?.departamento}
+                            value={d}
                           >
-                            {d.departamento}
+                            {d}
                           </MenuItem>
                         ))}
                       </Select>
@@ -325,8 +292,8 @@ const CheckoutPage = () => {
                       </InputLabel>
                       <Select {...field}>
                         {provinces?.map((p: any, index: number) => (
-                          <MenuItem key={index} value={p?.provincia}>
-                            {p.provincia}
+                          <MenuItem key={index} value={p}>
+                            {p}
                           </MenuItem>
                         ))}
                       </Select>
@@ -343,8 +310,8 @@ const CheckoutPage = () => {
                       </InputLabel>
                       <Select {...field}>
                         {districts?.map((d: any, index: number) => (
-                          <MenuItem key={index} value={d?.distrito}>
-                            {d.distrito}
+                          <MenuItem key={index} value={d}>
+                            {d}
                           </MenuItem>
                         ))}
                       </Select>
