@@ -113,13 +113,15 @@ const CheckoutPage = () => {
     handleSubmit,
     setValue,
     control,
-    watch
+    watch,
+    getValues
   } = useForm<Inputs>({
     defaultValues: defaultFormValue,
   });
 
   const watchDepartment = watch("department");
   const watchProvince = watch("province");
+  const watchBankEntity = watch("bankEntity");
 
   useEffect(() => {
     if (watchDepartment) {
@@ -169,7 +171,6 @@ const CheckoutPage = () => {
       numberAccount: data.numberAccount,
     };
     const createSaleDto = new SalesCreateDto(createSale);
-    console.log(createSaleDto)
     createSaleMutation.mutate(createSaleDto);
   };
 
@@ -190,7 +191,7 @@ const CheckoutPage = () => {
             <ChevronLeftIcon />
           </IconButton>
           <OrderDetailBody>
-            <OrderDetailDescription>
+            <OrderDetailDescription onClick={ ()=> navigate(-1) }>
               <Typography variant="h4">Checkout</Typography>
             </OrderDetailDescription>
           </OrderDetailBody>
@@ -240,25 +241,25 @@ const CheckoutPage = () => {
               >
                 <TextField
                   id="name"
-                  label="Name"
+                  label="Nombre"
                   variant="outlined"
                   {...register("name")}
                 />
                 <TextField
                   id="lastName"
-                  label="Last Name"
+                  label="Apellidos"
                   variant="outlined"
                   {...register("lastName")}
                 />
                 <TextField
                   id="email"
-                  label="email"
+                  label="Correo"
                   variant="outlined"
                   {...register("email")}
                 />
                 <TextField
                   id="phoneNumber"
-                  label="phoneNumber"
+                  label="Numero de telefono"
                   variant="outlined"
                   {...register("phoneNumber")}
                 />
@@ -268,7 +269,7 @@ const CheckoutPage = () => {
                   render={({ field }) => (
                     <FormControl>
                       <InputLabel id="demo-simple-select-label">
-                        Department
+                        Departamento
                       </InputLabel>
                       <Select {...field}>
                         {departments.map((d: any, index: number) => (
@@ -289,7 +290,7 @@ const CheckoutPage = () => {
                   render={({ field }) => (
                     <FormControl>
                       <InputLabel id="demo-simple-select-label">
-                        Province
+                        Provincia
                       </InputLabel>
                       <Select {...field}>
                         {provinces?.map((p: any, index: number) => (
@@ -307,7 +308,7 @@ const CheckoutPage = () => {
                   render={({ field }) => (
                     <FormControl>
                       <InputLabel id="demo-simple-select-label">
-                        District
+                        Distrito
                       </InputLabel>
                       <Select {...field}>
                         {districts?.map((d: any, index: number) => (
@@ -321,7 +322,7 @@ const CheckoutPage = () => {
                 />
                 <TextField
                   id="address"
-                  label="address"
+                  label="Direccion"
                   variant="outlined"
                   {...register("address")}
                 />
@@ -340,13 +341,19 @@ const CheckoutPage = () => {
                         <MenuItem value="INTERBANK">
                           INTERBANK
                         </MenuItem>
+                        <MenuItem value="YAPE">
+                          YAPE
+                        </MenuItem>
+                        <MenuItem value="PLIN">
+                          PLIN
+                        </MenuItem>
                       </Select>
                     </FormControl>
                   )}
                 />
                 <TextField
                   id="numberAccount"
-                  label="Numero de cuenta"
+                  label={['BCP','INTERBANK'].includes(watchBankEntity) ? 'Numero de Cuenta' : 'Celular'}
                   variant="outlined"
                   {...register("numberAccount")}
                 />
