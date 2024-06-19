@@ -111,7 +111,7 @@ const AppPage = () => {
                       <CardMedia
                         component="img"
                         height="140"
-                        image={mobileImg}
+                        image={product?.image?.url || mobileImg}
                         alt="green iguana"
                         sx={{
                           height: '15rem'
@@ -120,11 +120,6 @@ const AppPage = () => {
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                           { product.description } - { product.capacity.description }
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Lizards are a widespread group of squamate reptiles,
-                          with over 6,000 species, ranging across all continents
-                          except Antarctica
                         </Typography>
                       </CardContent>
                     </CardActionArea>
