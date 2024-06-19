@@ -113,8 +113,7 @@ const CheckoutPage = () => {
     handleSubmit,
     setValue,
     control,
-    watch,
-    getValues
+    watch
   } = useForm<Inputs>({
     defaultValues: defaultFormValue,
   });
