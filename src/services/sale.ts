@@ -11,8 +11,8 @@ const getSalebyUID = (uuid: string) => {
   return axios.get(`${baseUrl}/api/sale/uid/${uuid}`);
 };
 
-const getSalebyEmail = (email: string) => {
-  return axios.get(`${baseUrl}/api/sale/email/${email}`);
+const getSalesbyAccount = (id: string) => {
+  return axios.get(`${baseUrl}/api/sale/account/${id}`);
 };
 
-export { createSale, getSalebyUID, getSalebyEmail }
+export { createSale, getSalebyUID, getSalesbyAccount }

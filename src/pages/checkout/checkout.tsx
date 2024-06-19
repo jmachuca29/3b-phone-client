@@ -143,7 +143,7 @@ const CheckoutPage = () => {
 
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const user: UserProps = {
+    const userProps: UserProps = {
       name: data.name,
       lastName: data.lastName,
       email: data.email,
@@ -154,6 +154,7 @@ const CheckoutPage = () => {
       address: data.address,
     };
     const createSale: SaleCreateProps = {
+      userId: user.id,
       productId: currentProduct._id,
       productName: currentProduct.description,
       capacity: survey.capacity._id,
@@ -163,7 +164,7 @@ const CheckoutPage = () => {
       secondImei: survey.imei2,
       paymentType: survey.paymentType._id,
       grade: survey.condition._id,
-      user: { ...user },
+      user: { ...userProps },
       bankEntity: data.bankEntity,
       numberAccount: data.numberAccount,
     };
