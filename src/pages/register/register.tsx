@@ -14,13 +14,13 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import registerAccount from "src/services/account";
 import useAppStore from "src/store/store";
 import AlertType from "src/constant/alertType";
 import { useNavigate } from "react-router-dom";
-import { OrderDetailBody, OrderDetailContainer, OrderDetailDate, OrderDetailDescription, OrderDetailStack } from "./styles";
+import { OrderDetailBody, OrderDetailContainer, OrderDetailDescription, OrderDetailStack } from "./styles";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import useUbigeo from "src/hooks/ubigeo";
 import getDocumentType from "src/services/type-document";
@@ -57,7 +57,6 @@ type Inputs = {
 }
 
 const RegisterPage = () => {
-  const [userForm] = useState(defaultFormValue);
   const [setFn] = useAppStore(state => [state.setFn])
   const navigate = useNavigate();
 

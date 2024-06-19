@@ -31,7 +31,6 @@ import {
   OrderDetailDate,
   OrderDetailDescription,
   OrderDetailStack,
-  OrderDetailStatus,
   ProductDetailContainer,
   ProductDetailDescriptionAvatar,
   ProductDetailDescriptionContainer,

@@ -83,12 +83,16 @@ export class SalesCreateDto {
 export class SalesDto extends SalesCreateDto {
     _id: string
     uuid: string
+    price: number
+    status: SaleState
     correlative: number
     createdAt: Date
     constructor(sale: SaleProps) {
         super(sale)
         this._id = sale._id
         this.uuid = sale.uuid || ''
+        this.price = sale.price
+        this.status = sale.status
         this.correlative = sale.correlative || 0
         this.createdAt = sale.createdAt
     }
