@@ -9,20 +9,24 @@ import SnackBar from "src/components/SnackBar/SnackBar";
 export const DashboardLayout = ({ children }: any) => {
   const token = localStorage.getItem("3b-iphone-token");
   const [setFn] = useAppStore((state) => [state.setFn]);
-  const { data } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ["profile", token], // Include the token as part of the query key
     queryFn: () =>
       token ? getUserProfile(token) : Promise.reject("No token found"),
     retry: false,
     enabled: !!token, // Only run the query if token is available,
   });
-
+  
   useEffect(() => {
     if (data) {
       const user = data.data;
       setFn.setUser(user);
     }
   }, [token, data]);
+
+  if(isError) {
+    localStorage.removeItem("3b-iphone-token");
+  }
 
   return (
     <>

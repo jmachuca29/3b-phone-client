@@ -53,6 +53,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import Status from "src/components/Status/Status";
+import { SaleState } from "src/constant/sales";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -105,11 +107,11 @@ const ResumePage = () => {
           </IconButton>
           <OrderDetailBody>
             <OrderDetailDescription>
-              <Typography variant="h4">Orden #{uuid}</Typography>
-              <OrderDetailStatus>{sale?.status}</OrderDetailStatus>
+              <Typography variant="h4">Sales #{sale?.correlative || 0}</Typography>
+              <Status state={sale?.status || SaleState.Pending} />
             </OrderDetailDescription>
             <OrderDetailDate variant="body2">
-              {calculateDate(sale?.createdAt)}
+              {calculateDate(sale?.createdAt || new Date())}
             </OrderDetailDate>
           </OrderDetailBody>
         </OrderDetailStack>
@@ -231,7 +233,7 @@ const ResumePage = () => {
               }
             />
             <CustomerShippingContainer>
-            <CustomerShippingSubCategoryContainer>
+              <CustomerShippingSubCategoryContainer>
                 <CustomerShippingSubCategoryName>
                   Department
                 </CustomerShippingSubCategoryName>
