@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,6 +12,22 @@
       rel="stylesheet"
     />
     <title>3B IPhone | VENDE</title>
+    <!-- Brevo Conversations {literal} -->
+    <script>
+      (function (d, w, c) {
+        w.BrevoConversationsID = "666bb2924f4d234efa573672";
+        w[c] =
+          w[c] ||
+          function () {
+            (w[c].q = w[c].q || []).push(arguments);
+          };
+        var s = d.createElement("script");
+        s.async = true;
+        s.src = "https://conversations-widget.brevo.com/brevo-conversations.js";
+        if (d.head) d.head.appendChild(s);
+      })(document, window, "BrevoConversations");
+    </script>
+    <!-- /Brevo Conversations {/literal} -->
   </head>
   <body>
     <div id="root"></div>

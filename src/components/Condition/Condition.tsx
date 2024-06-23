@@ -9,17 +9,17 @@ const conditionList = [
   {
     id: "1",
     value: "A",
-    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1718834504/vefgixfeq0do3vxzylkg.png",
+    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1719163017/3b_iphone_grado_a_giljsa.png",
   },
   {
     id: "2",
     value: "B",
-    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1718834503/r3ldfwogoboi9k4iefw0.png",
+    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1719163017/3b_iphone_grado_b_y1aotm.png",
   },
   {
     id: "3",
     value: "C",
-    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1718834503/svrrjokdc82qkycfpn3j.png",
+    image: "https://res.cloudinary.com/dwuk1xa8f/image/upload/v1719163017/3b_iphone_grado_c_t7hrtt.png"
   }
 ];
 

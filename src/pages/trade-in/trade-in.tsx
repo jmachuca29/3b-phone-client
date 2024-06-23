@@ -41,7 +41,7 @@ const TradeInPage = () => {
             <Stack padding={2}>
               <Stack component="span" alignItems="center">
                 <img
-                  src={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=242&h=242&fit=crop&auto=format`}
+                  src={`${currentProduct?.image?.url}`}
                   loading="lazy"
                 />
               </Stack>
