@@ -79,14 +79,17 @@ export const Header = () => {
             >
               {isLoggedIn
                 ? [
-                  <MenuItem key="profile" onClick={handleClose}>My Profile</MenuItem>,
+                  <MenuItem key="profile" onClick={() => {
+                    navigate('/profile')
+                    handleClose()
+                  }}>Mi Perfil</MenuItem>,
                   <MenuItem key="sales" onClick={() => {
                     navigate('/my-sales')
                     handleClose()
-                  }}>My Sales</MenuItem>,
-                  <MenuItem key="logout" onClick={handleLogin}>Logout</MenuItem>
+                  }}>Mis Ordenes</MenuItem>,
+                  <MenuItem key="logout" onClick={handleLogin}>Cerrar Sesion</MenuItem>
                 ]
-                : <MenuItem onClick={handleLogin}>Login</MenuItem>
+                : <MenuItem onClick={handleLogin}>Iniciar Sesion</MenuItem>
               }
             </Menu>
           </MuiStack>

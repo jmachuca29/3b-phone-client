@@ -66,13 +66,13 @@ const LoginPage = () => {
               >
                 <TextField
                   id="user"
-                  label="user"
+                  label="Usuario"
                   variant="outlined"
                   {...register("username", { required: true })}
                 />
                 <TextField
                   id="password"
-                  label="password"
+                  label="Contraseña"
                   variant="outlined"
                   type="password"
                   {...register("password", { required: true })}

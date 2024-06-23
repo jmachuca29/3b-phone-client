@@ -6,6 +6,7 @@ import { DashboardLayout } from "src/layouts/DashboardLayout";
 export const IndexPage = lazy(() => import("src/pages/app"));
 export const LoginPage = lazy(() => import("src/pages/login"));
 export const RegisterPage = lazy(() => import("src/pages/register/register"));
+export const ProfilePage = lazy(() => import("src/pages/profile/profile"));
 export const TradeInPage = lazy(() => import("src/pages/trade-in/trade-in"));
 export const CheckoutPage = lazy(() => import("src/pages/checkout/checkout"));
 export const SalesPage = lazy(() => import("src/pages/sales/sales"));
@@ -28,19 +29,14 @@ export default function Router() {
         { element: <IndexPage />, index: true },
         { path: "login", element: <LoginPage /> },
         { path: "register", element: <RegisterPage /> },
-        { path: "my-account", element: <RegisterPage /> },
+        { path: "profile", element: <ProfilePage /> },
         { path: "resume/:uuid", element: <ResumePage /> },
         { path: "trade-in", element: <TradeInPage /> },
         { path: "checkout", element: <CheckoutPage /> },
         {
           element: <ProtectedRoute />,
           children: [{ path: "my-sales", element: <SalesPage /> }],
-        },
-        // { path: "my-sales", element: <SalesPage /> },
-        // {
-        //   element: <ProtectedRoute />,
-        //   children: [{ path: "trade-in", element: <TradeInPage /> },{ path: "checkout", element: <CheckoutPage /> },],
-        // },
+        }
       ],
     },
     {

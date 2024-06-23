@@ -222,7 +222,7 @@ const CheckoutPage = () => {
                   color="text.secondary"
                   component="div"
                 >
-                  {price + '$'}
+                  {'S/. ' +price}
                 </Typography>
               </CardContent>
             </Box>
