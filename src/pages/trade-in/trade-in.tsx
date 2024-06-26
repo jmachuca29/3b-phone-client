@@ -36,7 +36,7 @@ const TradeInPage = () => {
   return (
     <Container maxWidth="lg">
       <Grid container spacing={2}>
-        <Grid xs={4}>
+        <Grid xs={12} sm={4}>
           <MuiPaper>
             <Stack padding={2}>
               <Stack component="span" alignItems="center">
@@ -56,7 +56,7 @@ const TradeInPage = () => {
             </Stack>
           </MuiPaper>
         </Grid>
-        <Grid xs={8}>
+        <Grid xs={12} sm={8}>
             <Stack padding={2}>
               <Stepper activeStep={activeStep} orientation="vertical">
                 <Step>

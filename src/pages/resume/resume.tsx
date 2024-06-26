@@ -54,6 +54,7 @@ import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import Status from "src/components/Status/Status";
 import { SaleState } from "src/constant/sales";
+import Iconify from "src/components/Iconify/Iconify";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -106,7 +107,9 @@ const ResumePage = () => {
           </IconButton>
           <OrderDetailBody>
             <OrderDetailDescription>
-              <Typography variant="h4">Sales #{sale?.correlative || 0}</Typography>
+              <Typography variant="h4">
+                Sales #{sale?.correlative || 0}
+              </Typography>
               <Status state={sale?.status || SaleState.Pending} />
             </OrderDetailDescription>
             <OrderDetailDate variant="body2">
@@ -116,7 +119,7 @@ const ResumePage = () => {
         </OrderDetailStack>
       </OrderDetailContainer>
       <Grid container spacing={2}>
-        <Grid xs={8}>
+        <Grid xs={12} sm={8}>
           <Stack>
             <MuiPaper>
               <CardHeader
@@ -130,7 +133,7 @@ const ResumePage = () => {
               <ProductDetailContainer>
                 <ProductDetailDescriptionContainer>
                   <ProductDetailDescriptionAvatar variant="rounded">
-                    <p>Product</p>
+                    <Iconify icon="ic:baseline-apple" />
                   </ProductDetailDescriptionAvatar>
                   <ProductDetailDescriptionListItem>
                     <ListItemText
@@ -173,7 +176,7 @@ const ResumePage = () => {
             </MuiPaper>
           </Stack>
         </Grid>
-        <Grid xs={4}>
+        <Grid xs={12} sm={4}>
           <MuiPaper>
             <CardHeader
               title="Datos Usuario"
@@ -186,9 +189,10 @@ const ResumePage = () => {
             <CustomerInfoContainer>
               <CustomerInfoAvatarContainer
                 {...stringAvatar(
-                  `${sale?.user?.name.toUpperCase() +
-                  " " +
-                  sale?.user?.lastName.toUpperCase()
+                  `${
+                    sale?.user?.name.toUpperCase() +
+                    " " +
+                    sale?.user?.lastName.toUpperCase()
                   }`
                 )}
               ></CustomerInfoAvatarContainer>
@@ -281,7 +285,9 @@ const ResumePage = () => {
               </CustomerPaymentSubCategoryContainer>
               <CustomerPaymentSubCategoryContainer>
                 <CustomerPaymentSubCategoryName>
-                  {['BCP','INTERBANK'].includes(sale?.bankEntity) ? '# Cuenta' : 'Celular'}
+                  {["BCP", "INTERBANK"].includes(sale?.bankEntity)
+                    ? "# Cuenta"
+                    : "Celular"}
                 </CustomerPaymentSubCategoryName>
                 {sale?.numberAccount}
               </CustomerPaymentSubCategoryContainer>

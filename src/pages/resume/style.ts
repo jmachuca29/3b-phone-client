@@ -68,7 +68,6 @@ const ProductDetailDescriptionContainer = styled(Stack)`
   align-items: center;
   padding-top: 24px;
   padding-bottom: 24px;
-  min-width: 640px;
   border-bottom: 2px dashed rgb(244, 246, 248);
 `
 const ProductDetailDescriptionAvatar = styled(Avatar)`

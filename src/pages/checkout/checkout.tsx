@@ -197,7 +197,7 @@ const CheckoutPage = () => {
         </OrderDetailStack>
       </OrderDetailContainer>
       <Grid container spacing={4}>
-        <Grid xs={4}>
+        <Grid xs={12} sm={4}>
           <Card sx={{ display: "flex", flexDirection: "column" }}>
             <CardMedia
               component="img"
@@ -228,15 +228,13 @@ const CheckoutPage = () => {
             </Box>
           </Card>
         </Grid>
-        <Grid xs={8}>
+        <Grid xs={12} sm={8}>
           <Paper sx={{ padding: 2 }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: 2
-                }}
+                display="grid"
+                gridTemplateColumns={{ xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)" }}
+                gap={2}
               >
                 <TextField
                   id="name"
