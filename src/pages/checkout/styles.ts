@@ -10,7 +10,7 @@ const OrderDetailStack = styled(Stack)`
   display: flex;
   flex-direction: row;
   gap: 8px;
-  align-items: flex-start;
+  align-items: center;
 `
 
 const OrderDetailBody = styled(Stack)`

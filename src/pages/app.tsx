@@ -102,7 +102,7 @@ const AppPage = () => {
           <Grid container xs={12}>
             {productsFiltered.map((product: any, index: any) => {
               return (
-                <Grid xs={4} key={index}>
+                <Grid xs={12} sm={4} key={index}>
                   <Card>
                     <CardActionArea onClick={() => {
                       setFn.setCurrentProduct(product)

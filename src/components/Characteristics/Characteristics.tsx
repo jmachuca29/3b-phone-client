@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
+import Grid from "@mui/material/Unstable_Grid2";
 import {
   Box,
   Button,
@@ -18,7 +19,7 @@ type Inputs = {
 
 export const Characteristics = ({ handleNext, handleBack }: any) => {
   const [setFn, survey] = useAppStore((state) => [state.setFn, state.survey]);
-  
+
   const {
     register,
     handleSubmit,
@@ -28,50 +29,54 @@ export const Characteristics = ({ handleNext, handleBack }: any) => {
     defaultValues: {
       serieNumberRequired: survey.serieNumber,
       imeiNumberOneRequired: survey.imei1,
-      imeiNumberTwoRequired: survey.imei2
-    }
+      imeiNumberTwoRequired: survey.imei2,
+    },
   });
 
   useEffect(() => {
-    setValue('serieNumberRequired', survey.serieNumber);
-    setValue('imeiNumberOneRequired', survey.imei1);
-    setValue('imeiNumberTwoRequired', survey.imei2);
+    setValue("serieNumberRequired", survey.serieNumber);
+    setValue("imeiNumberOneRequired", survey.imei1);
+    setValue("imeiNumberTwoRequired", survey.imei2);
   }, [survey, setValue]);
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    setFn.setSerieNumberImei(data.serieNumberRequired, data.imeiNumberOneRequired, data.imeiNumberTwoRequired);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setFn.setSerieNumberImei(
+      data.serieNumberRequired,
+      data.imeiNumberOneRequired,
+      data.imeiNumberTwoRequired
+    );
     handleNext();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <StepLabel>Datos del equipo</StepLabel>
-      <StepContent sx={{ width: 0.6}}>
-        <Box sx={{ m: 2 }}>
-          <FormGroup sx={{ gap: 2}}>
-            <TextField
-              id="serieNumber-survey"
-              label="Numero de Serie"
-              variant="outlined"
-              {...register("serieNumberRequired", { required: true })}
-            />
-            <TextField
-              id="imei_1-survey"
-              label="Imei 1"
-              variant="outlined"
-              {...register("imeiNumberOneRequired", { required: true })}
-            />
-            <TextField
-              id="imei_2-survey"
-              label="Imei 2"
-              variant="outlined"
-              {...register("imeiNumberTwoRequired", { required: true })}
-            />
-            {errors.imeiNumberTwoRequired && (
-              <span>This field is required</span>
-            )}
-          </FormGroup>
-        </Box>
+      <StepContent>
+        <Grid container>
+          <Grid xs={12} sm={8}>
+            <FormGroup sx={{ gap: 2 }}>
+              <TextField
+                id="serieNumber-survey"
+                label="Numero de Serie"
+                variant="outlined"
+                {...register("serieNumberRequired", { required: true })}
+              />
+              <TextField
+                id="imei_1-survey"
+                label="Imei 1"
+                variant="outlined"
+                {...register("imeiNumberOneRequired", { required: true })}
+              />
+              <TextField
+                id="imei_2-survey"
+                label="Imei 2"
+                variant="outlined"
+                {...register("imeiNumberTwoRequired", { required: true })}
+              />
+            </FormGroup>
+          </Grid>
+        </Grid>
+        {errors.imeiNumberTwoRequired && <span>Los campos son necesarios</span>}
         <Box sx={{ mb: 2 }}>
           <div>
             <Button variant="contained" type="submit" sx={{ mt: 1, mr: 1 }}>
