@@ -42,7 +42,7 @@ const PaymentType = ({ handleNext, handleBack }: any) => {
         </Box>
         <Box sx={{ mb: 2 }}>
           <Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
-            Back
+            Atras
           </Button>
         </Box>
       </StepContent>

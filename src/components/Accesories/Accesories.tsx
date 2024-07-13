@@ -63,10 +63,10 @@ export const Accesories = ({ handleNext, handleBack }: any) => {
               onClick={handleSubmit}
               sx={{ mt: 1, mr: 1 }}
             >
-              Continue
+              Continuar
             </Button>
             <Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
-              Back
+              Atras
             </Button>
           </div>
         </Box>

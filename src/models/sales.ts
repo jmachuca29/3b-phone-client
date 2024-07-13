@@ -25,6 +25,8 @@ export type SaleCreateProps = {
     user: UserProps
     bankEntity: string
     numberAccount: string
+    documentType: string
+    documentNumber: string
 }
 
 export type SaleProps = {
@@ -47,6 +49,8 @@ export type SaleProps = {
     status: SaleState
     correlative: number
     createdAt: Date
+    documentType: string
+    documentNumber: string
 }
 
 export class SalesCreateDto {
@@ -63,6 +67,8 @@ export class SalesCreateDto {
     user: UserProps
     bankEntity: string
     numberAccount: string
+    documentType: string
+    documentNumber: string
     constructor(sale: SaleCreateProps) {
         this. userId = sale?.userId
         this.productId = sale.productId
@@ -77,6 +83,8 @@ export class SalesCreateDto {
         this.user = sale.user || null
         this.bankEntity = sale.bankEntity || ''
         this.numberAccount = sale.numberAccount || ''
+        this.documentType = sale.documentType || ''
+        this.documentNumber = sale.documentNumber || ''
     }
 }
 

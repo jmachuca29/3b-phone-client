@@ -302,7 +302,7 @@ const RegisterPage = () => {
                   control={control}
                   render={({ field }) => (
                     <FormControl>
-                      <InputLabel id="department-label">Department</InputLabel>
+                      <InputLabel id="department-label">Departamento</InputLabel>
                       <Select
                         {...field}
                         labelId="department-label"
@@ -326,7 +326,7 @@ const RegisterPage = () => {
                   control={control}
                   render={({ field }) => (
                     <FormControl>
-                      <InputLabel id="province-label">Province</InputLabel>
+                      <InputLabel id="province-label">Provincia</InputLabel>
                       <Select
                         {...field}
                         labelId="province-label"
@@ -349,7 +349,7 @@ const RegisterPage = () => {
                   control={control}
                   render={({ field }) => (
                     <FormControl>
-                      <InputLabel id="district-label">District</InputLabel>
+                      <InputLabel id="district-label">Distrito</InputLabel>
                       <Select {...field} labelId="district-label">
                         {districts.map((d, index) => (
                           <MenuItem key={index} value={d}>

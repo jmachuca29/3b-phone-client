@@ -84,7 +84,7 @@ const LoginPage = () => {
                 </Link>
               </Box>
               <Button variant="contained" type="submit">
-                Login
+                Iniciar Sesion
               </Button>
             </Paper>
           </form>

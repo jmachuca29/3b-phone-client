@@ -59,19 +59,25 @@ export const Characteristics = ({ handleNext, handleBack }: any) => {
                 id="serieNumber-survey"
                 label="Numero de Serie"
                 variant="outlined"
-                {...register("serieNumberRequired", { required: true })}
+                error={!!errors.serieNumberRequired}
+                helperText={errors.serieNumberRequired && 'Numero serie consta de 15 dígitos' }
+                {...register("serieNumberRequired", { required: true, minLength: 15, maxLength: 15 })}
               />
               <TextField
                 id="imei_1-survey"
                 label="Imei 1"
                 variant="outlined"
-                {...register("imeiNumberOneRequired", { required: true })}
+                error={!!errors.imeiNumberOneRequired}
+                helperText={errors.imeiNumberOneRequired && 'El IMEI consta de 15 dígitos' }
+                {...register("imeiNumberOneRequired", { required: true, minLength: 15, maxLength: 15 })}
               />
               <TextField
                 id="imei_2-survey"
                 label="Imei 2"
                 variant="outlined"
-                {...register("imeiNumberTwoRequired", { required: true })}
+                error={!!errors.imeiNumberTwoRequired}
+                helperText={errors.imeiNumberTwoRequired && 'El IMEI consta de 15 dígitos' }
+                {...register("imeiNumberTwoRequired", { required: true, minLength: 15, maxLength: 15 })}
               />
             </FormGroup>
           </Grid>
@@ -80,10 +86,10 @@ export const Characteristics = ({ handleNext, handleBack }: any) => {
         <Box sx={{ mb: 2 }}>
           <div>
             <Button variant="contained" type="submit" sx={{ mt: 1, mr: 1 }}>
-              Continue
+              Continuar
             </Button>
             <Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
-              Back
+              Atras
             </Button>
           </div>
         </Box>
