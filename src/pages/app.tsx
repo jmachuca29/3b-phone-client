@@ -110,11 +110,12 @@ const AppPage = () => {
                     }}>
                       <CardMedia
                         component="img"
-                        height="140"
+                        // height="140"
                         image={product?.image?.url || mobileImg}
                         alt="green iguana"
                         sx={{
-                          height: '15rem'
+                          height: '20rem',
+                          objectFit: 'contain',
                         }}
                       />
                       <CardContent>
