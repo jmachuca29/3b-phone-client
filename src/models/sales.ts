@@ -16,7 +16,7 @@ export type SaleCreateProps = {
     productId: string
     productName: string
     capacity: string
-    accesories: string[]
+    originalBox: boolean
     serieNumber: string
     firstImei: string
     secondImei: string
@@ -36,7 +36,7 @@ export type SaleProps = {
     uuid: string
     productName: string
     capacity: string
-    accesories: string[]
+    originalBox: boolean
     serieNumber: string
     firstImei: string
     secondImei: string
@@ -58,7 +58,7 @@ export class SalesCreateDto {
     productId: string
     productName: string
     capacity: string
-    accesories: string[]
+    originalBox: boolean
     serieNumber: string
     firstImei: string
     secondImei: string
@@ -74,7 +74,7 @@ export class SalesCreateDto {
         this.productId = sale.productId
         this.productName = sale.productName || ''
         this.capacity = sale.capacity || ''
-        this.accesories = sale.accesories || []
+        this.originalBox = sale.originalBox || false
         this.serieNumber = sale.serieNumber || ''
         this.firstImei = sale.firstImei || ''
         this.secondImei = sale.secondImei || ''

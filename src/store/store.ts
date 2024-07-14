@@ -12,7 +12,7 @@ type Actions = {
   setCapacity: (capacity: string) => void;
   setPaymentType: (paymentType: string) => void;
   setCondition: (condition: string) => void;
-  setAccesory: (accesory: string[]) => void;
+  setOriginalBox: (value: boolean) => void;
   setSerieNumberImei: (
     serieNumber: string,
     imei1: string,
@@ -30,7 +30,7 @@ type Actions = {
 type AppState = {
   survey: {
     capacity: any;
-    accesories: string[];
+    originalBox: boolean;
     serieNumber: string;
     imei1: string;
     imei2: string;
@@ -49,7 +49,7 @@ const initialState = {
   products: [],
   survey: {
     capacity: "",
-    accesories: [],
+    originalBox: false,
     serieNumber: "",
     imei1: "",
     imei2: "",
@@ -79,9 +79,9 @@ const sharedStateAndActions = (set: any, get: any) => ({
       const { survey } = get();
       set({ survey: { ...survey, condition: value } }, false, "SET CONDITION");
     },
-    setAccesory: (value: string[]) => {
+    setOriginalBox: (value: boolean) => {
       const { survey } = get();
-      set({ survey: { ...survey, accesories: value } }, false, "SET ACCESORY");
+      set({ survey: { ...survey, originalBox: value } }, false, "SET ORIGINAL BOX");
     },
     setSerieNumberImei: (serieNumber: string, imei1: string, imei2: string) => {
       const { survey } = get();

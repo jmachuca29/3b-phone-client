@@ -14,9 +14,6 @@ import { getSalebyUID } from "src/services/sale";
 import Grid from "@mui/material/Unstable_Grid2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  CustomerDeliveryContainer,
-  CustomerDeliverySubCategoryContainer,
-  CustomerDeliverySubCategoryName,
   CustomerInfoAvatarContainer,
   CustomerInfoContainer,
   CustomerInfoDescriptionContainer,
@@ -138,7 +135,7 @@ const ResumePage = () => {
                   <ProductDetailDescriptionListItem>
                     <ListItemText
                       primary={sale?.productName}
-                      secondary={sale?.capacity?.description}
+                      secondary={sale?.capacity?.description }
                     />
                   </ProductDetailDescriptionListItem>
                   <ProductDetailDescriptionQuantity>
@@ -203,29 +200,6 @@ const ResumePage = () => {
                 <Box>{sale?.user?.email}</Box>
               </CustomerInfoDescriptionContainer>
             </CustomerInfoContainer>
-            <Divider />
-            <CardHeader
-              title="Datos Envio"
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-            />
-            <CustomerDeliveryContainer>
-              <CustomerDeliverySubCategoryContainer>
-                <CustomerDeliverySubCategoryName>
-                  Enviado por
-                </CustomerDeliverySubCategoryName>
-                -
-              </CustomerDeliverySubCategoryContainer>
-              <CustomerDeliverySubCategoryContainer>
-                <CustomerDeliverySubCategoryName>
-                  Tracking No.
-                </CustomerDeliverySubCategoryName>
-                -
-              </CustomerDeliverySubCategoryContainer>
-            </CustomerDeliveryContainer>
             <Divider />
             <CardHeader
               title="Delivery"

@@ -193,7 +193,7 @@ const CheckoutPage = () => {
       productId: currentProduct._id,
       productName: currentProduct.description,
       capacity: survey.capacity._id,
-      accesories: survey.accesories,
+      originalBox: survey.originalBox,
       serieNumber: survey.serieNumber,
       firstImei: survey.imei1,
       secondImei: survey.imei2,

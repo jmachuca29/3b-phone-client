@@ -1,60 +1,44 @@
 import {
   Box,
   Button,
-  Checkbox,
   FormControlLabel,
-  FormGroup,
+  Radio,
+  RadioGroup,
   StepContent,
   StepLabel,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import useAppStore from "src/store/store";
 
-const accesoriesList = ["ORIGINAL BOX"];
-
 export const Accesories = ({ handleNext, handleBack }: any) => {
-  const [setFn, survey] = useAppStore((state) => [state.setFn, state.survey]);
-  const [accesories, setAccesories] = useState<string[]>(
-    survey.accesories || []
-  );
+  const [setFn] = useAppStore((state) => [state.setFn, state.survey]);
+  const [value, setValue] = React.useState<any>('');
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    element: string
-  ) => {
-    const checked = event.target.checked;
-    if (checked) {
-      setAccesories((accesories) => [...accesories, element]);
-    } else {
-      setAccesories((accesories) =>
-        accesories.filter((accesory) => accesory !== element)
-      );
-    }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value)
   };
 
+
   const handleSubmit = () => {
-    setFn.setAccesory(accesories);
+    setFn.setOriginalBox(value === "true");
     handleNext();
   };
 
   return (
     <>
-      <StepLabel>Indica los accesorios</StepLabel>
+      <StepLabel>¿Incluyes caja original?</StepLabel>
       <StepContent>
         <Box sx={{ mb: 2 }}>
-          <FormGroup>
-            {accesoriesList.map((element, index) => (
-              <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    onChange={(event) => handleChange(event, element)}
-                  />
-                }
-                label={element}
-              />
-            ))}
-          </FormGroup>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            value={value}
+            onChange={handleChange}
+          >
+            <FormControlLabel value="true" control={<Radio />} label="Si" />
+            <FormControlLabel value="false" control={<Radio />} label="No" />
+          </RadioGroup>
         </Box>
         <Box sx={{ mb: 2 }}>
           <div>
