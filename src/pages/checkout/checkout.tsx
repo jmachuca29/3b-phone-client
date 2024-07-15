@@ -148,7 +148,6 @@ const CheckoutPage = () => {
   const watchDocumentType = watch("documentType");
 
   useEffect(() => {
-    console.log('typeDocumentData', typeDocumentData)
     const documentTypes = typeDocumentData?.data || [];
     const documentTypeName = documentTypes.find(doc => doc._id === watchDocumentType)?.description || ''
     setDocumentTypeName(documentTypeName)
@@ -193,7 +192,7 @@ const CheckoutPage = () => {
       productId: currentProduct._id,
       productName: currentProduct.description,
       capacity: survey.capacity._id,
-      accesories: survey.accesories,
+      originalBox: survey.originalBox,
       serieNumber: survey.serieNumber,
       firstImei: survey.imei1,
       secondImei: survey.imei2,

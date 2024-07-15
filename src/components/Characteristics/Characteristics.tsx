@@ -82,7 +82,6 @@ export const Characteristics = ({ handleNext, handleBack }: any) => {
             </FormGroup>
           </Grid>
         </Grid>
-        {errors.imeiNumberTwoRequired && <span>Los campos son necesarios</span>}
         <Box sx={{ mb: 2 }}>
           <div>
             <Button variant="contained" type="submit" sx={{ mt: 1, mr: 1 }}>

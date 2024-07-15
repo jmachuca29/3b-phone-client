@@ -14,9 +14,6 @@ import { getSalebyUID } from "src/services/sale";
 import Grid from "@mui/material/Unstable_Grid2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  CustomerDeliveryContainer,
-  CustomerDeliverySubCategoryContainer,
-  CustomerDeliverySubCategoryName,
   CustomerInfoAvatarContainer,
   CustomerInfoContainer,
   CustomerInfoDescriptionContainer,
@@ -71,6 +68,13 @@ const calculateDate = (date: Date): string => {
   const peruTime = time.tz("America/Lima").format("DD MMMM YYYY hh:mm A");
   return peruTime;
 };
+
+const generateInfoDevice = (capacity: string, originalBox: boolean): string => {
+  const descriptionCapacity = capacity;
+  const descriptionOriginalBox = originalBox ? 'Incluye caja original' : 'No incluye caja original';
+  return `${descriptionCapacity} - ${descriptionOriginalBox}`;
+}
+
 
 const ResumePage = () => {
   const { uuid } = useParams();
@@ -138,7 +142,7 @@ const ResumePage = () => {
                   <ProductDetailDescriptionListItem>
                     <ListItemText
                       primary={sale?.productName}
-                      secondary={sale?.capacity?.description}
+                      secondary={ generateInfoDevice(sale?.capacity?.description, sale?.originalBox) }
                     />
                   </ProductDetailDescriptionListItem>
                   <ProductDetailDescriptionQuantity>
@@ -203,29 +207,20 @@ const ResumePage = () => {
                 <Box>{sale?.user?.email}</Box>
               </CustomerInfoDescriptionContainer>
             </CustomerInfoContainer>
-            <Divider />
-            <CardHeader
-              title="Datos Envio"
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-            />
-            <CustomerDeliveryContainer>
-              <CustomerDeliverySubCategoryContainer>
-                <CustomerDeliverySubCategoryName>
-                  Enviado por
-                </CustomerDeliverySubCategoryName>
-                -
-              </CustomerDeliverySubCategoryContainer>
-              <CustomerDeliverySubCategoryContainer>
-                <CustomerDeliverySubCategoryName>
-                  Tracking No.
-                </CustomerDeliverySubCategoryName>
-                -
-              </CustomerDeliverySubCategoryContainer>
-            </CustomerDeliveryContainer>
+            <CustomerShippingContainer>
+            <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>
+                  Tipo Doc.
+                </CustomerShippingSubCategoryName>
+                {sale?.documentType?.description}
+              </CustomerShippingSubCategoryContainer>
+              <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>
+                  # Documento
+                </CustomerShippingSubCategoryName>
+                {sale?.documentNumber}
+              </CustomerShippingSubCategoryContainer>
+            </CustomerShippingContainer>
             <Divider />
             <CardHeader
               title="Delivery"
