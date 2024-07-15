@@ -148,7 +148,6 @@ const CheckoutPage = () => {
   const watchDocumentType = watch("documentType");
 
   useEffect(() => {
-    console.log('typeDocumentData', typeDocumentData)
     const documentTypes = typeDocumentData?.data || [];
     const documentTypeName = documentTypes.find(doc => doc._id === watchDocumentType)?.description || ''
     setDocumentTypeName(documentTypeName)
