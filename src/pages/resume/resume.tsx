@@ -69,6 +69,13 @@ const calculateDate = (date: Date): string => {
   return peruTime;
 };
 
+const generateInfoDevice = (capacity: string, originalBox: boolean): string => {
+  const descriptionCapacity = capacity;
+  const descriptionOriginalBox = originalBox ? 'Incluye caja original' : 'No incluye caja original';
+  return `${descriptionCapacity} - ${descriptionOriginalBox}`;
+}
+
+
 const ResumePage = () => {
   const { uuid } = useParams();
   const navigate = useNavigate();
@@ -135,7 +142,7 @@ const ResumePage = () => {
                   <ProductDetailDescriptionListItem>
                     <ListItemText
                       primary={sale?.productName}
-                      secondary={sale?.capacity?.description }
+                      secondary={ generateInfoDevice(sale?.capacity?.description, sale?.originalBox) }
                     />
                   </ProductDetailDescriptionListItem>
                   <ProductDetailDescriptionQuantity>
@@ -200,6 +207,20 @@ const ResumePage = () => {
                 <Box>{sale?.user?.email}</Box>
               </CustomerInfoDescriptionContainer>
             </CustomerInfoContainer>
+            <CustomerShippingContainer>
+            <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>
+                  Tipo Doc.
+                </CustomerShippingSubCategoryName>
+                {sale?.documentType?.description}
+              </CustomerShippingSubCategoryContainer>
+              <CustomerShippingSubCategoryContainer>
+                <CustomerShippingSubCategoryName>
+                  # Documento
+                </CustomerShippingSubCategoryName>
+                {sale?.documentNumber}
+              </CustomerShippingSubCategoryContainer>
+            </CustomerShippingContainer>
             <Divider />
             <CardHeader
               title="Delivery"
