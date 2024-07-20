@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import {listProducts} from "src/services/product";
+import { listProducts } from "src/services/product";
 import { useEffect, useState } from "react";
 import useAppStore from "src/store/store";
 import { useForm } from "react-hook-form";
@@ -30,13 +30,13 @@ const searchProducts = (products: any, searchTerm: any) => {
 
   // Filter products based on description and capacity description
   return products.filter((product: any) => {
-      // Check if the product's description matches the regex
-      const matchesDescription = regex.test(product.description);
-      // Check if the product's capacity description matches the regex
-      const matchesCapacityDescription = regex.test(product.capacity.description);
+    // Check if the product's description matches the regex
+    const matchesDescription = regex.test(product.description);
+    // Check if the product's capacity description matches the regex
+    const matchesCapacityDescription = regex.test(product.capacity.description);
 
-      // Return true if any of the descriptions match
-      return matchesDescription || matchesCapacityDescription;
+    // Return true if any of the descriptions match
+    return matchesDescription || matchesCapacityDescription;
   });
 }
 
@@ -63,9 +63,9 @@ const AppPage = () => {
   }, [watchSearchField]);
 
   useEffect(() => {
-    if(data) {
+    if (data) {
       setFn.setProducts(data?.data);
-    }  
+    }
   }, [data]);
 
   if (isPending) return "Loading...";
@@ -120,7 +120,7 @@ const AppPage = () => {
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                          { product.description } - { product.capacity.description }
+                          {product.description} - {product.capacity.description}
                         </Typography>
                       </CardContent>
                     </CardActionArea>

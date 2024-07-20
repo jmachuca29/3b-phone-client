@@ -5,6 +5,7 @@ import { getUserProfile } from "src/services/auth";
 import useAppStore from "src/store/store";
 import MainStyled from "./styles";
 import SnackBar from "src/components/SnackBar/SnackBar";
+import WhatsappFab from "src/components/Whatsapp/Whatsapp";
 
 export const DashboardLayout = ({ children }: any) => {
   const token = localStorage.getItem("3b-iphone-token");
@@ -16,7 +17,7 @@ export const DashboardLayout = ({ children }: any) => {
     retry: false,
     enabled: !!token, // Only run the query if token is available,
   });
-  
+
   useEffect(() => {
     if (data) {
       const user = data.data;
@@ -24,15 +25,16 @@ export const DashboardLayout = ({ children }: any) => {
     }
   }, [token, data]);
 
-  if(isError) {
+  if (isError) {
     localStorage.removeItem("3b-iphone-token");
   }
 
   return (
     <>
-      <SnackBar/>
+      <SnackBar />
       <Header />
       <MainStyled>{children}</MainStyled>
+      <WhatsappFab />
     </>
   );
 };
