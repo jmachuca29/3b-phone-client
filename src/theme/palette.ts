@@ -20,8 +20,8 @@ export const grey = {
 export const primary = {
   lighter: '#c8fad6',
   light: '#73BAFB',
-  main: 'rgb(0 167 111)',
-  dark: 'rgb(0, 120, 103)',
+  main: '#5259D9',
+  dark: '#4247ae',
   darker: '#042174',
   contrastText: '#FFFFFF',
 };

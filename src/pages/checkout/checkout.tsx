@@ -256,8 +256,9 @@ const CheckoutPage = () => {
                 </Typography>
                 <Typography
                   variant="subtitle1"
-                  color="text.secondary"
+                  color="primary"
                   component="div"
+                  sx={{fontWeight: "bold" }}
                 >
                   {"S/. " + price}
                 </Typography>
