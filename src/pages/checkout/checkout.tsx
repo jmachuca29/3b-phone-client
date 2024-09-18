@@ -124,7 +124,13 @@ const CheckoutPage = () => {
     try {
       const productId = currentProduct._id;
       const gradeId = survey.condition._id;
-      const { data } = await getProductPrice(productId, gradeId);
+      const capacityId = survey.capacity._id;
+      const productPriceDto = {
+        productId,
+        gradeId,
+        capacityId
+      }
+      const { data } = await getProductPrice(productPriceDto);
       setPrice(data);
     } catch (error) {
       setPrice(0);
@@ -176,7 +182,7 @@ const CheckoutPage = () => {
   console.log(errors)
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    
+
     const userProps: UserProps = {
       name: data.name,
       lastName: data.lastName,
@@ -192,6 +198,7 @@ const CheckoutPage = () => {
       productId: currentProduct._id,
       productName: currentProduct.description,
       capacity: survey.capacity._id,
+      color: survey.color._id,
       originalBox: survey.originalBox,
       serieNumber: survey.serieNumber,
       firstImei: survey.imei1,
@@ -204,7 +211,7 @@ const CheckoutPage = () => {
       documentType: data.documentType,
       documentNumber: data.documentNumber
     };
-    
+
     const createSaleDto = new SalesCreateDto(createSale);
     createSaleMutation.mutate(createSaleDto);
   };
@@ -252,7 +259,7 @@ const CheckoutPage = () => {
                 >
                   Grado {survey.condition.description} -{" "}
                   {survey.capacity.description} -{" "}
-                  {survey.paymentType.description}
+                  {survey.color.description}
                 </Typography>
                 <Typography
                   variant="subtitle1"

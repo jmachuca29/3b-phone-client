@@ -2,13 +2,19 @@ import { Box, Button, StepContent, StepLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import useAppStore from "src/store/store";
 
+function extractValuesByKey(product:any, key: string) {
+    return product?.prices
+      .map((price: any) => price[key as keyof typeof price])
+      .filter((value: any) => value !== undefined);
+  }
+
 export const Capacity = ({ handleNext }: any) => {
-  const [products, currentProduct, setFn] = useAppStore((state) => [state.products, state.currentProduct, state.setFn]);
+  const [currentProduct, setFn] = useAppStore((state) => [state.currentProduct, state.setFn]);
   const [capacities, setCapacities] = useState<any>([])
 
   useEffect(() => {
-    const productsFiltered = products.filter((product: any) => product.description === currentProduct.description)
-    const capacities = productsFiltered.map((productFiltered: any) => productFiltered.capacity)
+    if(Object.keys(currentProduct).length == 0) return
+    const capacities = extractValuesByKey(currentProduct, 'capacity')
     setCapacities(capacities)
   }, [])
 
