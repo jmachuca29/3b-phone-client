@@ -64,7 +64,7 @@ const TradeInPage = () => {
                                 <Capacity handleNext={handleNext} />
                             </Step>
                             <Step>
-                                <Color handleNext={handleNext} />
+                                <Color handleNext={handleNext} handleBack={handleBack} />
                             </Step>
                             <Step>
                                 <Accesories handleNext={handleNext} handleBack={handleBack} />

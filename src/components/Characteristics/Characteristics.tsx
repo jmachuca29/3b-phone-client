@@ -61,7 +61,7 @@ export const Characteristics = ({ handleNext, handleBack }: any) => {
                 variant="outlined"
                 error={!!errors.serieNumberRequired}
                 helperText={errors.serieNumberRequired && 'Numero serie consta de 15 dígitos' }
-                {...register("serieNumberRequired", { required: true, minLength: 15, maxLength: 15 })}
+                {...register("serieNumberRequired", { required: true })}
               />
               <TextField
                 id="imei_1-survey"
