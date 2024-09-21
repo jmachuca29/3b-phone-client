@@ -1,12 +1,12 @@
 import {
-  Box,
-  CardHeader,
-  Container,
-  Divider,
-  IconButton,
-  ListItemText,
-  Stack,
-  Typography,
+    Box,
+    CardHeader,
+    Container,
+    Divider,
+    IconButton,
+    ListItemText,
+    Stack,
+    Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,33 +14,33 @@ import { getSalebyUID } from "src/services/sale";
 import Grid from "@mui/material/Unstable_Grid2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  CustomerInfoAvatarContainer,
-  CustomerInfoContainer,
-  CustomerInfoDescriptionContainer,
-  CustomerPaymentContainer,
-  CustomerPaymentSubCategoryContainer,
-  CustomerPaymentSubCategoryName,
-  CustomerShippingContainer,
-  CustomerShippingSubCategoryContainer,
-  CustomerShippingSubCategoryName,
-  OrderDetailBody,
-  OrderDetailContainer,
-  OrderDetailDate,
-  OrderDetailDescription,
-  OrderDetailStack,
-  ProductDetailContainer,
-  ProductDetailDescriptionAvatar,
-  ProductDetailDescriptionContainer,
-  ProductDetailDescriptionListItem,
-  ProductDetailDescriptionPrice,
-  ProductDetailDescriptionQuantity,
-  ProductPriceDetailContainer,
-  ProductPriceDetailDescription,
-  ProductPriceDetailPrice,
-  ProductPriceDetailStack,
-  ProductPriceDetailTotalDescription,
-  ProductPriceDetailTotalPrice,
-  ProductPriceDetailTotalStack,
+    CustomerInfoAvatarContainer,
+    CustomerInfoContainer,
+    CustomerInfoDescriptionContainer,
+    CustomerPaymentContainer,
+    CustomerPaymentSubCategoryContainer,
+    CustomerPaymentSubCategoryName,
+    CustomerShippingContainer,
+    CustomerShippingSubCategoryContainer,
+    CustomerShippingSubCategoryName,
+    OrderDetailBody,
+    OrderDetailContainer,
+    OrderDetailDate,
+    OrderDetailDescription,
+    OrderDetailStack,
+    ProductDetailContainer,
+    ProductDetailDescriptionAvatar,
+    ProductDetailDescriptionContainer,
+    ProductDetailDescriptionListItem,
+    ProductDetailDescriptionPrice,
+    ProductDetailDescriptionQuantity,
+    ProductPriceDetailContainer,
+    ProductPriceDetailDescription,
+    ProductPriceDetailPrice,
+    ProductPriceDetailStack,
+    ProductPriceDetailTotalDescription,
+    ProductPriceDetailTotalPrice,
+    ProductPriceDetailTotalStack,
 } from "./style";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { MuiPaper } from "src/components/MuiPaper/MuiPaper";
@@ -58,240 +58,240 @@ dayjs.extend(timezone);
 dayjs.extend(localizedFormat);
 
 const stringAvatar = (name: string) => {
-  return {
-    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
-  };
+    return {
+        children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+    };
 };
 
 const calculateDate = (date: Date): string => {
-  const time = dayjs(date);
-  const peruTime = time.tz("America/Lima").format("DD MMMM YYYY hh:mm A");
-  return peruTime;
+    const time = dayjs(date);
+    const peruTime = time.tz("America/Lima").format("DD MMMM YYYY hh:mm A");
+    return peruTime;
 };
 
-const generateInfoDevice = (color:string, originalBox: boolean): string => {
-  const descriptionColor = color;
-  const descriptionOriginalBox = originalBox ? 'Incluye caja' : 'No incluye caja';
-  return `${descriptionColor} - ${descriptionOriginalBox}`;
+const generateInfoDevice = (color: string, grade: string, originalBox: boolean): string => {
+    const descriptionColor = color;
+    const descriptionGrade = grade;
+    const descriptionOriginalBox = originalBox ? 'Incluye caja' : 'No incluye caja';
+    return `${descriptionColor} -\u00A0Grado ${descriptionGrade} -\u00A0${descriptionOriginalBox}`;
 }
 
 
 const ResumePage = () => {
-  const { uuid } = useParams();
-  const navigate = useNavigate();
+    const { uuid } = useParams();
+    const navigate = useNavigate();
 
-  const [sale, setSale] = useState<any>(null);
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["saleDetail", uuid],
-    queryFn: () =>
-      uuid ? getSalebyUID(uuid) : Promise.reject("No uuid found"),
-  });
+    const [sale, setSale] = useState<any>(null);
+    const { isPending, isError, data, error } = useQuery({
+        queryKey: ["saleDetail", uuid],
+        queryFn: () =>
+            uuid ? getSalebyUID(uuid) : Promise.reject("No uuid found"),
+    });
 
-  useEffect(() => {
-    if (data) {
-      const response = data?.data || null;
-      setSale(response);
+    useEffect(() => {
+        if (data) {
+            const response = data?.data || null;
+            setSale(response);
+        }
+    }, [data]);
+
+    if (isPending) {
+        return <span>Loading...</span>;
     }
-  }, [data]);
 
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
+    if (isError) {
+        return <span>Error: {error.message}</span>;
+    }
 
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
-
-  return (
-    <Container maxWidth="lg">
-      <OrderDetailContainer>
-        <OrderDetailStack>
-          <IconButton aria-label="arrow-back" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon />
-          </IconButton>
-          <OrderDetailBody>
-            <OrderDetailDescription>
-              <Typography variant="h4">
-                Sales #{sale?.correlative || 0}
-              </Typography>
-              <Status state={sale?.status || SaleState.Pending} />
-            </OrderDetailDescription>
-            <OrderDetailDate variant="body2">
-              {calculateDate(sale?.createdAt || new Date())}
-            </OrderDetailDate>
-          </OrderDetailBody>
-        </OrderDetailStack>
-      </OrderDetailContainer>
-      <Grid container spacing={2}>
-        <Grid xs={12} sm={8}>
-          <Stack>
-            <MuiPaper>
-              <CardHeader
-                title="Detalle"
-                action={
-                  <IconButton aria-label="settings">
-                    <MoreVertIcon />
-                  </IconButton>
-                }
-              />
-              <ProductDetailContainer>
-                <ProductDetailDescriptionContainer>
-                  <ProductDetailDescriptionAvatar variant="rounded">
-                    <Iconify icon="ic:baseline-apple" />
-                  </ProductDetailDescriptionAvatar>
-                  <ProductDetailDescriptionListItem>
-                    <ListItemText
-                      primary={sale?.productName + ' - ' + sale?.capacity?.description}
-                      secondary={ generateInfoDevice(sale?.color?.description, sale?.originalBox) }
-                    />
-                  </ProductDetailDescriptionListItem>
-                  <ProductDetailDescriptionQuantity>
-                    x1
-                  </ProductDetailDescriptionQuantity>
-                  <ProductDetailDescriptionPrice>
-                    S/ {sale?.price}
-                  </ProductDetailDescriptionPrice>
-                </ProductDetailDescriptionContainer>
-                <ProductPriceDetailContainer>
-                  <ProductPriceDetailStack>
-                    <ProductPriceDetailDescription>
-                      Sub Total
-                    </ProductPriceDetailDescription>
-                    <ProductPriceDetailPrice>
-                      S/ {sale?.price}
-                    </ProductPriceDetailPrice>
-                  </ProductPriceDetailStack>
-                  <ProductPriceDetailStack>
-                    <ProductPriceDetailDescription>
-                      Delivery
-                    </ProductPriceDetailDescription>
-                    <ProductPriceDetailPrice>-</ProductPriceDetailPrice>
-                  </ProductPriceDetailStack>
-                  <ProductPriceDetailTotalStack>
-                    <ProductPriceDetailTotalDescription>
-                      Total
-                    </ProductPriceDetailTotalDescription>
-                    <ProductPriceDetailTotalPrice>
-                      S/ {sale?.price}
-                    </ProductPriceDetailTotalPrice>
-                  </ProductPriceDetailTotalStack>
-                </ProductPriceDetailContainer>
-              </ProductDetailContainer>
-            </MuiPaper>
-          </Stack>
-        </Grid>
-        <Grid xs={12} sm={4}>
-          <MuiPaper>
-            <CardHeader
-              title="Datos Usuario"
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-            />
-            <CustomerInfoContainer>
-              <CustomerInfoAvatarContainer
-                {...stringAvatar(
-                  `${
-                    sale?.user?.name.toUpperCase() +
-                    " " +
-                    sale?.user?.lastName.toUpperCase()
-                  }`
-                )}
-              ></CustomerInfoAvatarContainer>
-              <CustomerInfoDescriptionContainer>
-                <Typography variant="subtitle2" gutterBottom>
-                  {sale?.user?.name} {sale?.user?.last_name}
-                </Typography>
-                <Box>{sale?.user?.email}</Box>
-              </CustomerInfoDescriptionContainer>
-            </CustomerInfoContainer>
-            <CustomerShippingContainer>
-            <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>
-                  Tipo Doc.
-                </CustomerShippingSubCategoryName>
-                {sale?.documentType?.description}
-              </CustomerShippingSubCategoryContainer>
-              <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>
-                  # Documento
-                </CustomerShippingSubCategoryName>
-                {sale?.documentNumber}
-              </CustomerShippingSubCategoryContainer>
-            </CustomerShippingContainer>
-            <Divider />
-            <CardHeader
-              title="Delivery"
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-            />
-            <CustomerShippingContainer>
-              <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>
-                  Departamento
-                </CustomerShippingSubCategoryName>
-                {sale?.user?.department}
-              </CustomerShippingSubCategoryContainer>
-              <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>
-                  Provincia
-                </CustomerShippingSubCategoryName>
-                {sale?.user?.province}
-              </CustomerShippingSubCategoryContainer>
-              <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>
-                  Distrito
-                </CustomerShippingSubCategoryName>
-                {sale?.user?.district}
-              </CustomerShippingSubCategoryContainer>
-              <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>
-                  Direccion
-                </CustomerShippingSubCategoryName>
-                {sale?.user?.address}
-              </CustomerShippingSubCategoryContainer>
-              <CustomerShippingSubCategoryContainer>
-                <CustomerShippingSubCategoryName>
-                  Celular
-                </CustomerShippingSubCategoryName>
-                {sale?.user?.phoneNumber}
-              </CustomerShippingSubCategoryContainer>
-            </CustomerShippingContainer>
-            <Divider />
-            <CardHeader
-              title="Datos de Pago"
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-            />
-            <CustomerPaymentContainer>
-              <CustomerPaymentSubCategoryContainer>
-                <CustomerPaymentSubCategoryName>
-                  Bank
-                </CustomerPaymentSubCategoryName>
-                {sale?.bankEntity}
-              </CustomerPaymentSubCategoryContainer>
-              <CustomerPaymentSubCategoryContainer>
-                <CustomerPaymentSubCategoryName>
-                  {["BCP", "INTERBANK"].includes(sale?.bankEntity)
-                    ? "# Cuenta"
-                    : "Celular"}
-                </CustomerPaymentSubCategoryName>
-                {sale?.numberAccount}
-              </CustomerPaymentSubCategoryContainer>
-            </CustomerPaymentContainer>
-          </MuiPaper>
-        </Grid>
-      </Grid>
-    </Container>
-  );
+    return (
+        <Container maxWidth="lg">
+            <OrderDetailContainer>
+                <OrderDetailStack>
+                    <IconButton aria-label="arrow-back" onClick={() => navigate(-1)}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                    <OrderDetailBody>
+                        <OrderDetailDescription>
+                            <Typography variant="h4">
+                                Sales #{sale?.correlative || 0}
+                            </Typography>
+                            <Status state={sale?.status || SaleState.Pending} />
+                        </OrderDetailDescription>
+                        <OrderDetailDate variant="body2">
+                            {calculateDate(sale?.createdAt || new Date())}
+                        </OrderDetailDate>
+                    </OrderDetailBody>
+                </OrderDetailStack>
+            </OrderDetailContainer>
+            <Grid container spacing={2}>
+                <Grid xs={12} sm={8}>
+                    <Stack>
+                        <MuiPaper>
+                            <CardHeader
+                                title="Detalle"
+                                action={
+                                    <IconButton aria-label="settings">
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                }
+                            />
+                            <ProductDetailContainer>
+                                <ProductDetailDescriptionContainer>
+                                    <ProductDetailDescriptionAvatar variant="rounded">
+                                        <Iconify icon="ic:baseline-apple" />
+                                    </ProductDetailDescriptionAvatar>
+                                    <ProductDetailDescriptionListItem>
+                                        <ListItemText
+                                            primary={sale?.productName + ' - ' + sale?.capacity?.description}
+                                            secondary={generateInfoDevice(sale?.color?.description, sale?.grade?.description, sale?.originalBox)}
+                                        />
+                                    </ProductDetailDescriptionListItem>
+                                    <ProductDetailDescriptionQuantity>
+                                        x1
+                                    </ProductDetailDescriptionQuantity>
+                                    <ProductDetailDescriptionPrice>
+                                        S/ {sale?.price}
+                                    </ProductDetailDescriptionPrice>
+                                </ProductDetailDescriptionContainer>
+                                <ProductPriceDetailContainer>
+                                    <ProductPriceDetailStack>
+                                        <ProductPriceDetailDescription>
+                                            Sub Total
+                                        </ProductPriceDetailDescription>
+                                        <ProductPriceDetailPrice>
+                                            S/ {sale?.price}
+                                        </ProductPriceDetailPrice>
+                                    </ProductPriceDetailStack>
+                                    <ProductPriceDetailStack>
+                                        <ProductPriceDetailDescription>
+                                            Delivery
+                                        </ProductPriceDetailDescription>
+                                        <ProductPriceDetailPrice>-</ProductPriceDetailPrice>
+                                    </ProductPriceDetailStack>
+                                    <ProductPriceDetailTotalStack>
+                                        <ProductPriceDetailTotalDescription>
+                                            Total
+                                        </ProductPriceDetailTotalDescription>
+                                        <ProductPriceDetailTotalPrice>
+                                            S/ {sale?.price}
+                                        </ProductPriceDetailTotalPrice>
+                                    </ProductPriceDetailTotalStack>
+                                </ProductPriceDetailContainer>
+                            </ProductDetailContainer>
+                        </MuiPaper>
+                    </Stack>
+                </Grid>
+                <Grid xs={12} sm={4}>
+                    <MuiPaper>
+                        <CardHeader
+                            title="Datos Usuario"
+                            action={
+                                <IconButton aria-label="settings">
+                                    <MoreVertIcon />
+                                </IconButton>
+                            }
+                        />
+                        <CustomerInfoContainer>
+                            <CustomerInfoAvatarContainer
+                                {...stringAvatar(
+                                    `${sale?.user?.name.toUpperCase() +
+                                    " " +
+                                    sale?.user?.lastName.toUpperCase()
+                                    }`
+                                )}
+                            ></CustomerInfoAvatarContainer>
+                            <CustomerInfoDescriptionContainer>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    {sale?.user?.name} {sale?.user?.last_name}
+                                </Typography>
+                                <Box>{sale?.user?.email}</Box>
+                            </CustomerInfoDescriptionContainer>
+                        </CustomerInfoContainer>
+                        <CustomerShippingContainer>
+                            <CustomerShippingSubCategoryContainer>
+                                <CustomerShippingSubCategoryName>
+                                    Tipo Doc.
+                                </CustomerShippingSubCategoryName>
+                                {sale?.documentType?.description}
+                            </CustomerShippingSubCategoryContainer>
+                            <CustomerShippingSubCategoryContainer>
+                                <CustomerShippingSubCategoryName>
+                                    # Documento
+                                </CustomerShippingSubCategoryName>
+                                {sale?.documentNumber}
+                            </CustomerShippingSubCategoryContainer>
+                        </CustomerShippingContainer>
+                        <Divider />
+                        <CardHeader
+                            title="Delivery"
+                            action={
+                                <IconButton aria-label="settings">
+                                    <MoreVertIcon />
+                                </IconButton>
+                            }
+                        />
+                        <CustomerShippingContainer>
+                            <CustomerShippingSubCategoryContainer>
+                                <CustomerShippingSubCategoryName>
+                                    Departamento
+                                </CustomerShippingSubCategoryName>
+                                {sale?.user?.department}
+                            </CustomerShippingSubCategoryContainer>
+                            <CustomerShippingSubCategoryContainer>
+                                <CustomerShippingSubCategoryName>
+                                    Provincia
+                                </CustomerShippingSubCategoryName>
+                                {sale?.user?.province}
+                            </CustomerShippingSubCategoryContainer>
+                            <CustomerShippingSubCategoryContainer>
+                                <CustomerShippingSubCategoryName>
+                                    Distrito
+                                </CustomerShippingSubCategoryName>
+                                {sale?.user?.district}
+                            </CustomerShippingSubCategoryContainer>
+                            <CustomerShippingSubCategoryContainer>
+                                <CustomerShippingSubCategoryName>
+                                    Direccion
+                                </CustomerShippingSubCategoryName>
+                                {sale?.user?.address}
+                            </CustomerShippingSubCategoryContainer>
+                            <CustomerShippingSubCategoryContainer>
+                                <CustomerShippingSubCategoryName>
+                                    Celular
+                                </CustomerShippingSubCategoryName>
+                                {sale?.user?.phoneNumber}
+                            </CustomerShippingSubCategoryContainer>
+                        </CustomerShippingContainer>
+                        <Divider />
+                        <CardHeader
+                            title="Datos de Pago"
+                            action={
+                                <IconButton aria-label="settings">
+                                    <MoreVertIcon />
+                                </IconButton>
+                            }
+                        />
+                        <CustomerPaymentContainer>
+                            <CustomerPaymentSubCategoryContainer>
+                                <CustomerPaymentSubCategoryName>
+                                    Bank
+                                </CustomerPaymentSubCategoryName>
+                                {sale?.bankEntity}
+                            </CustomerPaymentSubCategoryContainer>
+                            <CustomerPaymentSubCategoryContainer>
+                                <CustomerPaymentSubCategoryName>
+                                    {["BCP", "INTERBANK"].includes(sale?.bankEntity)
+                                        ? "# Cuenta"
+                                        : "Celular"}
+                                </CustomerPaymentSubCategoryName>
+                                {sale?.numberAccount}
+                            </CustomerPaymentSubCategoryContainer>
+                        </CustomerPaymentContainer>
+                    </MuiPaper>
+                </Grid>
+            </Grid>
+        </Container>
+    );
 };
 
 export default ResumePage;
