@@ -29,7 +29,6 @@ import {
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import useUbigeo from "src/hooks/ubigeo";
 import getDocumentType from "src/services/type-document";
-import { UserAccountDto } from "src/models/user";
 
 const defaultFormValue = {
   name: "",
@@ -115,9 +114,6 @@ const RegisterPage = () => {
   }, [watchProvince]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    const user = new UserAccountDto(data);
-    console.log(user);
     mutationRegister.mutate(data);
   };
 

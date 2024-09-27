@@ -60,14 +60,8 @@ export function overrides(theme: any): any {
     MuiButton: {
       styleOverrides: {
         contained: {
-          color: theme.palette.common.white,
-          backgroundColor: theme.palette.primary.main,
           textTransform: 'unset',
           padding: theme.spacing(0.75, 1.5),
-          '&:hover': {
-            color: theme.palette.common.white,
-            backgroundColor: theme.palette.primary.dark,
-          },
         },
         sizeLarge: {
           minHeight: 48,

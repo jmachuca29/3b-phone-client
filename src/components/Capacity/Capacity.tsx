@@ -20,7 +20,6 @@ export const Capacity = ({ handleNext }: any) => {
     useEffect(() => {
         if (Object.keys(currentProduct).length == 0) return
         const capacities = extractValuesByKey(currentProduct, 'capacity')
-        console.log(capacities)
         setCapacities(capacities)
     }, [])
 

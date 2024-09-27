@@ -179,8 +179,6 @@ const CheckoutPage = () => {
     setValue("email", user?.email);
   }, [user]);
 
-  console.log(errors)
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
 
     const userProps: UserProps = {

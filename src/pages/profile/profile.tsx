@@ -22,9 +22,8 @@ import {
   import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
   import useUbigeo from "src/hooks/ubigeo";
   import getDocumentType from "src/services/type-document";
-  import { UserAccountDto } from "src/models/user";
 import getUserById from "src/services/user";
-  
+
   const defaultFormValue = {
     name: '',
     lastName: '',
@@ -39,7 +38,7 @@ import getUserById from "src/services/user";
     password: '',
     passwordRepeat: ''
   };
-  
+
   type Inputs = {
     name: string;
     lastName: string;
@@ -54,7 +53,7 @@ import getUserById from "src/services/user";
     password: string;
     passwordRepeat: string;
   }
-  
+
   const ProfilePage = () => {
     const [user] = useAppStore(state => [state.user])
     const [profile, setProfile] = useState<any>(null);
@@ -66,12 +65,12 @@ import getUserById from "src/services/user";
         queryFn: () =>
             idUser ? getUserById(idUser) : Promise.reject("No id found"),
       });
-  
+
     const { data: typeDocumentData } = useQuery({
       queryKey: ['typeDocument'],
       queryFn: getDocumentType,
     })
-  
+
 
     const {
       isPending,
@@ -82,7 +81,7 @@ import getUserById from "src/services/user";
       getProvincesByDepartamento,
       getDistricts,
     } = useUbigeo();
-  
+
     const {
       handleSubmit,
       setValue,
@@ -91,10 +90,10 @@ import getUserById from "src/services/user";
     } = useForm<Inputs>({
       defaultValues: defaultFormValue,
     });
-  
+
     const watchDepartment = watch("department");
     const watchProvince = watch("province");
-  
+
     useEffect(() => {
       if (watchDepartment) {
         getProvincesByDepartamento(watchDepartment);
@@ -102,7 +101,7 @@ import getUserById from "src/services/user";
         setValue("district", "");
       }
     }, [watchDepartment]);
-  
+
     useEffect(() => {
       if (watchProvince) {
         getDistricts(watchDepartment, watchProvince);
@@ -142,21 +141,20 @@ import getUserById from "src/services/user";
         setValue('district', data?.district);
         setValue('address', data?.address);
     };
-    
-  
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-      const user = new UserAccountDto(data)
-      console.log(user)
+
+
+    const onSubmit: SubmitHandler<Inputs> = () => {
+      return
     };
-  
+
     if (isPending) {
       return <span>Loading...</span>;
     }
-  
+
     if (error) {
       return <span>Error: {error.message}</span>;
     }
-  
+
     return (
       <Container maxWidth="lg">
         <OrderDetailContainer>
@@ -312,6 +310,5 @@ import getUserById from "src/services/user";
       </Container>
     )
   };
-  
+
   export default ProfilePage;
-  
