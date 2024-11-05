@@ -12,6 +12,8 @@ export const CheckoutPage = lazy(() => import("src/pages/checkout/checkout"));
 export const SalesPage = lazy(() => import("src/pages/sales/sales"));
 export const Page404 = lazy(() => import("src/pages/page-not-found"));
 export const ResumePage = lazy(() => import("src/pages/resume/resume"));
+export const ResetPasswordPage = lazy(() => import("src/pages/reset-password/reset-password"));
+
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +35,7 @@ export default function Router() {
         { path: "resume/:uuid", element: <ResumePage /> },
         { path: "trade-in", element: <TradeInPage /> },
         { path: "checkout", element: <CheckoutPage /> },
+        { path: "reset-password/:token", element: <ResetPasswordPage /> },
         {
           element: <ProtectedRoute />,
           children: [{ path: "my-sales", element: <SalesPage /> }],
