@@ -1,9 +1,7 @@
 import {
-    Box,
     Button,
     Container,
     IconButton,
-    Link,
     Paper,
     Stack,
     TextField,
@@ -13,11 +11,12 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { login } from "src/services/auth";
-import { Link as RouterLink } from "react-router-dom";
 import { OrderDetailBody, OrderDetailContainer, OrderDetailDescription, OrderDetailStack } from "./styles";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useEffect } from "react";
+import { resetPasswordAccount } from "src/services/account";
+import useAppStore from "src/store/store";
+import AlertType from "src/constant/alertType";
 
 const defaultFormValue: Inputs = {
     token: "",
@@ -32,15 +31,23 @@ type Inputs = {
 };
 
 const ResetPasswordPage = () => {
+    const [setFn] = useAppStore(state => [state.setFn])
     const navigate = useNavigate();
     const { token } = useParams();
     const mutationLogin = useMutation({
-        mutationFn: login,
-        onSuccess: async (response) => { },
-        onError: async (error: any) => { },
+        mutationFn: resetPasswordAccount,
+        onSuccess: async () => {
+            setFn.addSnackbar('Contraseña restablecida', AlertType.success)
+            navigate("/");
+        },
+        onError: async (error: any) => {
+            const response = error?.response;
+            const message = response?.data?.message || "Internal Server Error";
+            setFn.addSnackbar(message, AlertType.error)
+        },
     });
 
-    const { register, handleSubmit, setValue, control } = useForm<Inputs>({
+    const { handleSubmit, setValue, control } = useForm<Inputs>({
         defaultValues: defaultFormValue,
     });
 
@@ -49,9 +56,8 @@ const ResetPasswordPage = () => {
     }, [token])
 
 
-    const onSubmit: SubmitHandler<Login> = (data) => {
-        console.log(data)
-        // mutationLogin.mutate(data);
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        mutationLogin.mutate(data);
     };
 
     return (
