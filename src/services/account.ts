@@ -6,4 +6,11 @@ const registerAccount = (user: any) => {
     return axios.post(`${baseUrl}/api/account`, user);
 };
 
-export default registerAccount
+const resetPasswordAccount = (body: any) => {
+    return axios.post(`${baseUrl}/api/account/reset-password`, body);
+};
+
+export {
+    registerAccount,
+    resetPasswordAccount
+}
